@@ -39,6 +39,16 @@ public class Game {
 			ArrayList<int[]> cells = maze.get_board_cells();
 			hero.set_position(cells.remove(rn.nextInt(cells.size())));
 			place_element(hero);
+			int[][] hero_neigh = hero.get_neighbour_positions();
+			for (int i = 0; i < hero_neigh.length; i++) {
+				int[] cell = hero_neigh[i];
+				for (int j = 0; j < cells.size(); j++) {
+					if (cells.get(j)[0] == cell[0] && cells.get(j)[1] == cell[1]) {
+						cells.remove(j);
+						break;
+					}
+				}
+			}
 			sword.set_position(cells.remove(rn.nextInt(cells.size())));
 			place_element(sword);
 			shield.set_position(cells.remove(rn.nextInt(cells.size())));
