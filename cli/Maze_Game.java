@@ -20,6 +20,9 @@ public class Maze_Game {
 			System.out.print("Number of dragons? ");
 			number = scan.nextInt();
 			game.set_number_dragons(number);
+			System.out.print("Type of dragons (0 - not moving, 1 - moving, 2 - sleeping and moving)? ");
+			number = scan.nextInt();
+			game.set_dragon_type(number);
 			System.out.print("Number of darts? ");
 			number = scan.nextInt();
 			game.set_number_darts(number);
@@ -27,6 +30,7 @@ public class Maze_Game {
 		else { 
 			game.set_maze_size(10);
 			game.set_number_dragons(1);
+			game.set_dragon_type(0);
 			game.set_number_darts(0);
 		}
 		game.start_game();
@@ -122,6 +126,25 @@ public class Maze_Game {
 		}
 	}
 	
+	private static void maybe_burn(Maze_Game mg) {
+		if (!mg.game.get_shielded_hero()) {
+			ArrayList<Integer> dragons_b = mg.game.dragons_burn();
+			if (!dragons_b.isEmpty()) {
+				System.out.println();		
+				System.out.print("Burn!!!");
+				try {
+					Thread.sleep(SLEEP_TIME);
+				}
+				catch(Exception e) {
+					System.out.println("Exception caught");
+				}			
+				System.out.println("\n");
+				mg.game.burn_hero();
+				mg.print_maze();
+			}
+		}
+	}
+
 	private static void game_result(Maze_Game mg) {
 		System.out.println();		
 		if (mg.game.get_game_state() == 1) System.out.print("You Win!!!");
@@ -137,12 +160,16 @@ public class Maze_Game {
 			play_hero(scan, mg);
 			if (mg.game.get_number_dragons() > 0) {
 				maybe_fight(mg);
-				if (mg.game.get_game_state() == 0 
-						&& mg.game.get_number_dragons() > 0 
-						&& mg.game.get_hero().get_hero_darts() > 0) hero_dart(scan, mg);
 				if (mg.game.get_game_state() == 0 && mg.game.get_number_dragons() > 0) {
+					maybe_burn(mg);
+					if (mg.game.get_game_state() == 0 
+							&& mg.game.get_number_dragons() > 0 
+							&& mg.game.get_hero().get_hero_darts() > 0) hero_dart(scan, mg);
+					if (mg.game.get_dragon_type() != 0 && mg.game.get_game_state() == 0 && mg.game.get_number_dragons() > 0) {
 						play_dragon(mg);
 						maybe_fight(mg);
+						if (mg.game.get_game_state() == 0 && mg.game.get_number_dragons() > 0) maybe_burn(mg);
+					}
 				}
 			}
 		}

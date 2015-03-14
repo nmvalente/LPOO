@@ -7,6 +7,7 @@ public class Game {
 	
 	private int maze_type;
 	private int maze_size;
+	private int dragon_type; // type 0 - not moving; type 1 - moving; type 2 - sleeping & moving
 	private Maze maze;
 	private Exit exit;
 	private Hero hero;
@@ -57,6 +58,7 @@ public class Game {
 		}
 		else {
 			shield.kill_shield();
+			hero.shield_hero();
 			place_element(shield);
 			place_element(exit);
 			place_element(hero);
@@ -83,6 +85,10 @@ public class Game {
 		maze_size = size;
 	}
 	
+	public void set_dragon_type(int type) {
+		dragon_type = type;
+	}
+
 	public void set_number_dragons(int number) {
 		number_dragons = number;
 	}
@@ -127,6 +133,10 @@ public class Game {
 		return number_dragons;
 	}
 	
+	public int get_dragon_type() {
+		return dragon_type;
+	}
+
 	public int get_number_darts() {
 		return number_darts;
 	}
@@ -156,14 +166,26 @@ public class Game {
 		int[][] pos_neigh = hero.get_neighbour_positions();
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		for (int i = 0; i < number_dragons; i++) {
+			Dragon dragon = dragons.get(i);
 			for (int j = 0; j < 4; j++) {
-				Dragon dragon = dragons.get(i);
 				if (dragon.same_position(pos_neigh[j]) && dragon.get_state() != ' ') result.add(i);
 			}
 		}
 		return result;
 	}
 	
+	public ArrayList<Integer> dragons_burn() {
+		int[][] pos_burn = hero.get_burn_positions();
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		for (int i = 0; i < number_dragons; i++) {
+			Dragon dragon = dragons.get(i);
+			for (int j = 0; j < 8; j++) {
+				if (dragon.same_position(pos_burn[j]) && dragon.get_state() != ' ' && dragon.get_state() != 'd' && dragon.get_state() != 'f') result.add(i);
+			}
+		}
+		return result;
+	}
+
 	public void hero_vs_dragons(ArrayList<Integer> dragons_c) {
 		char hero_state = hero.get_state();
 		if (hero_state == 'A' || hero_state == 'a') {
@@ -175,9 +197,16 @@ public class Game {
 				dec_number_dragons();
 			}
 		}
-		else if (dragons_c.size() > 0) {
-			hero.set_state(' ');
-			maze.set_position(hero);			
+		else {
+			for (int i = 0; i < dragons_c.size(); i++) {
+				int index = dragons_c.get(i);
+				Dragon d = dragons.get(index);
+				if (d.get_state() != 'd' && d.get_state() != 'f') {
+					hero.set_state(' ');
+					maze.set_position(hero);
+					break;
+				}
+			}
 		}
 		if (number_dragons == 0) {
 			exit.open_exit();
@@ -185,6 +214,18 @@ public class Game {
 		}
 	}
 	
+	public void burn_hero() {
+		hero.set_state(' ');
+		maze.set_position(hero);
+		compute_game_state();
+	}
+
+	public boolean get_shielded_hero() {
+		char state = hero.get_state();
+		if (state == 'H' || state == 'A') return true;
+		return false;
+	}
+
 	public void choose_dragon_movement(Dragon dragon) {
 		Random rn = new Random();
 		Move_Dragon md = new Move_Dragon();
@@ -253,29 +294,39 @@ public class Game {
 	}
 	
 	public void dragon_turn() {
+		Random rn = new Random();
 		for (int i = 0; i < number_dragons; i++) {
 			Dragon dragon = dragons.get(i);
 			if (dragon.get_state() != ' ') {
-				remove_element(dragon);
-				choose_dragon_movement(dragon);
-				for (int j = 0; j < number_darts; j++) {
-					place_element(darts.get(j));
+				int sleep_random = 1;
+				if (dragon_type == 2) sleep_random = rn.nextInt(4);
+				if (sleep_random == 0) {
+					dragon.sleep_dragon();
+					place_element(dragon);
 				}
-				place_element(shield);
-				place_element(sword);
-				place_element(hero);
-				place_element(dragon);
+				else {
+					remove_element(dragon);
+					choose_dragon_movement(dragon);
+					for (int j = 0; j < number_darts; j++) {
+						place_element(darts.get(j));
+					}
+					place_element(shield);
+					place_element(sword);
+					place_element(hero);
+					place_element(dragon);
+				}
 			}
 		}		
 	}
 
 	public void fight(ArrayList<Integer> dragons_c) {
 		hero_vs_dragons(dragons_c);
+		for (int i = 0; i < number_darts; i++) place_element(darts.get(i));
+		place_element(shield);
+		place_element(sword);
 		place_element(hero);
 		for (int i = 0; i < number_dragons; i++) place_element(dragons.get(i));
-		place_element(shield);
-		for (int i = 0; i < number_darts; i++) place_element(darts.get(i));
 		compute_game_state();
 	}
-	
+		
 }

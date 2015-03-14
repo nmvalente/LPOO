@@ -30,6 +30,19 @@ public class Element {
 		return pos_neigh;
 	}
 	
+	int[][] get_burn_positions() {
+		int[][] pos_burn = {
+				{position[0] - 2, position[1]}, 
+				{position[0] + 2, position[1]},
+				{position[0], position[1] - 2},
+				{position[0], position[1] + 2},
+				{position[0] - 3, position[1]}, 
+				{position[0] + 3, position[1]},
+				{position[0], position[1] - 3},
+				{position[0], position[1] + 3}};
+		return pos_burn;
+	}
+	
 	boolean same_position (int[] other_position) {
 		if (position[0] == other_position[0] && position[1] == other_position[1]) return true;
 		else return false;

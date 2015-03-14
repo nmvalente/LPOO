@@ -19,5 +19,10 @@ public class Dragon extends Element{
 	void unarm_dragon() {
 		set_state('D');
 	}
+	
+	void sleep_dragon() {
+		if (get_state() == 'D' || get_state() == 'd') set_state('d');
+		else if (get_state() == 'F' || get_state() == 'f') set_state('f');
+	}
 
 }
