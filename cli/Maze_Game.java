@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Maze_Game {
-	
+
 	private static final int SLEEP_TIME = 1000;
 	logic.Game game;
-	
+
 	public Maze_Game(Scanner scan) {
 		game = new logic.Game();
 		System.out.print("Maze type (0 - static, 1 - random)? ");
@@ -35,7 +35,7 @@ public class Maze_Game {
 		}
 		game.start_game();
 	}
-	
+
 	public void print_maze() {
 		int size = game.get_maze_size();
 		for (int i = 0; i < size; i++) {
@@ -46,25 +46,25 @@ public class Maze_Game {
 			System.out.println();
 		}
 	}
-	
+
 	private static void play_hero(Scanner scan, Maze_Game mg) {
 		System.out.println();		
 		System.out.print("Hero: w, a, s, d? ");
 		char hero_direction = scan.next().charAt(0);
 		int direction = 0;
 		switch (hero_direction) {
-			case 'w' :
-				direction = 2;
-				break;
-			case 'a' :
-				direction = 1;
-				break;
-			case 's' :
-				direction = 3;
-				break;
-			case 'd' :
-				direction = 0;
-				break;
+		case 'w' :
+			direction = 2;
+			break;
+		case 'a' :
+			direction = 1;
+			break;
+		case 's' :
+			direction = 3;
+			break;
+		case 'd' :
+			direction = 0;
+			break;
 		}				
 		mg.game.hero_turn(direction);
 		System.out.println();
@@ -77,18 +77,18 @@ public class Maze_Game {
 		char dart_direction = scan.next().charAt(0);
 		int direction = 4;
 		switch (dart_direction) {
-			case 'w' :
-				direction = 2;
-				break;
-			case 'a' :
-				direction = 1;
-				break;
-			case 's' :
-				direction = 3;
-				break;
-			case 'd' :
-				direction = 0;
-				break;
+		case 'w' :
+			direction = 2;
+			break;
+		case 'a' :
+			direction = 1;
+			break;
+		case 's' :
+			direction = 3;
+			break;
+		case 'd' :
+			direction = 0;
+			break;
 		}				
 		if (direction < 4) mg.game.hero_dart(direction);
 		System.out.println();
@@ -115,17 +115,17 @@ public class Maze_Game {
 			System.out.println();		
 			System.out.print("Fight!!!");
 			try {
-			    Thread.sleep(SLEEP_TIME);
+				Thread.sleep(SLEEP_TIME);
 			}
 			catch(Exception e) {
-			   System.out.println("Exception caught");
+				System.out.println("Exception caught");
 			}			
 			System.out.println("\n");
 			mg.game.fight(dragons_c);
 			mg.print_maze();
 		}
 	}
-	
+
 	private static void maybe_burn(Maze_Game mg) {
 		if (!mg.game.get_shielded_hero()) {
 			ArrayList<Integer> dragons_b = mg.game.dragons_burn();
@@ -150,10 +150,8 @@ public class Maze_Game {
 		if (mg.game.get_game_state() == 1) System.out.print("You Win!!!");
 		else System.out.print("You Lose!!!");
 	}
-
-	public static void main(String[] args) {
-		Scanner scan = new Scanner (System.in);
-		Maze_Game mg = new Maze_Game(scan);
+	
+	private static void play(Scanner scan, Maze_Game mg) {
 		System.out.println();
 		mg.print_maze();
 		do {
@@ -174,8 +172,13 @@ public class Maze_Game {
 			}
 		}
 		while (mg.game.get_game_state() == 0);
-		game_result(mg);
-		scan.close();
 	}
 
+	public static void main(String[] args) {
+		Scanner scan = new Scanner (System.in);
+		Maze_Game mg = new Maze_Game(scan);
+		play(scan, mg);
+		game_result(mg);
+		scan.close();
+	}	
 }
