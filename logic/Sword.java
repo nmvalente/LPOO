@@ -8,7 +8,7 @@ public class Sword extends Element{
 		set_position(default_position);
 	}
 	
-	void kill_sword() {
+	public void kill_sword() {
 		set_state(' ');
 	}
 

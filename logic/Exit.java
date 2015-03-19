@@ -8,7 +8,7 @@ public class Exit extends Element {
 		set_position(default_position);
 	}
 	
-	void open_exit() {
+	public void open_exit() {
 		set_state('e');
 	}
 

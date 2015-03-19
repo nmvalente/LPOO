@@ -5,23 +5,23 @@ public class Element {
 	private int[] position;
 	private char state;
 	
-	int[] get_position() {
+	public int[] get_position() {
 		return position;
 	}
 	
-	void set_position(int[] new_position) {
+	public void set_position(int[] new_position) {
 		position = new_position;
 	}
 	
-	char get_state() {
+	public char get_state() {
 		return state;
 	}
 	
-	void set_state(char new_state) {
+	public void set_state(char new_state) {
 		state = new_state;
 	}
 	
-	int[][] get_neighbour_positions() {
+	public int[][] get_neighbour_positions() {
 		int[][] pos_neigh = {
 				{position[0] - 1, position[1]}, 
 				{position[0] + 1, position[1]},
@@ -30,7 +30,7 @@ public class Element {
 		return pos_neigh;
 	}
 	
-	int[][] get_burn_positions() {
+	public int[][] get_burn_positions() {
 		int[][] pos_burn = {
 				{position[0] - 2, position[1]}, 
 				{position[0] + 2, position[1]},
@@ -43,9 +43,15 @@ public class Element {
 		return pos_burn;
 	}
 	
-	boolean same_position (int[] other_position) {
-		if (position[0] == other_position[0] && position[1] == other_position[1]) return true;
-		else return false;
+	public boolean same_position (int[] other_position) {
+		return position[0] == other_position[0] && position[1] == other_position[1];
 	}
 	
+	public boolean equals (Object obj) {
+		return obj != null
+				&& obj instanceof Element
+				&& getClass().getName() == ((Element)obj).getClass().getName()
+				&& same_position(((Element)obj).get_position())
+				&& ((Element)obj).get_state() == state;
+	}
 }

@@ -2,7 +2,7 @@ package logic;
 
 public class Move_Hero {
 	
-	void move_hero(Game g, int[] new_pos) {
+	public void move_hero(Game g, int[] new_pos) {
 		Maze m = g.get_maze();
 		Hero h = g.get_hero();
 		char board_symbol = m.get_board_position(new_pos);
@@ -37,25 +37,25 @@ public class Move_Hero {
 		}
 	}
 	
-	void move_hero_right(Game g) {
+	public void move_hero_right(Game g) {
 		int[] current_pos = g.get_hero().get_position();
 		int[] new_pos = {current_pos[0], current_pos[1] + 1};
 		move_hero(g, new_pos);
 	}
 	
-	void move_hero_left(Game g) {
+	public void move_hero_left(Game g) {
 		int[] current_pos = g.get_hero().get_position();
 		int[] new_pos = {current_pos[0], current_pos[1] - 1};
 		move_hero(g, new_pos);
 	}
 
-	void move_hero_up(Game g) {
+	public void move_hero_up(Game g) {
 		int[] current_pos = g.get_hero().get_position();
 		int[] new_pos = {current_pos[0] - 1, current_pos[1]};
 		move_hero(g, new_pos);
 	}
 
-	void move_hero_down(Game g) {
+	public void move_hero_down(Game g) {
 		int[] current_pos = g.get_hero().get_position();
 		int[] new_pos = {current_pos[0] + 1, current_pos[1]};
 		move_hero(g, new_pos);

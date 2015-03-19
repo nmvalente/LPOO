@@ -34,5 +34,9 @@ public abstract class Maze {
 	public char get_board_position(int[] position) {
 		return board[position[0]][position[1]];
 	}
+	
+	public char[][] get_board() {
+		return board;
+	}
 
 }
