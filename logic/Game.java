@@ -184,13 +184,42 @@ public class Game {
 		return result;
 	}
 	
+	public boolean free_path(Element elem1, Element elem2) {
+		int[] pos1 = elem1.get_position();
+		int[] pos2 = elem2.get_position();
+		if (pos1[0] == pos2[0]) {
+			int min = Math.min(pos1[1], pos2[1]);
+			int max = pos1[1] + pos2[1] - min;
+			for (int i = min + 1; i < max; i ++) {
+				int[] pos = {pos1[0], i};
+				if (maze.get_board_position(pos) == 'X') return false;
+			}
+			return true;
+		}
+		else if (pos1[1] == pos2[1]) {
+			int min = Math.min(pos1[0], pos2[0]);
+			int max = pos1[0] + pos2[0] - min;
+			for (int i = min + 1; i < max; i ++) {
+				int[] pos = {i, pos1[1]};
+				if (maze.get_board_position(pos) == 'X') return false;
+			}
+			return true;
+		}
+		else return false;
+	}
+	
 	public ArrayList<Integer> dragons_burn() {
 		int[][] pos_burn = hero.get_burn_positions();
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		for (int i = 0; i < number_dragons; i++) {
 			Dragon dragon = dragons.get(i);
 			for (int j = 0; j < 8; j++) {
-				if (dragon.same_position(pos_burn[j]) && dragon.get_state() != ' ' && dragon.get_state() != 'd' && dragon.get_state() != 'f') result.add(i);
+				if (dragon.same_position(pos_burn[j]) 
+						&& dragon.get_state() != ' ' 
+						&& dragon.get_state() != 'd' 
+						&& dragon.get_state() != 'f'
+						&& free_path(hero, dragon)
+						) result.add(i);
 			}
 		}
 		return result;
