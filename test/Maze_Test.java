@@ -268,7 +268,7 @@ public class Maze_Test {
 	@Test
 	public void testRandomMazeGenerator() throws Exception {
 		int numMazes = 100;
-		int maxSize = 55; // can change to any odd number >= 5
+		int maxSize = 55; // can change to any odd number >= 7
 		
 //		Maze_Builder builder = new Maze_Builder();
 		char[][] badWalls = {
@@ -286,15 +286,16 @@ public class Maze_Test {
 				{'X', ' '}};
 		Random rand = new Random(); 
 		for (int i = 0; i < numMazes; i++) {
-			int size = maxSize == 5? 5 : 5 + 2 * rand.nextInt((maxSize - 5)/2);
+			int size = maxSize == 7? 7 : 7 + 2 * rand.nextInt((maxSize - 7)/2);
 			Game game = new logic.Game();
 			game.set_maze_type(1);
 			game.set_maze_size(size);
-			game.set_number_dragons(1);
-			game.set_dragon_type(0);
-			game.set_number_darts(0);
+			game.set_number_dragons(2);
+			game.set_dragon_type(2);
+			game.set_number_darts(2);
 			game.start_game();
 			Maze m = game.get_maze();
+			assertEquals(game.get_dragon_type(), 2);
 			assertTrue("Invalid maze boundaries in maze:\n" + m, checkBoundaries(game));			
 			assertTrue("Maze exit not reachable in maze:\n" + m, checkExitReachable(game));			
 			assertNotNull("Invalid walls in maze:\n" + m, ! hasSquare(m, badWalls));
@@ -303,7 +304,8 @@ public class Maze_Test {
 			assertNotNull("Invalid diagonals in maze:\n" + m, ! hasSquare(m, badDiag2));
 			assertTrue("Missing or overlapping objects in maze:\n" + m, 
 					notNullAndDistinct(game.get_exit().get_position(), game.get_hero().get_position(),
-							game.get_dragons().get(0).get_position(), game.get_sword().get_position()));			
+							game.get_dragons().get(0).get_position(), game.get_dragons().get(game.get_number_dragons() - 1).get_position(), 
+							game.get_sword().get_position(), game.get_darts().get(0).get_position(), game.get_darts().get(game.get_number_darts() - 1).get_position()));			
 		}	
 	}
 
