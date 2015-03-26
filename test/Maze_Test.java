@@ -4,14 +4,14 @@ import static org.junit.Assert.*;
 
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.junit.Test;
 
-
-
 //import cli.*;
 import logic.*;
-
 
 public class Maze_Test {
 
@@ -43,7 +43,7 @@ public class Maze_Test {
 		assertEquals(game.get_sword(), s);
 		assertEquals(game.get_exit(), e);
 	}
-	
+
 	@Test
 	public void test_static_hero_movement() {
 		Game game = new logic.Game();
@@ -80,7 +80,7 @@ public class Maze_Test {
 		mh.move_hero_up(game);
 		assertEquals(game.get_hero(), h);
 	}
-	
+
 	@Test
 	public void test_static_hero_dies() {
 		Game game = new logic.Game();
@@ -194,11 +194,11 @@ public class Maze_Test {
 							countExit++;
 					else if (g.get_maze().get_board_position(pos) != 'X')
 						return false;
-					
+
 				}
 		return countExit == 1;
 	}
-	
+
 
 	// d) there cannot exist 2x2 (or greater) squares with blanks only 
 	// e) there cannot exit 2x2 (or greater) squares with blanks in one diagonal and walls in the other
@@ -224,15 +224,15 @@ public class Maze_Test {
 		int[] p = game.get_exit().get_position();
 		char [][] m = deepClone(game.get_maze().get_board());
 		visit(m, p[0], p[1]);
-		
+
 		for (int i = 0; i < m.length; i++)
 			for (int j = 0; j < m.length; j++)
 				if (m[i][j] != 'X' && m[i][j] != 'v')
 					return false;
-		
+
 		return true; 
 	}
-	
+
 	// auxiliary method used by checkExitReachable
 	// marks a cell as visited (V) and proceeds recursively to its neighbors
 	private void visit(char[][] m, int i, int j) {
@@ -269,8 +269,8 @@ public class Maze_Test {
 	public void testRandomMazeGenerator() throws Exception {
 		int numMazes = 100;
 		int maxSize = 55; // can change to any odd number >= 7
-		
-//		Maze_Builder builder = new Maze_Builder();
+
+		//		Maze_Builder builder = new Maze_Builder();
 		char[][] badWalls = {
 				{'X', 'X', 'X'},
 				{'X', 'X', 'X'},
@@ -309,4 +309,51 @@ public class Maze_Test {
 		}	
 	}
 
+	/**
+	 * Repetidamente gera uma inst�ncia do tipo T usando a fun��o geradora, e verifica se a inst�ncia
+	 * gerada obedece a um dos predicados (fun��es de T em Boolean). No caso de n�o obedecer a nenhum, 
+	 * falha, mostrando a mensagem gerada pela fun��o errorMessage (de T em String).
+	 * Repete at� cada teste ter sucedido pelo menos uma vez, num m�nimo de numIter itera��es.
+	 * @param generator - gera uma inst�ncia (fun��o de () em T);
+	 * @param errorMessage - gera uma mensagem em caso de erro (fun��o de T em String);
+	 * @param predicates - lista de predicados de teste (fun��es de T em Boolean).
+	 */
+
+	@SafeVarargs
+	public final <T> void testAlt(int minIter, Supplier<T> generator, Function<T, String> errorMessage, Predicate<T> ... predicates) {
+		boolean [] tested = new boolean[predicates.length];
+		int checked = 0;
+		for (int iter = 0; iter < minIter && checked < predicates.length; iter++ ) {
+			T x = generator.get();
+			boolean found = false;
+			for (int i = 0; i < predicates.length; i++)
+				if (predicates[i].test(x)) {
+					found = true;
+					if (!tested[i]) {
+						checked++;
+						tested[i] = true;
+					}
+				}
+			if (! found)		
+				fail(errorMessage.apply(x));
+			iter++;
+		}
+	}
+
+//	@Test(timeout=1000)
+//	public void testRandomDragon() {
+//		char [][] m1 = {
+//				{'X', 'X', 'X', 'X', 'X'},
+//				{'X', 'H', ' ', ' ', 'X'},
+//				{'X', ' ', 'X', ' ', 'S'},
+//				{'X', ' ', ' ', 'D', 'X'},
+//				{'X', 'X', 'X', 'X', 'X'}};
+//
+//		testAlt(1000,
+//				() -> {Maze maze = new Maze(m1); maze.moveHero(1, 0); return maze;},
+//				(m) -> "Dragao em posicao invalida: " + m, 
+//				(m) -> m.getDragonPosition().equals(3,3), 
+//				(m) -> m.getDragonPosition().equals(3,2), 
+//				(m) -> m.getDragonPosition().equals(2,3)); 
+//	}
 }

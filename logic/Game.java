@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 public class Game {
-	
+
 	private int maze_type;
 	private int maze_size;
 	private int dragon_type; // type 0 - not moving; type 1 - moving; type 2 - sleeping & moving
@@ -18,7 +18,10 @@ public class Game {
 	private int number_dragons;
 	private int number_darts;
 	private int state = 0; // state 0 - game continues; state 1 - hero wins, state 2 - hero loses
-	
+	private Move_Dragon md = new Move_Dragon();
+
+	public Move_Dragon getMoveDragon(){return md;}
+
 	public void start_game() {
 		Maze_Builder mb = new Maze_Builder();
 		mb.set_maze_type(maze_type);
@@ -78,11 +81,11 @@ public class Game {
 			place_element(dragon);
 		}
 	}
-	
+
 	public void place_element(Element elem) {
 		maze.set_position(elem);
 	}
-	
+
 	public void remove_element(Element elem) {
 		maze.remove_position(elem);
 	}
@@ -94,7 +97,7 @@ public class Game {
 	public void set_maze_size(int size) {
 		maze_size = size;
 	}
-	
+
 	public void set_dragon_type(int type) {
 		dragon_type = type;
 	}
@@ -102,11 +105,11 @@ public class Game {
 	public void set_number_dragons(int number) {
 		number_dragons = number;
 	}
-	
+
 	public void set_number_darts(int number) {
 		number_darts = number;
 	}
-	
+
 	public int get_maze_size() {
 		return maze_size;
 	}
@@ -114,15 +117,15 @@ public class Game {
 	public Maze get_maze() {
 		return maze;
 	}
-	
+
 	public Hero get_hero() {
 		return hero;
 	}
-	
+
 	public Sword get_sword() {
 		return sword;
 	}
-	
+
 	public Shield get_shield() {
 		return shield;
 	}
@@ -142,7 +145,7 @@ public class Game {
 	public int get_number_dragons() {
 		return number_dragons;
 	}
-	
+
 	public int get_dragon_type() {
 		return dragon_type;
 	}
@@ -150,7 +153,7 @@ public class Game {
 	public int get_number_darts() {
 		return number_darts;
 	}
-	
+
 	public void dec_number_dragons() {
 		number_dragons--;
 	}
@@ -167,11 +170,11 @@ public class Game {
 					|| hero_pos[0] == maze_size - 1 || hero_pos[1] == maze_size - 1) state = 1;
 		}
 	}
-	
+
 	public int get_game_state() {
 		return state;
 	}
-	
+
 	public ArrayList<Integer> dragons_close() {
 		int[][] pos_neigh = hero.get_neighbour_positions();
 		ArrayList<Integer> result = new ArrayList<Integer>();
@@ -183,7 +186,7 @@ public class Game {
 		}
 		return result;
 	}
-	
+
 	public boolean free_path(Element elem1, Element elem2) {
 		int[] pos1 = elem1.get_position();
 		int[] pos2 = elem2.get_position();
@@ -207,7 +210,7 @@ public class Game {
 		}
 		else return false;
 	}
-	
+
 	public ArrayList<Integer> dragons_burn() {
 		int[][] pos_burn = hero.get_burn_positions();
 		ArrayList<Integer> result = new ArrayList<Integer>();
@@ -252,7 +255,7 @@ public class Game {
 			maze.set_position(exit);
 		}
 	}
-	
+
 	public void burn_hero() {
 		hero.set_state(' ');
 		maze.set_position(hero);
@@ -266,9 +269,8 @@ public class Game {
 	}
 
 	public void choose_dragon_movement(Dragon dragon) {
-		Random rn = new Random();
-		Move_Dragon md = new Move_Dragon();
-		int direction = rn.nextInt(4); 
+		//Move_Dragon md = new Move_Dragon();
+		int direction = md.getMove(); 
 		switch (direction) {
 		case 0 :
 			md.move_dragon_right(this, dragon);
@@ -284,7 +286,7 @@ public class Game {
 			break;
 		}		
 	}
-	
+
 	public void choose_hero_movement(int direction) {
 		Move_Hero mh = new Move_Hero();
 		switch (direction) {
@@ -302,7 +304,7 @@ public class Game {
 			break;
 		}				
 	}
-	
+
 	public void choose_dart_movement(int direction) {
 		Throw_Dart td = new Throw_Dart();
 		switch (direction) {
@@ -320,7 +322,7 @@ public class Game {
 			break;
 		}
 	}
-	
+
 	public void hero_turn(int direction) {
 		remove_element(hero);
 		choose_hero_movement(direction);
@@ -331,7 +333,7 @@ public class Game {
 	public void hero_dart(int direction) {
 		choose_dart_movement(direction);
 	}
-	
+
 	public void dragon_turn() {
 		Random rn = new Random();
 		for (int i = 0; i < number_dragons; i++) {
@@ -367,5 +369,4 @@ public class Game {
 		for (int i = 0; i < number_dragons; i++) place_element(dragons.get(i));
 		compute_game_state();
 	}
-		
 }
