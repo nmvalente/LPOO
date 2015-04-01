@@ -17,4 +17,8 @@ public class Maze_Builder {
 		if (type == 0) return new Static_Maze();
 		else return new Random_Maze(size, exit);
 	}
+
+	public Maze get_maze(Exit exit, char[][] stat_maze) {
+		return new Static_Maze(stat_maze);
+	}
 }

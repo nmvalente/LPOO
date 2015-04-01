@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 import org.junit.Test;
 
+
 //import cli.*;
 import logic.*;
 
@@ -257,7 +258,7 @@ public class Maze_Test {
 	}
 
 	// Checks if all the arguments (in the variable arguments list) are not null and distinct
-	private <T> boolean notNullAndDistinct(T ... args) {
+	private <T> boolean notNullAndDistinct(@SuppressWarnings("unchecked") T ... args) {
 		for (int i = 0; i < args.length - 1; i++)
 			for (int j = i + 1; j < args.length ; j++)
 				if (args[i] == null || args[j] == null || args[i].equals(args[j]))
@@ -310,14 +311,14 @@ public class Maze_Test {
 	}
 
 	/**
-	 * Repetidamente gera uma inst�ncia do tipo T usando a fun��o geradora, e verifica se a inst�ncia
-	 * gerada obedece a um dos predicados (fun��es de T em Boolean). No caso de n�o obedecer a nenhum, 
-	 * falha, mostrando a mensagem gerada pela fun��o errorMessage (de T em String).
-	 * Repete at� cada teste ter sucedido pelo menos uma vez, num m�nimo de numIter itera��es.
-	 * @param generator - gera uma inst�ncia (fun��o de () em T);
-	 * @param errorMessage - gera uma mensagem em caso de erro (fun��o de T em String);
-	 * @param predicates - lista de predicados de teste (fun��es de T em Boolean).
-	 */
+	 * Repetidamente gera uma instancia do tipo T usando a funcao geradora, e verifica se a instancia
+	 * gerada obedece a um dos predicados (funcoes de T em Boolean). No caso de nao obedecer a nenhum, 
+	 * falha, mostrando a mensagem gerada pela funcao errorMessage (de T em String).
+	 * Repete ate cada teste ter sucedido pelo menos uma vez, num minimo de numIter iteracoes.
+	 * @param generator - gera uma instancia (funcao de () em T);
+	 * @param errorMessage - gera uma mensagem em caso de erro (funcao de T em String);
+	 * @param predicates - lista de predicados de teste (funcoes de T em Boolean).
+	 **/
 
 	@SafeVarargs
 	public final <T> void testAlt(int minIter, Supplier<T> generator, Function<T, String> errorMessage, Predicate<T> ... predicates) {
@@ -340,20 +341,49 @@ public class Maze_Test {
 		}
 	}
 
-//	@Test(timeout=1000)
-//	public void testRandomDragon() {
-//		char [][] m1 = {
-//				{'X', 'X', 'X', 'X', 'X'},
-//				{'X', 'H', ' ', ' ', 'X'},
-//				{'X', ' ', 'X', ' ', 'S'},
-//				{'X', ' ', ' ', 'D', 'X'},
-//				{'X', 'X', 'X', 'X', 'X'}};
-//
-//		testAlt(1000,
-//				() -> {Maze maze = new Maze(m1); maze.moveHero(1, 0); return maze;},
-//				(m) -> "Dragao em posicao invalida: " + m, 
-//				(m) -> m.getDragonPosition().equals(3,3), 
-//				(m) -> m.getDragonPosition().equals(3,2), 
-//				(m) -> m.getDragonPosition().equals(2,3)); 
-//	}
+	@Test(timeout=1000)
+	public void testRandomDragon() {
+		char [][] m1 = {
+				{'X', 'X', 'X', 'X', 'X'},
+				{'X', 'H', ' ', ' ', 'X'},
+				{'X', ' ', 'X', ' ', 'S'},
+				{'X', ' ', ' ', 'D', 'X'},
+				{'X', 'X', 'X', 'X', 'X'}};
+
+		testAlt(1000,
+				() -> {
+					Game game = new logic.Game();
+					game.set_maze_type(0);
+					game.set_maze_size(5);
+					game.set_number_dragons(1);
+					game.set_dragon_type(1);
+					game.set_number_darts(0);
+					int[] hero_position = {1, 1};
+					Hero h = new Hero();
+					h.set_position(hero_position);
+					h.set_state('H');
+					int[] dragon_position = {3, 3};
+					Dragon d = new Dragon();
+					d.set_position(dragon_position);
+					d.set_state('D');
+					int[] exit_position = {2, 4};
+					game.start_test_game(m1, hero_position, dragon_position, exit_position);
+					return game;},
+				(g) -> "Dragao em posicao invalida: " + g, 
+				(g) -> {
+					int[] dragon_position = {3, 3};
+					Dragon d = new Dragon();
+					d.set_position(dragon_position);
+					return g.get_dragons().get(0).equals(d);},
+				(g) -> {
+					int[] dragon_position = {3, 2};
+					Dragon d = new Dragon();
+					d.set_position(dragon_position);
+					return g.get_dragons().get(0).equals(d);},
+				(g) -> {
+					int[] dragon_position = {2, 3};
+					Dragon d = new Dragon();
+					d.set_position(dragon_position);
+					return g.get_dragons().get(0).equals(d);}); 
+	}
 }

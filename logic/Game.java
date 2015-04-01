@@ -21,6 +21,30 @@ public class Game {
 	private Move_Dragon md = new Move_Dragon();
 
 	public Move_Dragon getMoveDragon(){return md;}
+	
+	public void start_test_game(char[][] stat_maze, int[] hero_pos, int[] dragon_pos, int[] exit_pos) {
+		Maze_Builder mb = new Maze_Builder();
+		mb.set_maze_type(maze_type);
+		mb.set_maze_size(maze_size);
+		exit = new Exit();
+		exit.set_position(exit_pos);
+		hero = new Hero();
+		hero.set_position(hero_pos);
+		sword = new Sword();
+		sword.kill_sword();
+		shield = new Shield();
+		shield.kill_shield();
+		hero.shield_hero();
+		darts = new ArrayList<Dart>();
+		dragons = new ArrayList<Dragon>();
+		maze = mb.get_maze(exit, stat_maze);
+		place_element(exit);
+		place_element(hero);
+		Dragon dragon = new Dragon();
+		dragon.set_position(dragon_pos);
+		dragons.add(dragon);
+		place_element(dragon);
+	}
 
 	public void start_game() {
 		Maze_Builder mb = new Maze_Builder();
@@ -37,46 +61,54 @@ public class Game {
 		}
 		maze = mb.get_maze(exit);
 		if (maze_type == 1) {
-			place_element(exit);
-			Random rn = new Random();
-			ArrayList<int[]> cells = maze.get_board_cells();
-			hero.set_position(cells.remove(rn.nextInt(cells.size())));
-			place_element(hero);
-			int[][] hero_neigh = hero.get_neighbour_positions();
-			for (int i = 0; i < hero_neigh.length; i++) {
-				int[] cell = hero_neigh[i];
-				for (int j = 0; j < cells.size(); j++) {
-					if (cells.get(j)[0] == cell[0] && cells.get(j)[1] == cell[1]) {
-						cells.remove(j);
-						break;
-					}
-				}
-			}
-			sword.set_position(cells.remove(rn.nextInt(cells.size())));
-			place_element(sword);
-			shield.set_position(cells.remove(rn.nextInt(cells.size())));
-			place_element(shield);
-			for (int i = 0; i < number_darts; i++) {
-				Dart dart = new Dart();
-				dart.set_position(cells.remove(rn.nextInt(cells.size())));
-				darts.add(dart);
-				place_element(dart);
-			}
-			for (int i = 0; i < number_dragons; i++) {
-				Dragon dragon = new Dragon();
-				dragon.set_position(cells.remove(rn.nextInt(cells.size())));
-				dragons.add(dragon);
-				place_element(dragon);
-			}
+			start_random_game();
 		}
 		else {
-			shield.kill_shield();
-			hero.shield_hero();
-			place_element(shield);
-			place_element(exit);
-			place_element(hero);
-			place_element(sword);
+			start_static_game();
+		}
+	}
+
+	private void start_static_game() {
+		shield.kill_shield();
+		hero.shield_hero();
+		place_element(shield);
+		place_element(exit);
+		place_element(hero);
+		place_element(sword);
+		Dragon dragon = new Dragon();
+		dragons.add(dragon);
+		place_element(dragon);
+	}
+
+	private void start_random_game() {
+		place_element(exit);
+		Random rn = new Random();
+		ArrayList<int[]> cells = maze.get_board_cells();
+		hero.set_position(cells.remove(rn.nextInt(cells.size())));
+		place_element(hero);
+		int[][] hero_neigh = hero.get_neighbour_positions();
+		for (int i = 0; i < hero_neigh.length; i++) {
+			int[] cell = hero_neigh[i];
+			for (int j = 0; j < cells.size(); j++) {
+				if (cells.get(j)[0] == cell[0] && cells.get(j)[1] == cell[1]) {
+					cells.remove(j);
+					break;
+				}
+			}
+		}
+		sword.set_position(cells.remove(rn.nextInt(cells.size())));
+		place_element(sword);
+		shield.set_position(cells.remove(rn.nextInt(cells.size())));
+		place_element(shield);
+		for (int i = 0; i < number_darts; i++) {
+			Dart dart = new Dart();
+			dart.set_position(cells.remove(rn.nextInt(cells.size())));
+			darts.add(dart);
+			place_element(dart);
+		}
+		for (int i = 0; i < number_dragons; i++) {
 			Dragon dragon = new Dragon();
+			dragon.set_position(cells.remove(rn.nextInt(cells.size())));
 			dragons.add(dragon);
 			place_element(dragon);
 		}
