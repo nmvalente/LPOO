@@ -25,6 +25,7 @@ import java.awt.Color;
 
 public class Game_GUI extends JFrame{
 
+	public int type, syze, nr_of_dragons, nr_of_darts;
 	
 	/**
 	 * 
@@ -51,6 +52,8 @@ public class Game_GUI extends JFrame{
 	 * Create the application.
 	 */
 	public Game_GUI() {
+		super("Maze Game");
+		setBackground(Color.LIGHT_GRAY);
 		initialize();
 	}
 
@@ -58,10 +61,17 @@ public class Game_GUI extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//temporario
 		setBounds(100, 100, 533, 533);
-		//frame.setPreferredSize(new Dimension(800, 800));
+		
+		setName("Maze Game");
+		
+		// ativar este e apagar temporario, no final - setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		setVisible(true);
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		
 		
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(100, 100));
@@ -80,6 +90,14 @@ public class Game_GUI extends JFrame{
 		panel.add(btnNewButton);
 		
 		JSpinner spinner = new JSpinner();
+		spinner.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.equals("Static"))
+					type = 0;
+				else type = 1;
+			}
+		});
 		spinner.setModel(new SpinnerListModel(new String[] {"Static", "Random"}));
 		spinner.setBounds(0, 25, 97, 25);
 		panel.add(spinner);
