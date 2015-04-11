@@ -25,7 +25,7 @@ import java.awt.Color;
 
 public class Game_GUI extends JFrame{
 
-	public int type, syze, nr_of_dragons, nr_of_darts;
+	public int type, size, nr_of_dragons, dragon_type, nr_of_darts;
 	
 	/**
 	 * 
@@ -83,7 +83,7 @@ public class Game_GUI extends JFrame{
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				System.out.println("Botão 1");
+				System.out.println("Botao 1");
 			}
 		});
 		btnNewButton.setBounds(0, 429, 100, 25);
@@ -113,15 +113,15 @@ public class Game_GUI extends JFrame{
 		txtrMazeType.setBounds(0, 0, 100, 25);
 		panel.add(txtrMazeType);
 		
-		JTextArea txtrMazeSyze = new JTextArea();
-		txtrMazeSyze.setBackground(Color.BLUE);
-		txtrMazeSyze.setForeground(Color.WHITE);
-		txtrMazeSyze.setText("Maze syze?");
-		txtrMazeSyze.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		txtrMazeSyze.setEditable(false);
-		txtrMazeSyze.setAlignmentX(1.0f);
-		txtrMazeSyze.setBounds(0, 75, 100, 25);
-		panel.add(txtrMazeSyze);
+		JTextArea txtrMazeSize = new JTextArea();
+		txtrMazeSize.setBackground(Color.BLUE);
+		txtrMazeSize.setForeground(Color.WHITE);
+		txtrMazeSize.setText("Maze size?");
+		txtrMazeSize.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtrMazeSize.setEditable(false);
+		txtrMazeSize.setAlignmentX(1.0f);
+		txtrMazeSize.setBounds(0, 75, 100, 25);
+		panel.add(txtrMazeSize);
 		
 		JSpinner spinner_1 = new JSpinner();
 		spinner_1.setModel(new SpinnerNumberModel(9, 9, 31, 2));
@@ -131,7 +131,7 @@ public class Game_GUI extends JFrame{
 		JTextArea txtrNumberOfDragons = new JTextArea();
 		txtrNumberOfDragons.setBackground(Color.BLUE);
 		txtrNumberOfDragons.setForeground(Color.WHITE);
-		txtrNumberOfDragons.setText("Nr of dragons?");
+		txtrNumberOfDragons.setText("No. of dragons?");
 		txtrNumberOfDragons.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtrNumberOfDragons.setEditable(false);
 		txtrNumberOfDragons.setAlignmentX(1.0f);
@@ -144,11 +144,11 @@ public class Game_GUI extends JFrame{
 		panel.add(spinner_2);
 		
 		JTextArea txtrTypeOfDragons = new JTextArea();
+		txtrTypeOfDragons.setEditable(false);
 		txtrTypeOfDragons.setBackground(Color.BLUE);
 		txtrTypeOfDragons.setForeground(Color.WHITE);
-		txtrTypeOfDragons.setText("Type of dragons?");
+		txtrTypeOfDragons.setText("Dragon type?");
 		txtrTypeOfDragons.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		txtrTypeOfDragons.setEditable(false);
 		txtrTypeOfDragons.setAlignmentX(1.0f);
 		txtrTypeOfDragons.setBounds(0, 243, 100, 25);
 		panel.add(txtrTypeOfDragons);
@@ -161,7 +161,7 @@ public class Game_GUI extends JFrame{
 		JTextArea txtrNrOfDarts = new JTextArea();
 		txtrNrOfDarts.setBackground(Color.BLUE);
 		txtrNrOfDarts.setForeground(Color.WHITE);
-		txtrNrOfDarts.setText("Nr of darts?");
+		txtrNrOfDarts.setText("No. of darts?");
 		txtrNrOfDarts.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtrNrOfDarts.setEditable(false);
 		txtrNrOfDarts.setAlignmentX(1.0f);
@@ -177,7 +177,7 @@ public class Game_GUI extends JFrame{
 		btnExitGame.setBounds(0, 461, 100, 25);
 		panel.add(btnExitGame);
 		
-		JPanel panel_1 = new desenho();
+		JPanel panel_1 = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts);
 		getContentPane().add(panel_1, BorderLayout.CENTER);
 	}
 }

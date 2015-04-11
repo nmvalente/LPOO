@@ -25,10 +25,19 @@ public class Maze_Test {
 		game.set_dragon_type(0);
 		game.set_number_darts(0);
 		game.start_game();
+		assertEquals(game.get_maze_type(), 0);
+		assertEquals(game.get_maze_size(), 10);
+		assertEquals(game.get_number_dragons(), 1);
+		assertEquals(game.get_dragon_type(), 0);
+		assertEquals(game.get_number_darts(), 0);
 		int[] dragon_position = {3, 1};
 		int[] hero_position = {1, 1};
 		int[] sword_position = {8, 1};
 		int[] exit_position = {5, 9};
+		assertEquals(game.get_maze().get_board_position(dragon_position), 'D');
+		assertEquals(game.get_maze().get_board_position(hero_position), 'H');
+		assertEquals(game.get_maze().get_board_position(sword_position), 'S');
+		assertEquals(game.get_maze().get_board_position(exit_position), 'E');
 		Dragon d = new Dragon();
 		d.set_position(dragon_position);
 		Hero h = new Hero();
@@ -178,6 +187,175 @@ public class Maze_Test {
 		game.compute_game_state();
 		assertEquals(game.get_game_state(), 1);
 	}
+	
+	@Test
+	public void testDart() {
+		char [][] m1 = {
+				{'X', 'X', 'X', 'X', 'X'},
+				{'X', ' ', ' ', ' ', 'X'},
+				{'X', ' ', 'X', ' ', 'S'},
+				{'X', ' ', ' ', ' ', 'X'},
+				{'X', 'X', 'X', 'X', 'X'}};
+		Game game = new logic.Game();
+		game.set_maze_type(0);
+		game.set_maze_size(5);
+		game.set_number_dragons(1);
+		game.set_dragon_type(1);
+		game.set_number_darts(1);
+		int[] hero_position = {1, 1};
+		Hero h = new Hero();
+		h.set_position(hero_position);
+		h.set_state('H');
+		int[] dragon_position = {3, 3};
+		Dragon d = new Dragon();
+		d.set_position(dragon_position);
+		d.set_state('D');
+		int[] sword_position = {1, 3};
+		int[] shield_position = {1, 3};
+		int[] dart_position = {1, 2};
+		int[] exit_position = {2, 4};
+		Dart i = new Dart();
+		i.set_position(dart_position);
+		game.start_test_game(m1, hero_position, dragon_position, sword_position, shield_position, dart_position, exit_position);
+		assertEquals(game.get_maze_type(), 0);
+		assertEquals(game.get_maze_size(), 5);
+		assertEquals(game.get_number_dragons(), 1);
+		assertEquals(game.get_dragon_type(), 1);
+		assertEquals(game.get_number_darts(), 1);
+		assertEquals(game.get_shield().get_state(), ' ');
+		assertEquals(game.get_sword().get_state(), ' ');
+		assertEquals(game.get_shield().get_position()[0], 1);
+		assertEquals(game.get_sword().get_position()[0], 1);
+		assertEquals(game.get_shield().get_position()[1], 3);
+		assertEquals(game.get_sword().get_position()[1], 3);
+		assertEquals(game.get_maze().get_board_position(dragon_position), 'D');
+		assertEquals(game.get_maze().get_board_position(hero_position), 'H');
+		assertEquals(game.get_maze().get_board_position(sword_position), ' ');
+		assertEquals(game.get_maze().get_board_position(shield_position), ' ');
+		assertEquals(game.get_maze().get_board_position(exit_position), 'E');
+		assertEquals(game.get_maze().get_board_position(dart_position), 'i');
+		Move_Hero mh = new Move_Hero();
+		h.dart_hero();
+		h.dart_hero();
+		h.dart_hero();
+		game.get_hero().dart_hero();
+		game.get_hero().dart_hero();
+		game.get_hero().dart_hero();
+		assertEquals(game.get_hero(), h);
+		assertEquals(game.get_hero().get_hero_darts(), 3);		
+		h.undart_hero();
+		h.undart_hero();
+		h.undart_hero();
+		game.hero_dart(0);
+		game.hero_dart(1);
+		game.hero_dart(2);
+		assertEquals(game.get_hero(), h);
+		assertEquals(game.get_hero().get_hero_darts(), 0);		
+		assertEquals(game.get_darts().get(0), i);
+		mh.move_hero_right(game);
+		h.set_position(dart_position);
+		h.dart_hero();
+		i.kill_dart();
+		assertEquals(game.get_hero(), h);
+		assertEquals(game.get_hero().get_hero_darts(), 1);		
+		assertEquals(game.get_darts().size(), 0);
+		int[] new_position = {1, 3};
+		h.set_position(new_position);
+		mh.move_hero_right(game);
+		game.hero_dart(3); // 3 - down
+		h.undart_hero();
+		d.kill_dragon();
+		assertEquals(game.get_hero(), h);	
+		assertEquals(game.get_dragons().size(), 0);
+	}
+
+	@Test
+	public void testBurn() {
+		char [][] m1 = {
+				{'X', 'X', 'X', 'X', 'X'},
+				{'X', ' ', ' ', ' ', 'X'},
+				{'X', ' ', 'X', ' ', 'S'},
+				{'X', ' ', ' ', ' ', 'X'},
+				{'X', 'X', 'X', 'X', 'X'}};
+		Game game = new logic.Game();
+		game.set_maze_type(0);
+		game.set_maze_size(5);
+		game.set_number_dragons(1);
+		game.set_dragon_type(1);
+		game.set_number_darts(1);
+		int[] hero_position = {1, 1};
+		Hero h = new Hero();
+		h.set_position(hero_position);
+		h.set_state('h');
+		int[] dragon_position = {3, 3};
+		Dragon d = new Dragon();
+		d.set_position(dragon_position);
+		d.set_state('D');
+		int[] sword_position = {1, 3};
+		int[] shield_position = {1, 3};
+		int[] dart_position = {1, 2};
+		int[] exit_position = {2, 4};
+		Dart i = new Dart();
+		i.set_position(dart_position);
+		game.start_test_game(m1, hero_position, dragon_position, sword_position, shield_position, dart_position, exit_position);
+		game.get_hero().set_state('h');
+		game.place_element(game.get_hero());
+		assertEquals(game.get_maze().get_board_position(hero_position), 'h');
+		Move_Hero mh = new Move_Hero();
+		assertEquals(game.get_hero(), h);
+		mh.move_hero_down(game);
+		int[] new_position = {2, 1};
+		h.set_position(new_position);
+		assertEquals(game.get_hero(), h);
+		int[] final_position = {3, 1};
+		h.set_position(final_position);
+		mh.move_hero_down(game);
+		assertEquals(game.get_hero(), h);
+		h.kill_hero();
+		game.burn_hero();
+		assertEquals(game.get_hero(), h);
+		assertEquals(game.get_game_state(), 2);
+	}
+
+	@Test
+	public void testSleep() {
+		char [][] m1 = {
+				{'X', 'X', 'X', 'X', 'X'},
+				{'X', ' ', ' ', ' ', 'X'},
+				{'X', ' ', 'X', ' ', 'S'},
+				{'X', ' ', ' ', ' ', 'X'},
+				{'X', 'X', 'X', 'X', 'X'}};
+		Game game = new logic.Game();
+		game.set_maze_type(0);
+		game.set_maze_size(5);
+		game.set_number_dragons(1);
+		game.set_dragon_type(1);
+		game.set_number_darts(1);
+		int[] hero_position = {1, 1};
+		Hero h = new Hero();
+		h.set_position(hero_position);
+		h.set_state('H');
+		int[] dragon_position = {3, 3};
+		Dragon d = new Dragon();
+		d.set_position(dragon_position);
+		d.set_state('D');
+		int[] sword_position = {1, 3};
+		int[] shield_position = {1, 3};
+		int[] dart_position = {1, 2};
+		int[] exit_position = {2, 4};
+		Dart i = new Dart();
+		i.set_position(dart_position);
+		game.start_test_game(m1, hero_position, dragon_position, sword_position, shield_position, dart_position, exit_position);
+		game.get_dragons().get(0).sleep_dragon();
+		d.set_state('d');
+		assertEquals(game.get_dragons().get(0), d);
+		game.get_dragons().get(0).arm_dragon();
+		d.set_state('F');
+		assertEquals(game.get_dragons().get(0), d);
+		game.get_dragons().get(0).sleep_dragon();
+		d.set_state('f');
+		assertEquals(game.get_dragons().get(0), d);
+	}
 
 	// a) the maze boundaries must have exactly one exit and everything else walls
 	// b) the exist cannot be a corner
@@ -295,6 +473,11 @@ public class Maze_Test {
 			game.set_dragon_type(2);
 			game.set_number_darts(2);
 			game.start_game();
+			assertEquals(game.get_maze_type(), 1);
+			assertEquals(game.get_maze_size(), size);
+			assertEquals(game.get_number_dragons(), 2);
+			assertEquals(game.get_dragon_type(), 2);
+			assertEquals(game.get_number_darts(), 2);
 			Maze m = game.get_maze();
 			assertEquals(game.get_dragon_type(), 2);
 			assertTrue("Invalid maze boundaries in maze:\n" + m, checkBoundaries(game));			
@@ -345,9 +528,9 @@ public class Maze_Test {
 	public void testRandomDragon() {
 		char [][] m1 = {
 				{'X', 'X', 'X', 'X', 'X'},
-				{'X', 'H', ' ', ' ', 'X'},
+				{'X', ' ', ' ', ' ', 'X'},
 				{'X', ' ', 'X', ' ', 'S'},
-				{'X', ' ', ' ', 'D', 'X'},
+				{'X', ' ', ' ', ' ', 'X'},
 				{'X', 'X', 'X', 'X', 'X'}};
 
 		testAlt(1000,
@@ -357,7 +540,7 @@ public class Maze_Test {
 					game.set_maze_size(5);
 					game.set_number_dragons(1);
 					game.set_dragon_type(1);
-					game.set_number_darts(0);
+					game.set_number_darts(1);
 					int[] hero_position = {1, 1};
 					Hero h = new Hero();
 					h.set_position(hero_position);
@@ -366,15 +549,23 @@ public class Maze_Test {
 					Dragon d = new Dragon();
 					d.set_position(dragon_position);
 					d.set_state('D');
+					int[] sword_position = {1, 3};
+					int[] shield_position = {1, 3};
+					int[] dart_position = {1, 2};
 					int[] exit_position = {2, 4};
-					game.start_test_game(m1, hero_position, dragon_position, exit_position);
+					game.start_test_game(m1, hero_position, dragon_position, sword_position, shield_position, dart_position, exit_position);
+					game.dragon_turn();
 					return game;},
-				(g) -> "Dragao em posicao invalida: " + g, 
+				(g) -> "Dragao em posicao invalida: (" 
+					+ g.get_dragons().get(0).get_position()[0]
+					+ ", "
+					+ g.get_dragons().get(0).get_position()[1]
+					+ ")", 
 				(g) -> {
 					int[] dragon_position = {3, 3};
-					Dragon d = new Dragon();
-					d.set_position(dragon_position);
-					return g.get_dragons().get(0).equals(d);},
+					Dragon d1 = new Dragon();
+					d1.set_position(dragon_position);
+					return g.get_dragons().get(0).equals(d1);},
 				(g) -> {
 					int[] dragon_position = {3, 2};
 					Dragon d = new Dragon();

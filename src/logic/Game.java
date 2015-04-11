@@ -20,9 +20,9 @@ public class Game {
 	private int state = 0; // state 0 - game continues; state 1 - hero wins, state 2 - hero loses
 	private Move_Dragon md = new Move_Dragon();
 
-	public Move_Dragon getMoveDragon(){return md;}
+//	public Move_Dragon getMoveDragon(){return md;}
 	
-	public void start_test_game(char[][] stat_maze, int[] hero_pos, int[] dragon_pos, int[] exit_pos) {
+	public void start_test_game(char[][] stat_maze, int[] hero_pos, int[] dragon_pos, int[] sword_pos, int[] shield_pos, int[] dart_pos, int[] exit_pos) {
 		Maze_Builder mb = new Maze_Builder();
 		mb.set_maze_type(maze_type);
 		mb.set_maze_size(maze_size);
@@ -31,15 +31,21 @@ public class Game {
 		hero = new Hero();
 		hero.set_position(hero_pos);
 		sword = new Sword();
+		sword.set_position(sword_pos);
 		sword.kill_sword();
 		shield = new Shield();
+		shield.set_position(shield_pos);
 		shield.kill_shield();
 		hero.shield_hero();
 		darts = new ArrayList<Dart>();
+		Dart dart = new Dart();
+		dart.set_position(dart_pos);
+		darts.add(dart);
 		dragons = new ArrayList<Dragon>();
 		maze = mb.get_maze(exit, stat_maze);
 		place_element(exit);
 		place_element(hero);
+		place_element(dart);
 		Dragon dragon = new Dragon();
 		dragon.set_position(dragon_pos);
 		dragons.add(dragon);
@@ -140,6 +146,10 @@ public class Game {
 
 	public void set_number_darts(int number) {
 		number_darts = number;
+	}
+
+	public int get_maze_type() {
+		return maze_type;
 	}
 
 	public int get_maze_size() {
@@ -288,10 +298,17 @@ public class Game {
 		}
 	}
 
-	public void burn_hero() {
-		hero.set_state(' ');
-		maze.set_position(hero);
-		compute_game_state();
+	public boolean burn_hero() {
+		if (!get_shielded_hero()) {
+			ArrayList<Integer> dragons_b = dragons_burn();
+			if (!dragons_b.isEmpty()) {
+				hero.set_state(' ');
+				maze.set_position(hero);
+				compute_game_state();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean get_shielded_hero() {

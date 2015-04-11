@@ -8,7 +8,7 @@ public class Dart extends Element {
 		set_position(default_position);
 	}
 		
-	void kill_dart() {
+	public void kill_dart() {
 		set_state(' ');
 	}
 	

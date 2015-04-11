@@ -127,21 +127,17 @@ public class Maze_Game {
 	}
 
 	private static void maybe_burn(Maze_Game mg) {
-		if (!mg.game.get_shielded_hero()) {
-			ArrayList<Integer> dragons_b = mg.game.dragons_burn();
-			if (!dragons_b.isEmpty()) {
-				System.out.println();		
-				System.out.print("Burn!!!");
-				try {
-					Thread.sleep(SLEEP_TIME);
-				}
-				catch(Exception e) {
-					System.out.println("Exception caught");
-				}			
-				System.out.println("\n");
-				mg.game.burn_hero();
-				mg.print_maze();
+		if (mg.game.burn_hero()) {
+			System.out.println();		
+			System.out.print("Burn!!!");
+			try {
+				Thread.sleep(SLEEP_TIME);
 			}
+			catch(Exception e) {
+				System.out.println("Exception caught");
+			}			
+			System.out.println("\n");
+			mg.print_maze();
 		}
 	}
 
