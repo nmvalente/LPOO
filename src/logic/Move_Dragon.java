@@ -2,9 +2,10 @@ package logic;
 
 import java.util.Random;
 
-public class Move_Dragon {
+class Move_Dragon {
 
-	Random r;
+	private Random r;
+	
 	public Move_Dragon(){
 		r = new Random();
 	}
@@ -13,7 +14,7 @@ public class Move_Dragon {
 		return r.nextInt(4);
 	}
 
-	void move_dragon(Game g, Dragon d, int[] new_pos) {
+	private void move_dragon(Game g, Dragon d, int[] new_pos) {
 		Maze m = g.get_maze();
 		char board_symbol = m.get_board_position(new_pos);
 		if (board_symbol == ' ') {

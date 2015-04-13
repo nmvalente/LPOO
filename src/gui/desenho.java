@@ -9,16 +9,37 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+<<<<<<< Updated upstream
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+=======
+<<<<<<< HEAD
+import java.util.Scanner;
+
+import javax.swing.ImageIcon;
+//import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import cli.Maze_Game;
+
+public class desenho extends JPanel implements MouseListener, MouseMotionListener, KeyListener{
+
+=======
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+>>>>>>> Stashed changes
 public class desenho extends JPanel implements MouseListener, MouseMotionListener, KeyListener{
 
 	/**
 	 * 
 	 */
+>>>>>>> origin/master
 	private static final long serialVersionUID = 1L;
 	logic.Game game;
 	cli.Maze_Game mg;
@@ -54,9 +75,20 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		ImageIcon iwall = new ImageIcon("images/wall.gif");
 		Image wall = iwall.getImage();
 		ImageIcon ihero = new ImageIcon("images/hero.gif");
+<<<<<<< Updated upstream
 		JButton b= new JButton(ihero);
 		
 		//Image hero = ihero.getImage();
+=======
+<<<<<<< HEAD
+//		JButton b= new JButton(ihero);
+		Image hero = ihero.getImage();
+=======
+		JButton b= new JButton(ihero);
+		
+		//Image hero = ihero.getImage();
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 		ImageIcon iherosword = new ImageIcon("images/herosword.gif");
 		Image herosword = iherosword.getImage();
 		ImageIcon iheroshield = new ImageIcon("images/heroshield.gif");
@@ -65,6 +97,12 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		Image heroswordshield = iheroswordshield.getImage();
 		ImageIcon idragon = new ImageIcon("images/dragon.gif");
 		Image dragon = idragon.getImage();
+		ImageIcon idragonsleep = new ImageIcon("images/dragonsleep.gif");
+		Image dragonsleep = idragonsleep.getImage();
+		ImageIcon idragonsword = new ImageIcon("images/dragonsword.gif");
+		Image dragonsword = idragonsword.getImage();
+		ImageIcon idragonshield = new ImageIcon("images/dragonshield.gif");
+		Image dragonshield = idragonshield.getImage();
 		ImageIcon isword = new ImageIcon("images/sword.gif");
 		Image sword = isword.getImage();
 		ImageIcon ishield = new ImageIcon("images/shield.gif");
@@ -97,6 +135,15 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 					break;
 				case 'D' :
 					g.drawImage(dragon, j * 50, i * 50, 50, 50, null);
+					break;
+				case 'd' :
+					g.drawImage(dragonsleep, j * 50, i * 50, 50, 50, null);
+					break;
+				case 'F' :
+					g.drawImage(dragonsword, j * 50, i * 50, 50, 50, null);
+					break;
+				case 'G' :
+					g.drawImage(dragonshield, j * 50, i * 50, 50, 50, null);
 					break;
 				case 'S' :
 					g.drawImage(sword, j * 50, i * 50, 50, 50, null);
@@ -149,25 +196,105 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		switch(e.getKeyCode()){
 		case KeyEvent.VK_A:
 			game.hero_turn(1);
+<<<<<<< Updated upstream
 			//mg.play(mg);
 			repaint(); 
+=======
+<<<<<<< HEAD
+			repaint(); 
+			play_dragon();
+=======
+			//mg.play(mg);
+			repaint(); 
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 			break;
 
 		case KeyEvent.VK_D: 
 			game.hero_turn(0);
 			repaint(); 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+			play_dragon();
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 			break;
 
 		case KeyEvent.VK_W: 
 			game.hero_turn(2);
 			repaint(); 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+			play_dragon();
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 			break;
 
 		case KeyEvent.VK_S: 
 			game.hero_turn(3);
 			repaint(); 
+<<<<<<< Updated upstream
 			break;
 		}
+=======
+<<<<<<< HEAD
+			play_dragon();
+			break;
+			
+		case KeyEvent.VK_J:
+			if (game.get_game_state() == 0 
+			&& game.get_number_dragons() > 0 
+			&& game.get_hero().get_hero_darts() > 0) {
+				game.hero_dart(1);
+				repaint(); 
+				play_dragon();
+			}
+			break;
+
+		case KeyEvent.VK_L: 
+			if (game.get_game_state() == 0 
+			&& game.get_number_dragons() > 0 
+			&& game.get_hero().get_hero_darts() > 0) {
+				game.hero_dart(0);
+				repaint(); 
+				play_dragon();
+			}
+			break;
+
+		case KeyEvent.VK_I: 
+			if (game.get_game_state() == 0 
+			&& game.get_number_dragons() > 0 
+			&& game.get_hero().get_hero_darts() > 0) {
+				game.hero_dart(2);
+				repaint(); 
+				play_dragon();
+			}
+			break;
+
+		case KeyEvent.VK_K: 
+			if (game.get_game_state() == 0 
+			&& game.get_number_dragons() > 0 
+			&& game.get_hero().get_hero_darts() > 0) {
+				game.hero_dart(3);
+				repaint(); 
+				play_dragon();
+			}
+			break;
+		}		
+	}
+
+	private void play_dragon() {
+		game.dragon_turn();
+		repaint(); 
+=======
+			break;
+		}
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 	}
 
 	@Override

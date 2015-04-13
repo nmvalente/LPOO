@@ -1,11 +1,12 @@
 package cli;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Maze_Game {
 
-	private static final int SLEEP_TIME = 1000;
+	private static final int SLEEP_TIME = 10;
 	logic.Game game;
 
 	public Maze_Game(Scanner scan) {
@@ -36,61 +37,73 @@ public class Maze_Game {
 		game.start_game();
 	}
 
+	public Maze_Game(String filename) throws IOException {
+		game = new logic.Game();
+		game.load_game_file(filename);
+	}
+	
 	public void print_maze() {
 		int size = game.get_maze_size();
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				int[] position = {i, j};
-				System.out.print(game.get_maze().get_board_position(position)+" ");
+				System.out.print(game.get_maze().get_board_position(position) + " ");
 			}
 			System.out.println();
 		}
 	}
 
+	private static int choose_direction(char direction_char) {
+		switch (direction_char) {
+		case 'w' :
+			return 2;
+		case 'a' :
+			return 1;
+		case 's' :
+			return 3;
+		case 'd' :
+			return 0;
+		case 'i' :
+			return 4;
+		}
+		return -1;
+	}
+
 	private static void play_hero(Scanner scan, Maze_Game mg) {
 		System.out.println();		
-		System.out.print("Hero: w, a, s, d? ");
-		char hero_direction = scan.next().charAt(0);
-		int direction = 0;
-		switch (hero_direction) {
-		case 'w' :
-			direction = 2;
-			break;
-		case 'a' :
-			direction = 1;
-			break;
-		case 's' :
-			direction = 3;
-			break;
-		case 'd' :
-			direction = 0;
-			break;
-		}				
-		mg.game.hero_turn(direction);
-		System.out.println();
-		mg.print_maze();
+		if (mg.game.get_game_state() == 0 
+			&& mg.game.get_number_dragons() > 0 
+			&& mg.game.get_hero().get_hero_darts() > 0) {
+			System.out.print("Hero: w, a, s, d, i? ");
+			char hero_direction = scan.next().charAt(0);
+			int direction = choose_direction(hero_direction);
+			if (direction == 4) {
+				System.out.println();
+				mg.print_maze();
+				hero_dart(scan, mg);				
+			}
+			else if (direction >= 0) {
+				mg.game.hero_turn(direction);
+				System.out.println();
+				mg.print_maze();
+			}
+		}
+		else {
+			System.out.print("Hero: w, a, s, d? ");
+			char hero_direction = scan.next().charAt(0);
+			int direction = choose_direction(hero_direction);
+			if (direction >= 0 && direction < 4) mg.game.hero_turn(direction);
+			System.out.println();
+			mg.print_maze();
+		}
 	}
 
 	private static void hero_dart(Scanner scan, Maze_Game mg) {
 		System.out.println();		
 		System.out.print("Dart: w, a, s, d, q? ");
 		char dart_direction = scan.next().charAt(0);
-		int direction = 4;
-		switch (dart_direction) {
-		case 'w' :
-			direction = 2;
-			break;
-		case 'a' :
-			direction = 1;
-			break;
-		case 's' :
-			direction = 3;
-			break;
-		case 'd' :
-			direction = 0;
-			break;
-		}				
-		if (direction < 4) mg.game.hero_dart(direction);
+		int direction = choose_direction(dart_direction);
+		if (direction >= 0 && direction < 4) mg.game.hero_dart(direction);
 		System.out.println();
 		mg.print_maze();
 	}
@@ -156,9 +169,6 @@ public class Maze_Game {
 				maybe_fight(mg);
 				if (mg.game.get_game_state() == 0 && mg.game.get_number_dragons() > 0) {
 					maybe_burn(mg);
-					if (mg.game.get_game_state() == 0 
-							&& mg.game.get_number_dragons() > 0 
-							&& mg.game.get_hero().get_hero_darts() > 0) hero_dart(scan, mg);
 					if (mg.game.get_dragon_type() != 0 && mg.game.get_game_state() == 0 && mg.game.get_number_dragons() > 0) {
 						play_dragon(mg);
 						maybe_fight(mg);
@@ -169,10 +179,11 @@ public class Maze_Game {
 		}
 		while (mg.game.get_game_state() == 0);
 	}
-
-	public static void main(String[] args) {
+	
+	public static void main(String[] args) throws IOException {
 		Scanner scan = new Scanner (System.in);
-		Maze_Game mg = new Maze_Game(scan);
+//		Maze_Game mg = new Maze_Game(scan);
+		Maze_Game mg = new Maze_Game("save_file.txt");
 		play(scan, mg);
 		game_result(mg);
 		scan.close();

@@ -13,7 +13,7 @@ public class Element {
 		position = new_position;
 	}
 	
-	public char get_state() {
+	char get_state() {
 		return state;
 	}
 	
@@ -21,7 +21,7 @@ public class Element {
 		state = new_state;
 	}
 	
-	public int[][] get_neighbour_positions() {
+	int[][] get_neighbour_positions() {
 		int[][] pos_neigh = {
 				{position[0] - 1, position[1]}, 
 				{position[0] + 1, position[1]},
@@ -30,7 +30,7 @@ public class Element {
 		return pos_neigh;
 	}
 	
-	public int[][] get_burn_positions() {
+	int[][] get_burn_positions() {
 		int[][] pos_burn = {
 				{position[0] - 2, position[1]}, 
 				{position[0] + 2, position[1]},
@@ -43,7 +43,7 @@ public class Element {
 		return pos_burn;
 	}
 	
-	public boolean same_position (int[] other_position) {
+	boolean same_position (int[] other_position) {
 		return position[0] == other_position[0] && position[1] == other_position[1];
 	}
 	
@@ -53,5 +53,10 @@ public class Element {
 				&& getClass().getName() == ((Element)obj).getClass().getName()
 				&& same_position(((Element)obj).get_position())
 				&& ((Element)obj).get_state() == state;
+	}
+	
+	public String toString() {
+		String res = state + ";" + position[0] + ";" + position[1];
+		return res;
 	}
 }

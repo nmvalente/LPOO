@@ -16,7 +16,7 @@ public class Dragon extends Element{
 		set_state('F');
 	}
 
-	public void unarm_dragon() {
+	void unarm_dragon() {
 		set_state('D');
 	}
 	

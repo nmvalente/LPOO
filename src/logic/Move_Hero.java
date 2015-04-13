@@ -2,7 +2,7 @@ package logic;
 
 public class Move_Hero {
 	
-	public void move_hero(Game g, int[] new_pos) {
+	private void move_hero(Game g, int[] new_pos) {
 		Maze m = g.get_maze();
 		Hero h = g.get_hero();
 		char board_symbol = m.get_board_position(new_pos);

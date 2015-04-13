@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
-public class Random_Maze extends Maze{
+class Random_Maze extends Maze{
 
-	public Random_Maze(int size, Exit exit) {
+	Random_Maze(int size, Exit exit) {
 		make_random_maze(size, exit);
 	}
 	
-	public void make_random_maze(int size, Exit exit) {
+	private void make_random_maze(int size, Exit exit) {
 		Random rn = new Random();
 		int[] exit_position = exit.get_position();
 		int[] next_2_exit = {0, 0};

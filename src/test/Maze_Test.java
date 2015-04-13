@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -11,10 +12,14 @@ import java.util.function.Supplier;
 import org.junit.Test;
 
 
+
+
 //import cli.*;
 import logic.*;
 
 public class Maze_Test {
+	
+	private static String newline = System.getProperty("line.separator");
 
 	@Test
 	public void test_static() {
@@ -216,18 +221,20 @@ public class Maze_Test {
 		int[] exit_position = {2, 4};
 		Dart i = new Dart();
 		i.set_position(dart_position);
+		Sword s = new Sword();
+		s.set_state(' ');
+		s.set_position(sword_position);
+		Shield v = new Shield();
+		v.set_state(' ');
+		v.set_position(shield_position);
 		game.start_test_game(m1, hero_position, dragon_position, sword_position, shield_position, dart_position, exit_position);
 		assertEquals(game.get_maze_type(), 0);
 		assertEquals(game.get_maze_size(), 5);
 		assertEquals(game.get_number_dragons(), 1);
 		assertEquals(game.get_dragon_type(), 1);
 		assertEquals(game.get_number_darts(), 1);
-		assertEquals(game.get_shield().get_state(), ' ');
-		assertEquals(game.get_sword().get_state(), ' ');
-		assertEquals(game.get_shield().get_position()[0], 1);
-		assertEquals(game.get_sword().get_position()[0], 1);
-		assertEquals(game.get_shield().get_position()[1], 3);
-		assertEquals(game.get_sword().get_position()[1], 3);
+		assertEquals(game.get_shield(), v);
+		assertEquals(game.get_sword(), s);
 		assertEquals(game.get_maze().get_board_position(dragon_position), 'D');
 		assertEquals(game.get_maze().get_board_position(hero_position), 'H');
 		assertEquals(game.get_maze().get_board_position(sword_position), ' ');
@@ -355,6 +362,54 @@ public class Maze_Test {
 		game.get_dragons().get(0).sleep_dragon();
 		d.set_state('f');
 		assertEquals(game.get_dragons().get(0), d);
+	}
+	
+	@Test
+	public void testLoadPrint() throws IOException {
+		Game game = new logic.Game();
+		game.load_game_file("save_test.txt");
+		int[] hero_position = {1, 1};
+		Hero h = new Hero();
+		h.set_position(hero_position);
+		h.set_state('H');
+		int[] dragon_position = {3, 3};
+		Dragon d = new Dragon();
+		d.set_position(dragon_position);
+		d.set_state('D');
+		int[] sword_position = {1, 3};
+		int[] shield_position = {1, 3};
+		int[] dart_position = {1, 2};
+		int[] exit_position = {2, 4};
+		Dart i = new Dart();
+		i.set_position(dart_position);
+		Sword s = new Sword();
+		s.set_state(' ');
+		s.set_position(sword_position);
+		Shield v = new Shield();
+		v.set_state(' ');
+		v.set_position(shield_position);
+		Exit e = new Exit();
+		e.set_state('E');
+		e.set_position(exit_position);
+		assertEquals(game.get_maze_type(), 0);
+		assertEquals(game.get_maze_size(), 5);
+		assertEquals(game.get_number_dragons(), 1);
+		assertEquals(game.get_dragon_type(), 1);
+		assertEquals(game.get_number_darts(), 1);
+		assertEquals(game.get_shield(), v);
+		assertEquals(game.get_sword(), s);
+		assertEquals(game.get_exit(), e);
+		assertEquals(game.get_maze().get_board_position(dragon_position), 'D');
+		assertEquals(game.get_maze().get_board_position(hero_position), 'H');
+		assertEquals(game.get_maze().get_board_position(sword_position), ' ');
+		assertEquals(game.get_maze().get_board_position(shield_position), ' ');
+		assertEquals(game.get_maze().get_board_position(exit_position), 'E');
+		assertEquals(game.get_maze().get_board_position(dart_position), 'i');
+		assertEquals(game.toString(), "0" + newline + "5" + newline + "1" + newline 
+			+ "X;X;X;X;X;X;H;i; ;X;X; ;X; ;E;X; ; ;D;X;X;X;X;X;X;" + newline 
+			+ "E;2;4" + newline + "H;1;1;0"  + newline + " ;1;3" + newline 
+			+ " ;1;3" + newline + "1"  + newline + "i;1;2" + newline + "1" + newline + "D;3;3" + newline);
+
 	}
 
 	// a) the maze boundaries must have exactly one exit and everything else walls

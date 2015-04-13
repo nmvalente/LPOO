@@ -2,9 +2,9 @@ package logic;
 
 import java.util.Random;
 
-public class Random_Exit {
+class Random_Exit {
 	
-	public Random_Exit(Game g, Exit exit) {
+	Random_Exit(Game g, Exit exit) {
 		Random rn = new Random();
 		int exit_wall = rn.nextInt(4);
 		int size = g.get_maze_size();

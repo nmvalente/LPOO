@@ -1,8 +1,8 @@
 package logic;
 
-public class Throw_Dart {
+class Throw_Dart {
 		
-	boolean find_dragon(Game g, Hero h, int[] new_pos) {
+	private boolean find_dragon(Game g, Hero h, int[] new_pos) {
 		for (int i = 0; i < g.get_number_dragons(); i ++) {
 			Dragon d = g.get_dragons().get(i);
 			if (d.same_position(new_pos) && g.free_path(h, d)) {
