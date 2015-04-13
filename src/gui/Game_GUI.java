@@ -7,20 +7,37 @@ import java.awt.EventQueue;
 
 
 
+
+
+
+
+
+
 import javax.swing.JFrame;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JButton;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+
 import java.awt.Color;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 public class Game_GUI extends JFrame{
-
+	
 	public JFrame aux = new JFrame();
 	public Configurations c = null;
+	public desenho d = null;
 	public int type = 1, size = 17, nr_of_dragons = 1, dragon_type = 1, nr_of_darts = 1;
 
 	/**
@@ -88,7 +105,7 @@ public class Game_GUI extends JFrame{
 					System.exit(0);
 			}
 		});
-		Exit.setBounds(0, 563, 100, 25);
+		Exit.setBounds(0, 250, 100, 25);
 		panel.add(Exit);
 
 		//Start button///////////////////////////////////////////////////
@@ -107,14 +124,15 @@ public class Game_GUI extends JFrame{
 					nr_of_darts = c.getNrDarts();
 				}
 
-				JPanel panel_1 = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts);
+				d = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts);
+				JPanel panel_1 = d;
 				getContentPane().add(panel_1);
 				getContentPane().setPreferredSize(new Dimension(size * 50 + 100, size * 50));
 				pack();
-				setVisible(true);
+				d.setVisible(true);
 			}
 		});
-		Start.setBounds(0, 429, 100, 25);
+		Start.setBounds(0, 50, 100, 25);
 		panel.add(Start);
 
 		//Configuration Button////////////////////////////////////////////
@@ -133,7 +151,41 @@ public class Game_GUI extends JFrame{
 			}
 		});
 		Configurations.setAlignmentX(0.5f);
-		Configurations.setBounds(0, 499, 100, 25);
+		Configurations.setBounds(0, 100, 100, 25);
 		panel.add(Configurations);
+	
+		JButton Save = new JButton("Save");
+		Save.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("savegame.txt"), "utf-8"))) {
+					writer.write(d.game.toString());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		Save.setBounds(0, 150, 100, 25);
+		panel.add(Save);
+		
+		JButton Load = new JButton("Load");
+		Load.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					d = new desenho("savegame.txt");
+					JPanel panel_1 = d;
+					getContentPane().add(panel_1);
+					getContentPane().setPreferredSize(new Dimension(d.game.get_maze_size() * 50 + 100, d.game.get_maze_size() * 50));
+					pack();
+					d.setVisible(true);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		Load.setBounds(0, 200, 100, 25);
+		panel.add(Load);
+
 	}
 }

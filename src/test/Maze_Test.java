@@ -253,9 +253,9 @@ public class Maze_Test {
 		h.undart_hero();
 		h.undart_hero();
 		h.undart_hero();
-		game.hero_dart(0);
-		game.hero_dart(1);
-		game.hero_dart(2);
+		game.hero_dart(4);
+		game.hero_dart(5);
+		game.hero_dart(6);
 		assertEquals(game.get_hero(), h);
 		assertEquals(game.get_hero().get_hero_darts(), 0);		
 		assertEquals(game.get_darts().get(0), i);
@@ -269,7 +269,7 @@ public class Maze_Test {
 		int[] new_position = {1, 3};
 		h.set_position(new_position);
 		mh.move_hero_right(game);
-		game.hero_dart(3); // 3 - down
+		game.hero_dart(7); // 7 - down
 		h.undart_hero();
 		d.kill_dragon();
 		assertEquals(game.get_hero(), h);	

@@ -182,7 +182,7 @@ public class Maze_Game {
 	public static void main(String[] args) throws IOException {
 		Scanner scan = new Scanner (System.in);
 //		Maze_Game mg = new Maze_Game(scan);
-		Maze_Game mg = new Maze_Game("save_bug.txt");
+		Maze_Game mg = new Maze_Game("savegame.txt");
 		play(scan, mg);
 		game_result(mg);
 		scan.close();

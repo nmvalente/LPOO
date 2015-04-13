@@ -143,11 +143,10 @@ public class Game {
 	        load_sword(line);
 	        line = br.readLine();
 	        load_shield(line);
+	        line = br.readLine();
 			place_element(exit);
-			place_element(hero);
 			place_element(sword);
 			place_element(shield);
-	        line = br.readLine();
 	        number_darts = Integer.parseInt(line);
 			darts = new ArrayList<Dart>();
 	        for (int i = 0; i < number_darts; i++) {
@@ -165,6 +164,7 @@ public class Game {
 		        dragons.add(dragon);
 				place_element(dragon);
 	        }
+			place_element(hero);
 	    }
 		
 	}
@@ -176,6 +176,7 @@ public class Game {
 		Dragon dragon = new Dragon();
 		dragon.set_state (dragon_state);
 		dragon.set_position(dragon_pos);
+		System.out.println(dragon);
 		return dragon;
 	}
 
@@ -186,6 +187,7 @@ public class Game {
 		Dart dart = new Dart();
 		dart.set_state (dart_state);
 		dart.set_position (dart_pos);
+		System.out.println(dart);
 		return dart;
 	}
 
@@ -196,6 +198,7 @@ public class Game {
 		shield = new Shield();
 		shield.set_state (shield_state);
 		shield.set_position (shield_pos);
+		System.out.println(shield);
 	}
 
 	private void load_sword(String line) {
@@ -205,6 +208,7 @@ public class Game {
 		sword = new Sword();
 		sword.set_state (sword_state);
 		sword.set_position (sword_pos);
+		System.out.println(sword);
 	}
 
 	private void load_hero(String line) {
@@ -216,6 +220,7 @@ public class Game {
 		hero.set_state (hero_state);
 		hero.set_position (hero_pos);
 		hero.set_hero_darts(hero_darts);
+		System.out.println(hero);
 	}
 
 	private void load_exit(String line) {
@@ -225,6 +230,7 @@ public class Game {
 		exit = new Exit();
 		exit.set_state (exit_state);
 		exit.set_position (exit_pos);
+		System.out.println(exit);
 	}
 
 	private char[][] load_board(String line) {

@@ -55,6 +55,7 @@ public class Configurations extends JDialog {
 	public Configurations() {
 
 		contentPanel = new JPanel();
+		contentPanel.setBackground(Color.BLACK);
 		setBounds(700, 300, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -62,6 +63,7 @@ public class Configurations extends JDialog {
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			buttonPane.setBackground(Color.BLACK);
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
 			JTextArea txtrMazeSize = new JTextArea();

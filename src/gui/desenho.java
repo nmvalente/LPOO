@@ -8,16 +8,19 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 //import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class desenho extends JPanel implements MouseListener, MouseMotionListener, KeyListener{
+public class desenho extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
+	
 	logic.Game game;
+	
 	ImageIcon iwall = new ImageIcon("images/wall.gif");
 	Image wall = iwall.getImage();
 	ImageIcon ihero = new ImageIcon("images/hero.gif");
@@ -81,6 +84,19 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 			game.set_number_darts(nr_of_darts);
 		}
 		game.start_game();
+	}
+
+	desenho(String filename) throws IOException {
+		
+		this.addKeyListener(this);
+		setBackground(Color.BLACK);
+		game = new logic.Game();
+		game.load_game_file(filename);
+		game.start_game();
+	}
+	
+	logic.Game get_game() {
+		return game;
 	}
 
 	public void print_maze(Graphics g) {
