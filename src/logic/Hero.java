@@ -73,6 +73,13 @@ public class Hero extends Element{
 		return hero_darts;
 	}
 	
+	/**
+	 * To be used by the GUI after the hero is burned to dead to change its state to 'n' so that the appropriate image can be used.
+	 */
+	public void set_burn() {
+		if (get_state() == ' ') set_state('n');
+	}
+	
 	/* (non-Javadoc)
 	 * @see logic.Element#toString()
 	 */
@@ -80,5 +87,6 @@ public class Hero extends Element{
 		String res = get_state() + ";" + get_position()[0] + ";" + get_position()[1] + ";" + hero_darts;
 		return res;
 	}
+
 	
 }

@@ -17,7 +17,7 @@ public class Game {
 	/** The size of the maze. */
 	private int maze_size;
 	
-	/** The type of dragons: 0 - not moving; 1 - moving; 2 - sleeping & moving. */
+	/** The type of dragons: 0 - not moving; 1 - moving; 2 - sleeping and moving. */
 	private int dragon_type;
 	
 	/** The maze for the game. */
@@ -261,7 +261,6 @@ public class Game {
 	 * Makes the shield from the appropriate line extracted from the file.
 	 *
 	 * @param line the line with the shield's information
-	 * @return the shield
 	 */
 	private void load_shield(String line) {
 		String[] shield_info = line.split(";");
@@ -276,7 +275,6 @@ public class Game {
 	 * Makes the sword from the appropriate line extracted from the file.
 	 *
 	 * @param line the line with the sword's information
-	 * @return the sword
 	 */
 	private void load_sword(String line) {
 		String[] sword_info = line.split(";");
@@ -291,7 +289,6 @@ public class Game {
 	 * Makes the hero from the appropriate line extracted from the file.
 	 *
 	 * @param line the line with the hero's information
-	 * @return the hero
 	 */
 	private void load_hero(String line) {
 		String[] hero_info = line.split(";");
@@ -308,7 +305,6 @@ public class Game {
 	 * Makes the exit from the appropriate line extracted from the file.
 	 *
 	 * @param line the line with the exit's information
-	 * @return the exit
 	 */
 	private void load_exit(String line) {
 		String[] exit_info = line.split(";");

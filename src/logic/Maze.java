@@ -13,7 +13,7 @@ public abstract class Maze {
 	/**
 	 * Gets all the empty cells of the board (where new elements can be place.
 	 *
-	 * @return ArrayList<int[]> with all empty board cells
+	 * @return Array list with the positions of all empty board cells
 	 */
 	ArrayList<int[]> get_board_cells() {
 		ArrayList<int[]> cells = new ArrayList<int[]>();

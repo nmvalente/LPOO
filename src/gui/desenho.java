@@ -32,6 +32,14 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 	Image heroshield = iheroshield.getImage();
 	ImageIcon iheroswordshield = new ImageIcon("images/heroswordshield.gif");
 	Image heroswordshield = iheroswordshield.getImage();
+	ImageIcon iheroburn = new ImageIcon("images/heroburn.gif");
+	Image heroburn = iheroburn.getImage();
+	ImageIcon iheroburnsword = new ImageIcon("images/heroburnsword.gif");
+	Image heroburnsword = iheroburnsword.getImage();
+	ImageIcon iherosurvive = new ImageIcon("images/herosurvive.gif");
+	Image herosurvive = iherosurvive.getImage();
+	ImageIcon iherosurvivesword = new ImageIcon("images/herosurvivesword.gif");
+	Image herosurvivesword = iherosurvivesword.getImage();
 	ImageIcon idragon = new ImageIcon("images/dragon.gif");
 	Image dragon = idragon.getImage();
 	ImageIcon idragonsleep = new ImageIcon("images/dragonsleep.gif");
@@ -120,6 +128,18 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 					break;
 				case 'H' :
 					g.drawImage(heroshield, j * 50, i * 50, 50, 50, null);
+					break;
+				case 'n' :
+					g.drawImage(heroburn, j * 50, i * 50, 50, 50, null);
+					break;
+				case 'm' :
+					g.drawImage(heroburnsword, j * 50, i * 50, 50, 50, null);
+					break;
+				case 'M' :
+					g.drawImage(herosurvivesword, j * 50, i * 50, 50, 50, null);
+					break;
+				case 'N' :
+					g.drawImage(herosurvive, j * 50, i * 50, 50, 50, null);
 					break;
 				case 'D' :
 					g.drawImage(dragon, j * 50, i * 50, 50, 50, null);
@@ -256,13 +276,12 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 			&& game.get_number_dragons() > 0 
 			&& game.get_hero().get_hero_darts() > 0) {
 				game.hero_dart(direction);
-				repaint(); 			
 			}
 		}
 		else if (direction >= 0) {
 			game.hero_turn(direction);
-			repaint(); 			
 		}
+		repaint();
 	}
 	
 	private void play_dragon() {
@@ -279,7 +298,10 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 	}
 	
 	private void maybe_burn() {
+		repaint();
 		if (game.burn_hero()) {
+			game.get_hero().set_burn();
+			game.place_element(game.get_hero());
 			repaint(); 
 		}
 	}
