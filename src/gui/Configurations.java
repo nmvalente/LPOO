@@ -5,9 +5,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -19,14 +22,19 @@ import javax.swing.event.ChangeListener;
 
 public class Configurations extends JDialog {
 
-	private int type = 1, size = 17, nr_of_dragons = 1, dragon_type = 1, nr_of_darts = 1;
+	private final JPanel contentPanel;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public int type = 1, size = 17, nr_of_dragons = 1, dragon_type = 1, nr_of_darts = 1;
 	public int getmType(){return type;}
 	public int getmSize(){return size;}
 	public int getNrDragons(){return nr_of_dragons;}
 	public int getDragonType(){return dragon_type;}
 	public int getNrDarts(){return nr_of_darts;}
-	
-	private final JPanel contentPanel = new JPanel();
+	public JPanel getPanel(){return contentPanel;}
 
 	/**
 	 * Launch the application.
@@ -45,7 +53,9 @@ public class Configurations extends JDialog {
 	 * Create the dialog.
 	 */
 	public Configurations() {
-		setBounds(100, 100, 450, 300);
+
+		contentPanel = new JPanel();
+		setBounds(700, 300, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -53,47 +63,7 @@ public class Configurations extends JDialog {
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-			contentPanel.setLayout(null);
-			
-			JTextArea txtrMazeType = new JTextArea();
-			txtrMazeType.setForeground(Color.WHITE);
-			txtrMazeType.setCaretColor(Color.BLACK);
-			txtrMazeType.setBackground(Color.BLACK);
-			txtrMazeType.setAlignmentX(Component.CENTER_ALIGNMENT);
-			txtrMazeType.setAlignmentY(Component.CENTER_ALIGNMENT);
-			txtrMazeType.setEditable(false);
-			txtrMazeType.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			txtrMazeType.setText("Maze type?");
-			txtrMazeType.setBounds(65, 13, 94, 20);
-			contentPanel.add(txtrMazeType);
-			
-			JSpinner maze_type_spinner = new JSpinner();
-			maze_type_spinner.addChangeListener(new ChangeListener() {
-				public void stateChanged(ChangeEvent e) {
-					String typeString = (String)maze_type_spinner.getValue();
-					if(typeString == "Static")
-						type = 0;
-					else type = 1;
-				}
-			});
 
-			maze_type_spinner.setModel(new SpinnerListModel(new String[] {"Static", "Random"}));
-			maze_type_spinner.setBounds(65, 32, 94, 33);
-			contentPanel.add(maze_type_spinner);
-
-			
-			
 			JTextArea txtrMazeSize = new JTextArea();
 			txtrMazeSize.setBackground(Color.BLACK);
 			txtrMazeSize.setForeground(Color.WHITE);
@@ -113,8 +83,8 @@ public class Configurations extends JDialog {
 			maze_size.setModel(new SpinnerNumberModel(7, 7, 31, 2));
 			maze_size.setBounds(65, 103, 94, 36);
 			contentPanel.add(maze_size);
-			
-			
+
+
 			JTextArea txtrNumberOfDragons = new JTextArea();
 			txtrNumberOfDragons.setBackground(Color.BLACK);
 			txtrNumberOfDragons.setForeground(Color.WHITE);
@@ -134,8 +104,8 @@ public class Configurations extends JDialog {
 				}
 			});
 			contentPanel.add(nr_of_dragons_1);
-			
-			
+
+
 			JTextArea txtrTypeOfDragons = new JTextArea();
 			txtrTypeOfDragons.setEditable(false);
 			txtrTypeOfDragons.setBackground(Color.BLACK);
@@ -160,9 +130,7 @@ public class Configurations extends JDialog {
 			dragon_type_1.setModel(new SpinnerListModel(new String[] {"Static", "Moving", "Sleeping"}));
 			dragon_type_1.setBounds(266, 51, 100, 42);
 			contentPanel.add(dragon_type_1);
-			
-			
-			
+
 			JTextArea txtrNrOfDarts = new JTextArea();
 			txtrNrOfDarts.setBackground(Color.BLACK);
 			txtrNrOfDarts.setForeground(Color.WHITE);
@@ -182,7 +150,106 @@ public class Configurations extends JDialog {
 			nr_of_darts_1.setModel(new SpinnerNumberModel(0, 0, 7, 1));
 			nr_of_darts_1.setBounds(266, 142, 100, 43);
 			contentPanel.add(nr_of_darts_1);
+
+			JTextArea txtrMazeType = new JTextArea();
+			txtrMazeType.setForeground(Color.WHITE);
+			txtrMazeType.setCaretColor(Color.BLACK);
+			txtrMazeType.setBackground(Color.BLACK);
+			txtrMazeType.setAlignmentX(Component.CENTER_ALIGNMENT);
+			txtrMazeType.setAlignmentY(Component.CENTER_ALIGNMENT);
+			txtrMazeType.setEditable(false);
+			txtrMazeType.setFont(new Font("Tahoma", Font.PLAIN, 13));
+			txtrMazeType.setText("Maze type?");
+			txtrMazeType.setBounds(65, 13, 94, 20);
+			contentPanel.add(txtrMazeType);
+
+			JSpinner maze_type_spinner = new JSpinner();
+
+			initial_state_spinnners(maze_size, nr_of_dragons_1, dragon_type_1, nr_of_darts_1);
+
+			maze_type_spinner.addChangeListener(new ChangeListener() {
+
+
+				public void stateChanged(ChangeEvent e) {
+					String typeString = (String)maze_type_spinner.getValue();
+					if(typeString == "Static")
+					{
+						initial_state_spinnners(maze_size, nr_of_dragons_1,
+								dragon_type_1, nr_of_darts_1);
+						type = 0;
+					}
+					else 
+					{
+						nr_of_dragons_1.setEnabled(true);	
+						dragon_type_1.setEnabled(true);
+						nr_of_darts_1.setEnabled(true);
+						maze_size.setEnabled(true);	
+						type = 1;
+					}
+				}
+			});
+			maze_type_spinner.setModel(new SpinnerListModel(new String[] {"Static", "Random"}));
+			maze_type_spinner.setBounds(65, 32, 94, 33);
+			contentPanel.add(maze_type_spinner);
+
+			{
+				JButton okButton = new JButton("OK");
+				okButton.setActionCommand("OK");
+				okButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						int n = JOptionPane.showConfirmDialog(null,"Confirm", "Configurations accepted",JOptionPane.YES_NO_OPTION);
+						if(n==0)
+						{
+							nr_of_darts = (int) nr_of_darts_1.getValue();
+
+							if("Static" == maze_type_spinner.getValue())
+								type = 0;
+							else type = 1;
+
+							size = (int) maze_size.getValue();
+
+							nr_of_dragons = (int) nr_of_dragons_1.getValue();
+
+							if("Static" == dragon_type_1.getValue())
+								dragon_type = 0;
+							else if("Sleeping" == maze_type_spinner.getValue())
+								dragon_type = 1;
+							else dragon_type = 2; 
+							dispose();
+						}
+					}
+				});
+				buttonPane.add(okButton);
+				getRootPane().setDefaultButton(okButton);
+			}
+			{
+				JButton cancelButton = new JButton("Cancel");
+				cancelButton.setActionCommand("Cancel");
+
+				cancelButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						nr_of_darts_1.setValue(1);
+						maze_type_spinner.setValue("Static");
+						maze_size.setValue(17);
+						nr_of_dragons_1.setValue(1);
+						dragon_type_1.setValue("Static"); 
+					}
+				});
+				buttonPane.add(cancelButton);	
+			}
+
+
+			contentPanel.setLayout(null);
 		}
+	}
+	private void initial_state_spinnners(JSpinner maze_size, JSpinner nr_of_dragons_1, JSpinner dragon_type_1, JSpinner nr_of_darts_1) 
+	{
+		nr_of_dragons_1.setEnabled(false);	
+		dragon_type_1.setEnabled(false);
+		nr_of_darts_1.setEnabled(false);
+		maze_size.setEnabled(false);
 	}
 
 }
