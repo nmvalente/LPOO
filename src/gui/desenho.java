@@ -4,25 +4,30 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.PaintContext;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import logic.*;
-
-public class desenho extends JPanel {
-
+public class desenho extends JPanel implements MouseListener, MouseMotionListener, KeyListener{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	logic.Game game;
-	
+	cli.Maze_Game mg;
+
 	desenho(int type, int size, int nr_of_dragons, int dragon_type, int nr_of_darts) {
-        setBackground(Color.BLACK);
-        setPreferredSize(new Dimension(17*50, 17*50));
+	
+		this.addKeyListener(this);
+		setBackground(Color.BLACK);
+		setPreferredSize(new Dimension(17*50, 17*50));
 		setSize(new Dimension(17*50, 17*50));
 		game = new logic.Game();
 		game.set_maze_type(type);
@@ -40,14 +45,18 @@ public class desenho extends JPanel {
 		}
 		game.start_game();
 	}
-	
+
 	public void print_maze(Graphics g) {
+		requestFocus();
 		int size = game.get_maze_size();
 		g.setColor(Color.black);
+		
 		ImageIcon iwall = new ImageIcon("images/wall.gif");
 		Image wall = iwall.getImage();
 		ImageIcon ihero = new ImageIcon("images/hero.gif");
-		Image hero = ihero.getImage();
+		JButton b= new JButton(ihero);
+		
+		//Image hero = ihero.getImage();
 		ImageIcon iherosword = new ImageIcon("images/herosword.gif");
 		Image herosword = iherosword.getImage();
 		ImageIcon iheroshield = new ImageIcon("images/heroshield.gif");
@@ -75,7 +84,7 @@ public class desenho extends JPanel {
 					g.drawImage(wall, j * 50, i * 50, 50, 50, null);
 					break;
 				case 'h' :
-					g.drawImage(hero, j * 50, i * 50, 50, 50, null);
+					b.paintImmediately(j * 50, i * 50, 50, 50);//, offset, length, x, y);//g.drawImage(hero, j * 50, i * 50, 50, 50, null);
 					break;
 				case 'a' :
 					g.drawImage(herosword, j * 50, i * 50, 50, 50, null);
@@ -109,9 +118,83 @@ public class desenho extends JPanel {
 		}
 	}
 
+//	public void jogada(){
+//		//String nome = JOptionPane.showInputDialog("Choose movement");
+//			char hero_direction = 0;
+//				int direction = 0;
+//				switch (hero_direction) {
+//				case 'w' :
+//					direction = 2;
+//					break;
+//				case 'a' :
+//					direction = 1;
+//					break;
+//				case 's' :
+//					direction = 3;
+//					break;
+//				case 'd' :
+//					direction = 0;
+//					break;
+//				}			
+//		game.hero_turn(direction);
+//	}
+
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		print_maze(g);
 	}
-	
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch(e.getKeyCode()){
+		case KeyEvent.VK_A:
+			game.hero_turn(1);
+			//mg.play(mg);
+			repaint(); 
+			break;
+
+		case KeyEvent.VK_D: 
+			game.hero_turn(0);
+			repaint(); 
+			break;
+
+		case KeyEvent.VK_W: 
+			game.hero_turn(2);
+			repaint(); 
+			break;
+
+		case KeyEvent.VK_S: 
+			game.hero_turn(3);
+			repaint(); 
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
+
 }

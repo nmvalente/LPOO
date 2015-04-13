@@ -4,30 +4,36 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import java.awt.GridLayout;
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JButton;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JComboBox;
+
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
+
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.JFormattedTextField;
-import javax.swing.JEditorPane;
 import javax.swing.SpinnerListModel;
+
 import java.awt.Component;
 import java.awt.Font;
+
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.Color;
-import java.awt.FlowLayout;
 
 public class Game_GUI extends JFrame{
 
-	public int type, size, nr_of_dragons, dragon_type, nr_of_darts;
-	
+	public int type = 0, size = 17, nr_of_dragons = 1
+			, dragon_type = 0, nr_of_darts = 1;
+
 	/**
 	 * 
 	 */
@@ -64,46 +70,42 @@ public class Game_GUI extends JFrame{
 	private void initialize() {
 		//temporario
 		setBounds(20, 20, 960, 880);
-		
+
 		setName("Maze Game");
-		
+		       
+        
 		// ativar este e apagar temporario, no final - setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setVisible(true);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		
-		
+
+
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
 		panel.setPreferredSize(new Dimension(100, 100));
 		panel.setSize(new Dimension(100, 100));
 		getContentPane().add(panel, BorderLayout.EAST);
 		panel.setLayout(null);
+
 		
-		JButton btnNewButton = new JButton("Start Game");
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				System.out.println("Botao 1");
-			}
-		});
-		btnNewButton.setBounds(0, 429, 100, 25);
-		panel.add(btnNewButton);
-		
-		JSpinner spinner = new JSpinner();
-		spinner.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.equals("Static"))
+		///////////////////////////spinners///////////////////////////////////////////
+
+
+		JSpinner maze_type_spinner = new JSpinner();
+		maze_type_spinner.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				String typeString = (String)maze_type_spinner.getValue();
+				if(typeString == "Static")
 					type = 0;
 				else type = 1;
 			}
 		});
-		spinner.setModel(new SpinnerListModel(new String[] {"Static", "Random"}));
-		spinner.setBounds(0, 25, 97, 25);
-		panel.add(spinner);
-		
+
+		maze_type_spinner.setModel(new SpinnerListModel(new String[] {"Static", "Random"}));
+		maze_type_spinner.setBounds(0, 25, 97, 25);
+		panel.add(maze_type_spinner);
+
 		JTextArea txtrMazeType = new JTextArea();
 		txtrMazeType.setForeground(Color.WHITE);
 		txtrMazeType.setCaretColor(Color.BLACK);
@@ -115,7 +117,7 @@ public class Game_GUI extends JFrame{
 		txtrMazeType.setText("Maze type?");
 		txtrMazeType.setBounds(0, 0, 100, 25);
 		panel.add(txtrMazeType);
-		
+
 		JTextArea txtrMazeSize = new JTextArea();
 		txtrMazeSize.setBackground(Color.BLACK);
 		txtrMazeSize.setForeground(Color.WHITE);
@@ -125,12 +127,17 @@ public class Game_GUI extends JFrame{
 		txtrMazeSize.setAlignmentX(1.0f);
 		txtrMazeSize.setBounds(0, 75, 100, 25);
 		panel.add(txtrMazeSize);
-		
-		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setModel(new SpinnerNumberModel(9, 9, 31, 2));
-		spinner_1.setBounds(0, 101, 97, 25);
-		panel.add(spinner_1);
-		
+
+		JSpinner maze_size = new JSpinner();
+		maze_size.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				size = (int)maze_size.getValue();
+			}
+		});
+		maze_size.setModel(new SpinnerNumberModel(7, 7, 31, 2));
+		maze_size.setBounds(0, 101, 97, 25);
+		panel.add(maze_size);
+
 		JTextArea txtrNumberOfDragons = new JTextArea();
 		txtrNumberOfDragons.setBackground(Color.BLACK);
 		txtrNumberOfDragons.setForeground(Color.WHITE);
@@ -140,12 +147,17 @@ public class Game_GUI extends JFrame{
 		txtrNumberOfDragons.setAlignmentX(1.5f);
 		txtrNumberOfDragons.setBounds(0, 162, 100, 25);
 		panel.add(txtrNumberOfDragons);
-		
-		JSpinner spinner_2 = new JSpinner();
-		spinner_2.setModel(new SpinnerNumberModel(0, 0, 6, 1));
-		spinner_2.setBounds(0, 189, 97, 25);
-		panel.add(spinner_2);
-		
+
+		JSpinner nr_of_dragons_1 = new JSpinner();
+		nr_of_dragons_1.setModel(new SpinnerNumberModel(1, 1, 6, 1));
+		nr_of_dragons_1.setBounds(0, 189, 97, 25);
+		nr_of_dragons_1.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				nr_of_dragons = (int)nr_of_dragons_1.getValue();
+			}
+		});
+		panel.add(nr_of_dragons_1);
+
 		JTextArea txtrTypeOfDragons = new JTextArea();
 		txtrTypeOfDragons.setEditable(false);
 		txtrTypeOfDragons.setBackground(Color.BLACK);
@@ -155,12 +167,22 @@ public class Game_GUI extends JFrame{
 		txtrTypeOfDragons.setAlignmentX(1.0f);
 		txtrTypeOfDragons.setBounds(0, 243, 100, 25);
 		panel.add(txtrTypeOfDragons);
-		
-		JSpinner spinner_3 = new JSpinner();
-		spinner_3.setModel(new SpinnerListModel(new String[] {"Static", "Moving", "Sleeping"}));
-		spinner_3.setBounds(0, 269, 97, 25);
-		panel.add(spinner_3);
-		
+
+		JSpinner dragon_type_1 = new JSpinner();
+		dragon_type_1.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				String dragon_typeString = (String)dragon_type_1.getValue();
+				if(dragon_typeString == "Static")
+					dragon_type = 0;
+				else if(dragon_typeString == "Moving")
+					dragon_type = 1;
+				else dragon_type = 2;
+			}
+		});
+		dragon_type_1.setModel(new SpinnerListModel(new String[] {"Static", "Moving", "Sleeping"}));
+		dragon_type_1.setBounds(0, 269, 97, 25);
+		panel.add(dragon_type_1);
+
 		JTextArea txtrNrOfDarts = new JTextArea();
 		txtrNrOfDarts.setBackground(Color.BLACK);
 		txtrNrOfDarts.setForeground(Color.WHITE);
@@ -170,18 +192,76 @@ public class Game_GUI extends JFrame{
 		txtrNrOfDarts.setAlignmentX(1.0f);
 		txtrNrOfDarts.setBounds(0, 323, 100, 25);
 		panel.add(txtrNrOfDarts);
-		
-		JSpinner spinner_4 = new JSpinner();
-		spinner_4.setModel(new SpinnerNumberModel(0, 0, 7, 1));
-		spinner_4.setBounds(0, 350, 97, 25);
-		panel.add(spinner_4);
-		
-		JButton btnExitGame = new JButton("Exit Game");
-		btnExitGame.setBounds(0, 461, 100, 25);
-		panel.add(btnExitGame);
-		
-		JPanel panel_1 = new desenho(1, 17, 3, 2, 2);
-		getContentPane().add(panel_1, BorderLayout.CENTER);
-//		panel_1.setLayout(null);
+
+		JSpinner nr_of_darts_1 = new JSpinner();
+		nr_of_darts_1.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				nr_of_darts = (int)nr_of_darts_1.getValue();
+			}
+		});
+		nr_of_darts_1.setModel(new SpinnerNumberModel(0, 0, 7, 1));
+		nr_of_darts_1.setBounds(0, 350, 97, 25);
+		panel.add(nr_of_darts_1);
+
+
+		//Exit button/////////////////////////////////////
+		JButton Exit = new JButton("Exit Game");
+		Exit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int n = JOptionPane.showConfirmDialog(null,"Exit Game", "Exiting Game",JOptionPane.YES_NO_OPTION);
+				if(n==0)
+					System.exit(0);
+			}
+		});
+		Exit.setBounds(0, 563, 100, 25);
+		panel.add(Exit);
+
+
+		//Start button///////////////////////////////////////////////////
+		JButton Start = new JButton("Start Game");
+		Start.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JPanel panel_1 = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts);
+				getContentPane().add(panel_1);
+			}
+		});
+		Start.setBounds(0, 429, 100, 25);
+		panel.add(Start);
+		//////////////////////////////////////////////////////////////////
+
+
+		//Button configurations///////////////////////////////////////////
+		JButton Configurations = new JButton("Game Configurations");
+		Configurations.addMouseListener(new MouseAdapter() {
+			public void MouseClicked(MouseEvent e) {
+
+				JDialog quest = new JDialog();
+				quest.setName("Game Configurations");
+				quest.setSize(800,800);
+				quest.setLocationRelativeTo(null);
+				quest.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				quest.setVisible(true);
+				quest.getContentPane().setLayout(null);
+
+				quest.add(maze_type_spinner);
+				//				Object[] possibilities = {"ham", "spam", "yam"};
+				//				String s = (String)JOptionPane.showInputDialog(this,"Complete the sentence:\n"+ "\"Green eggs and...\"","Customized Dialog",
+				//						JOptionPane.PLAIN_MESSAGE, possibilities, "ham");
+			}
+		});
+		Configurations.setAlignmentX(0.5f);
+		Configurations.setBounds(0, 499, 100, 25);
+		panel.add(Configurations);
+
+		////////////////////desenho////////////////////////////////////////
+
+		//		JPanel panel_1 = new desenho(1, 17, 3, 2, 2);
+		//		getContentPane().add(panel_1, BorderLayout.CENTER);
+		//panel_1.setLayout(null);
+
+
+
 	}
 }
