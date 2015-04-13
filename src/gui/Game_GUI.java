@@ -2,26 +2,12 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-
-//import javafx.geometry.Insets;
-
-
-
-
-
-
-
-
-
-
-
 import javax.swing.JFrame;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -45,7 +31,7 @@ public class Game_GUI extends JFrame{
 	public Configurations c = null;
 	public desenho d = null;
 	public int type = 1, size = 17, nr_of_dragons = 1, dragon_type = 1, nr_of_darts = 1;
-	char left='a', right='d', up='s', down='w';
+	char left='a', right='d', up='w', down='s';
 	JPanel panel_game = null;
 
 	/**
@@ -114,11 +100,10 @@ public class Game_GUI extends JFrame{
 					System.exit(0);
 			}
 		});
-		Exit.setBounds(0, 300, 100, 25);
+		Exit.setBounds(0, 400, 100, 25);
 		panel.add(Exit);
 
 		//Start button///////////////////////////////////////////////////
-
 		JButton Start = new JButton("Start");
 		Start.addMouseListener(new MouseAdapter() {
 			@Override
@@ -131,7 +116,7 @@ public class Game_GUI extends JFrame{
 					dragon_type = c.getDragonType();
 					nr_of_darts = c.getNrDarts();
 					c = null;
-					d = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts);
+					d = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts, left, right, up, down);
 					panel_game = d;
 					getContentPane().add(panel_game);
 					getContentPane().setPreferredSize(new Dimension(d.game.get_maze_size() * 50 + 100, d.game.get_maze_size() * 50));
@@ -184,7 +169,7 @@ public class Game_GUI extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					d = new desenho("savegame.txt");
+					d = new desenho("savegame.txt", left, right, up, down);
 					panel_game = d;
 					getContentPane().add(panel_game);
 					getContentPane().setPreferredSize(new Dimension(d.game.get_maze_size() * 50 + 100, d.game.get_maze_size() * 50));
@@ -226,8 +211,8 @@ public class Game_GUI extends JFrame{
 		reset.setBounds(0, 250, 100, 25);
 		panel.add(reset);
 
-		JButton ChangeKeys = new JButton("Change keys");
-		ChangeKeys.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		JButton ChangeKeys = new JButton("Keys");
+		ChangeKeys.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		ChangeKeys.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
@@ -246,19 +231,18 @@ public class Game_GUI extends JFrame{
 				}
 			}
 		});
-		ChangeKeys.setBounds(0, 412, 100, 25);
+		ChangeKeys.setBounds(0, 300, 100, 25);
 		panel.add(ChangeKeys);
 		
 		JButton help = new JButton("Help");
 		help.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JTextField text = new JTextField("Texto para colocar aqui");
-				text.setVisible(true);
-			}
+				JOptionPane.showMessageDialog(null, "To move hero: w - up, a - left, s - down, d - right \nTo throw dart: i - up, j - left, k - down, l - right");
+				}
 		});
 		help.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		help.setBounds(0, 359, 100, 25);
+		help.setBounds(0, 350, 100, 25);
 		panel.add(help);
 
 	}

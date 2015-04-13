@@ -21,6 +21,12 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 	
 	logic.Game game;
 	
+	int keyCodeleft , keyCoderight, keyCodeup, keyCodedown;
+	int dartleft = KeyEvent.getExtendedKeyCodeForChar('j');
+	int dartright = KeyEvent.getExtendedKeyCodeForChar('l');
+	int darteup = KeyEvent.getExtendedKeyCodeForChar('i');
+	int dartdown = KeyEvent.getExtendedKeyCodeForChar('k');
+
 	ImageIcon iwall = new ImageIcon("images/wall.gif");
 	Image wall = iwall.getImage();
 	ImageIcon ihero = new ImageIcon("images/hero.gif");
@@ -73,9 +79,13 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 	ImageIcon inada = new ImageIcon("images/nothing.gif");
 	Image nada = inada.getImage();
 
-	desenho(int type, int size, int nr_of_dragons, int dragon_type, int nr_of_darts) {
+	desenho(int type, int size, int nr_of_dragons, int dragon_type, int nr_of_darts, char a, char d, char w, char s) {
 	
 		this.addKeyListener(this);
+		keyCodeleft = KeyEvent.getExtendedKeyCodeForChar(a);
+		keyCoderight = KeyEvent.getExtendedKeyCodeForChar(d);
+		keyCodeup = KeyEvent.getExtendedKeyCodeForChar(w);
+		keyCodedown = KeyEvent.getExtendedKeyCodeForChar(s);
 		setBackground(Color.BLACK);
 		game = new logic.Game();
 		game.set_maze_type(type);
@@ -94,8 +104,12 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		game.start_game();
 	}
 
-	desenho(String filename) throws IOException {
+	desenho(String filename, char a, char d, char w, char s) throws IOException {
 		this.addKeyListener(this);
+		keyCodeleft = KeyEvent.getExtendedKeyCodeForChar(a);
+		keyCoderight = KeyEvent.getExtendedKeyCodeForChar(d);
+		keyCodeup = KeyEvent.getExtendedKeyCodeForChar(w);
+		keyCodedown = KeyEvent.getExtendedKeyCodeForChar(s);
 		setBackground(Color.BLACK);
 		game = new logic.Game();
 		game.load_game_file(filename);
@@ -225,11 +239,19 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+/*		if (e.getKeyCode() == keyCodeleft) play(1);
+		else if (e.getKeyCode() == keyCoderight) play(0);
+		else if (e.getKeyCode() == keyCodeup) play(2);
+		else if (e.getKeyCode() == keyCodedown) play(3);
+		else if (e.getKeyCode() == dartleft) play(5);
+		else if (e.getKeyCode() == dartright) play(4);
+		else if (e.getKeyCode() == dartdown) play(6);
+		else if (e.getKeyCode() == dartup) play(7);*/
 		switch(e.getKeyCode()){
-		case KeyEvent.VK_A:
+		case KeyEvent.VK_A: 
 			play(1);
 			break;
-			case KeyEvent.VK_D: 
+		case KeyEvent.VK_D: 
 			play(0);
 			break;
 		case KeyEvent.VK_W: 
@@ -250,7 +272,7 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		case KeyEvent.VK_K: 
 			play(7);
 			break;
-		}	
+		}
 	}
 
 	private void play(int direction) {

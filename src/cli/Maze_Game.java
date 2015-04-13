@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Maze_Game {
 
-	private static final int SLEEP_TIME = 10;
+	private static final int SLEEP_TIME = 1000;
 	logic.Game game;
 
 	public Maze_Game(Scanner scan) {
@@ -27,6 +27,14 @@ public class Maze_Game {
 			System.out.print("Number of darts? ");
 			number = scan.nextInt();
 			game.set_number_darts(number);
+			System.out.println("To move hero: w - up, a - left, s - down, d - right.");
+			System.out.println("To throw dart: i - up, j - left, k - down, l - right.");
+			try {
+				Thread.sleep(4 * SLEEP_TIME);
+			}
+			catch(Exception e) {
+				System.out.println("Exception caught");
+			}			
 		}
 		else { 
 			game.set_maze_size(10);
@@ -181,8 +189,7 @@ public class Maze_Game {
 	
 	public static void main(String[] args) throws IOException {
 		Scanner scan = new Scanner (System.in);
-//		Maze_Game mg = new Maze_Game(scan);
-		Maze_Game mg = new Maze_Game("savegame.txt");
+		Maze_Game mg = new Maze_Game(scan);
 		play(scan, mg);
 		game_result(mg);
 		scan.close();
