@@ -104,7 +104,7 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 	logic.Game get_game() {
 		return game;
 	}
-
+	
 	public void print_maze(Graphics g) {
 		requestFocus();
 		int size = game.get_maze_size();

@@ -39,6 +39,7 @@ public class Game_GUI extends JFrame{
 	public Configurations c = null;
 	public desenho d = null;
 	public int type = 1, size = 17, nr_of_dragons = 1, dragon_type = 1, nr_of_darts = 1;
+	JPanel panel_game = null;
 
 	/**
 	 * 
@@ -76,7 +77,7 @@ public class Game_GUI extends JFrame{
 	private void initialize() {
 		//temporario
 		setBounds(500, 20, 960, 880);
-
+		setBackground(Color.BLACK);
 		setName("Maze Game");
 
 
@@ -85,6 +86,7 @@ public class Game_GUI extends JFrame{
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		getContentPane().setBackground(Color.BLACK);
 
 
 		JPanel panel = new JPanel();
@@ -123,11 +125,11 @@ public class Game_GUI extends JFrame{
 					nr_of_darts = c.getNrDarts();
 					c = null;
 					d = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts);
-					JPanel panel_1 = d;
-					getContentPane().add(panel_1);
-					getContentPane().setPreferredSize(new Dimension(size * 50 + 100, size * 50));
+					panel_game = d;
+					getContentPane().add(panel_game);
+					getContentPane().setPreferredSize(new Dimension(d.game.get_maze_size() * 50 + 100, d.game.get_maze_size() * 50));
 					pack();
-					d.setVisible(true);
+					panel_game.setVisible(true);
 					}
 				else {
 					JOptionPane.showMessageDialog(null, "Please, configure game first");
@@ -176,8 +178,8 @@ public class Game_GUI extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				try {
 					d = new desenho("savegame.txt");
-					JPanel panel_1 = d;
-					getContentPane().add(panel_1);
+					panel_game = d;
+					getContentPane().add(panel_game);
 					getContentPane().setPreferredSize(new Dimension(d.game.get_maze_size() * 50 + 100, d.game.get_maze_size() * 50));
 					pack();
 					d.setVisible(true);
@@ -200,7 +202,9 @@ public class Game_GUI extends JFrame{
 				if(j==0)
 				{
 					c = null;
-					//panel_1.show(false);
+					panel_game.setVisible(false);
+					pack();
+
 					//				
 					//					try {
 					//						c = new Configurations();
