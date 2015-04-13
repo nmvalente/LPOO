@@ -24,7 +24,7 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 	int keyCodeleft , keyCoderight, keyCodeup, keyCodedown;
 	int dartleft = KeyEvent.getExtendedKeyCodeForChar('j');
 	int dartright = KeyEvent.getExtendedKeyCodeForChar('l');
-	int darteup = KeyEvent.getExtendedKeyCodeForChar('i');
+	int dartup = KeyEvent.getExtendedKeyCodeForChar('i');
 	int dartdown = KeyEvent.getExtendedKeyCodeForChar('k');
 
 	ImageIcon iwall = new ImageIcon("images/wall.gif");
@@ -239,14 +239,16 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-/*		if (e.getKeyCode() == keyCodeleft) play(1);
+		/*
+		if (e.getKeyCode() == keyCodeleft) play(1);
 		else if (e.getKeyCode() == keyCoderight) play(0);
 		else if (e.getKeyCode() == keyCodeup) play(2);
 		else if (e.getKeyCode() == keyCodedown) play(3);
 		else if (e.getKeyCode() == dartleft) play(5);
 		else if (e.getKeyCode() == dartright) play(4);
 		else if (e.getKeyCode() == dartdown) play(6);
-		else if (e.getKeyCode() == dartup) play(7);*/
+		else if (e.getKeyCode() == dartup) play(7);
+		*/
 		switch(e.getKeyCode()){
 		case KeyEvent.VK_A: 
 			play(1);
@@ -273,6 +275,7 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 			play(7);
 			break;
 		}
+		
 	}
 
 	private void play(int direction) {
