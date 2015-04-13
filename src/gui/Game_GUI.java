@@ -13,12 +13,15 @@ import java.awt.EventQueue;
 
 
 
+
+
 import javax.swing.JFrame;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,13 +35,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class Game_GUI extends JFrame{
-	
+
 	public JFrame aux = new JFrame();
 	public Configurations c = null;
 	public desenho d = null;
 	public int type = 1, size = 17, nr_of_dragons = 1, dragon_type = 1, nr_of_darts = 1;
+	char left='a', right='d', up='s', down='w';
 	JPanel panel_game = null;
 
 	/**
@@ -130,7 +137,7 @@ public class Game_GUI extends JFrame{
 					getContentPane().setPreferredSize(new Dimension(d.game.get_maze_size() * 50 + 100, d.game.get_maze_size() * 50));
 					pack();
 					panel_game.setVisible(true);
-					}
+				}
 				else {
 					JOptionPane.showMessageDialog(null, "Please, configure game first");
 				}
@@ -157,7 +164,7 @@ public class Game_GUI extends JFrame{
 		Configurations.setAlignmentX(0.5f);
 		Configurations.setBounds(0, 100, 100, 25);
 		panel.add(Configurations);
-	
+
 		JButton Save = new JButton("Save");
 		Save.addMouseListener(new MouseAdapter() {
 			@Override
@@ -171,7 +178,7 @@ public class Game_GUI extends JFrame{
 		});
 		Save.setBounds(0, 150, 100, 25);
 		panel.add(Save);
-		
+
 		JButton Load = new JButton("Load");
 		Load.addMouseListener(new MouseAdapter() {
 			@Override
@@ -218,6 +225,41 @@ public class Game_GUI extends JFrame{
 		});
 		reset.setBounds(0, 250, 100, 25);
 		panel.add(reset);
+
+		JButton ChangeKeys = new JButton("Change keys");
+		ChangeKeys.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		ChangeKeys.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					ChangeButtons dialog = new ChangeButtons();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+					left = dialog.getLeft();
+					right = dialog.getRight();
+					up = dialog.getUp();
+					down = dialog.getDown();
+				} 
+				catch (Exception e1) 
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
+		ChangeKeys.setBounds(0, 412, 100, 25);
+		panel.add(ChangeKeys);
+		
+		JButton help = new JButton("Help");
+		help.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JTextField text = new JTextField("Texto para colocar aqui");
+				text.setVisible(true);
+			}
+		});
+		help.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		help.setBounds(0, 359, 100, 25);
+		panel.add(help);
 
 	}
 }

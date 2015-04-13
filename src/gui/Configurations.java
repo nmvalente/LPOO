@@ -19,6 +19,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Configurations extends JDialog {
 
@@ -196,6 +198,10 @@ public class Configurations extends JDialog {
 
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
 				okButton.setActionCommand("OK");
 				okButton.addMouseListener(new MouseAdapter() {
 					@Override
