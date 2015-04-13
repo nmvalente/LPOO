@@ -105,7 +105,7 @@ public class Game_GUI extends JFrame{
 					System.exit(0);
 			}
 		});
-		Exit.setBounds(0, 250, 100, 25);
+		Exit.setBounds(0, 300, 100, 25);
 		panel.add(Exit);
 
 		//Start button///////////////////////////////////////////////////
@@ -115,21 +115,23 @@ public class Game_GUI extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				if(c != null)
-				{
+				if(c != null) {
 					type = c.getmType();
 					size = c.getmSize();
 					nr_of_dragons = c.getNrDragons();
 					dragon_type = c.getDragonType();
 					nr_of_darts = c.getNrDarts();
+					c = null;
+					d = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts);
+					JPanel panel_1 = d;
+					getContentPane().add(panel_1);
+					getContentPane().setPreferredSize(new Dimension(size * 50 + 100, size * 50));
+					pack();
+					d.setVisible(true);
+					}
+				else {
+					JOptionPane.showMessageDialog(null, "Please, configure game first");
 				}
-
-				d = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts);
-				JPanel panel_1 = d;
-				getContentPane().add(panel_1);
-				getContentPane().setPreferredSize(new Dimension(size * 50 + 100, size * 50));
-				pack();
-				d.setVisible(true);
 			}
 		});
 		Start.setBounds(0, 50, 100, 25);
@@ -186,6 +188,32 @@ public class Game_GUI extends JFrame{
 		});
 		Load.setBounds(0, 200, 100, 25);
 		panel.add(Load);
+
+		//Reset Button////////////////////////////////////////////
+
+		JButton reset = new JButton("Reset");
+		reset.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int j = JOptionPane.showConfirmDialog(null,"Reset Game", "Maze Game",JOptionPane.YES_NO_OPTION);
+				JOptionPane.showMessageDialog(null, "Please, configure new game");
+				if(j==0)
+				{
+					c = null;
+					//panel_1.show(false);
+					//				
+					//					try {
+					//						c = new Configurations();
+					//						c.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					//						c.setVisible(true);
+					//					} catch (Exception e1) {
+					//						e1.printStackTrace();
+					//					}
+				}
+			}
+		});
+		reset.setBounds(0, 250, 100, 25);
+		panel.add(reset);
 
 	}
 }
