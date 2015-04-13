@@ -87,12 +87,10 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 	}
 
 	desenho(String filename) throws IOException {
-		
 		this.addKeyListener(this);
 		setBackground(Color.BLACK);
 		game = new logic.Game();
 		game.load_game_file(filename);
-		game.start_game();
 	}
 	
 	logic.Game get_game() {
