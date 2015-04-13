@@ -6,23 +6,64 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.ArrayList;
 
+/**
+ * The Class Game - contains all the game elements, as well as the board the game mecanics.
+ */
 public class Game {
 
+	/** The type of maze: 0 - static, 1 - random. */
 	private int maze_type;
+	
+	/** The size of the maze. */
 	private int maze_size;
-	private int dragon_type; // type 0 - not moving; type 1 - moving; type 2 - sleeping & moving
+	
+	/** The type of dragons: 0 - not moving; 1 - moving; 2 - sleeping & moving. */
+	private int dragon_type;
+	
+	/** The maze for the game. */
 	private Maze maze;
+	
+	/** The exit of the board. */
 	private Exit exit;
+	
+	/** The hero. */
 	private Hero hero;
+	
+	/** The sword. */
 	private Sword sword;
+	
+	/** The shield. */
 	private Shield shield;
+	
+	/** The darts. */
 	private ArrayList<Dart> darts;
+	
+	/** The dragons. */
 	private ArrayList<Dragon> dragons;
+	
+	/** The number of live dragons in the game. */
 	private int number_dragons;
+	
+	/** The number of darts on the board. */
 	private int number_darts;
-	private int state = 0; // state 0 - game continues; state 1 - hero wins, state 2 - hero loses
+	
+	/** The state of the game: 0 - game continues; 1 - hero wins, 2 - hero loses. */
+	private int state = 0;
+	
+	/** The newline character. */
 	private static String newline = System.getProperty("line.separator");
 	
+	/**
+	 * Starts a new test_game with the provided elements, to use during tests.
+	 *
+	 * @param stat_maze the static maze
+	 * @param hero_pos the hero's position
+	 * @param dragon_pos the single dragon's position
+	 * @param sword_pos the sword's position
+	 * @param shield_pos the shield's position
+	 * @param dart_pos the single dart's position
+	 * @param exit_pos the position of the exit
+	 */
 	public void start_test_game(char[][] stat_maze, int[] hero_pos, int[] dragon_pos, int[] sword_pos, int[] shield_pos, int[] dart_pos, int[] exit_pos) {
 		Maze_Builder mb = new Maze_Builder();
 		mb.set_maze_type(maze_type);
@@ -53,6 +94,9 @@ public class Game {
 		place_element(dragon);
 	}
 
+	/**
+	 * Starts a new game.
+	 */
 	public void start_game() {
 		Maze_Builder mb = new Maze_Builder();
 		mb.set_maze_type(maze_type);
@@ -75,6 +119,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Used to start a static game.
+	 */
 	private void start_static_game() {
 		shield.kill_shield();
 		hero.shield_hero();
@@ -87,6 +134,9 @@ public class Game {
 		place_element(dragon);
 	}
 
+	/**
+	 * Used to start a random game.
+	 */
 	private void start_random_game() {
 		place_element(exit);
 		Random rn = new Random();
@@ -121,6 +171,12 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Loads a game file, making a new game with the information on the file.
+	 *
+	 * @param filename the path and name of the file
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void load_game_file(String filename) throws IOException {
 	    try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
 	        String line = br.readLine();
@@ -169,6 +225,12 @@ public class Game {
 		
 	}
 
+	/**
+	 * Makes a dragon from the appropriate line extracted from the file.
+	 *
+	 * @param line the line with the dragon's information
+	 * @return the dragon
+	 */
 	private Dragon load_dragon(String line) {
 		String[] dragon_info = line.split(";");
 		char dragon_state = dragon_info[0].charAt(0);
@@ -179,6 +241,12 @@ public class Game {
 		return dragon;
 	}
 
+	/**
+	 * Makes a dart from the appropriate line extracted from the file.
+	 *
+	 * @param line the line with the dart's information
+	 * @return the dart
+	 */
 	private Dart load_dart(String line) {
 		String[] dart_info = line.split(";");
 		char dart_state = dart_info[0].charAt(0);
@@ -189,6 +257,12 @@ public class Game {
 		return dart;
 	}
 
+	/**
+	 * Makes the shield from the appropriate line extracted from the file.
+	 *
+	 * @param line the line with the shield's information
+	 * @return the shield
+	 */
 	private void load_shield(String line) {
 		String[] shield_info = line.split(";");
 		char shield_state = shield_info[0].charAt(0);
@@ -198,6 +272,12 @@ public class Game {
 		shield.set_position (shield_pos);
 	}
 
+	/**
+	 * Makes the sword from the appropriate line extracted from the file.
+	 *
+	 * @param line the line with the sword's information
+	 * @return the sword
+	 */
 	private void load_sword(String line) {
 		String[] sword_info = line.split(";");
 		char sword_state = sword_info[0].charAt(0);
@@ -207,6 +287,12 @@ public class Game {
 		sword.set_position (sword_pos);
 	}
 
+	/**
+	 * Makes the hero from the appropriate line extracted from the file.
+	 *
+	 * @param line the line with the hero's information
+	 * @return the hero
+	 */
 	private void load_hero(String line) {
 		String[] hero_info = line.split(";");
 		char hero_state = hero_info[0].charAt(0);
@@ -218,6 +304,12 @@ public class Game {
 		hero.set_hero_darts(hero_darts);
 	}
 
+	/**
+	 * Makes the exit from the appropriate line extracted from the file.
+	 *
+	 * @param line the line with the exit's information
+	 * @return the exit
+	 */
 	private void load_exit(String line) {
 		String[] exit_info = line.split(";");
 		char exit_state = exit_info[0].charAt(0);
@@ -227,6 +319,12 @@ public class Game {
 		exit.set_position (exit_pos);
 	}
 
+	/**
+	 * Makes the game board from the appropriate line extracted from the file.
+	 *
+	 * @param line the line with the board's information
+	 * @return the board matrix
+	 */
 	private char[][] load_board(String line) {
 		char[][] board = new char[maze_size][maze_size];
 		int position = 0;
@@ -239,90 +337,194 @@ public class Game {
 		return board;
 	}
 
+	/**
+	 * Places a game element on the board.
+	 *
+	 * @param elem the element to be placed
+	 */
 	public void place_element(Element elem) {
 		maze.set_position(elem);
 	}
 
+	/**
+	 * Removes a game element from the board.
+	 *
+	 * @param elem the element to be removed
+	 */
 	private void remove_element(Element elem) {
 		maze.remove_position(elem);
 	}
 
+	/**
+	 * Sets the maze type.
+	 *
+	 * @param type the new maze type
+	 */
 	public void set_maze_type(int type) {
 		maze_type = type;
 	}
 
+	/**
+	 * Sets the maze size.
+	 *
+	 * @param size the new maze size
+	 */
 	public void set_maze_size(int size) {
 		maze_size = size;
 	}
 
+	/**
+	 * Sets the dragon type.
+	 *
+	 * @param type the new dragon type
+	 */
 	public void set_dragon_type(int type) {
 		dragon_type = type;
 	}
 
+	/**
+	 * Sets the number of dragons.
+	 *
+	 * @param number the new number of dragons
+	 */
 	public void set_number_dragons(int number) {
 		number_dragons = number;
 	}
 
+	/**
+	 * Sets the number of darts.
+	 *
+	 * @param number the new number of darts
+	 */
 	public void set_number_darts(int number) {
 		number_darts = number;
 	}
 
+	/**
+	 * Gets the maze type.
+	 *
+	 * @return the maze type
+	 */
 	public int get_maze_type() {
 		return maze_type;
 	}
 
+	/**
+	 * Gets the maze size.
+	 *
+	 * @return the maze size
+	 */
 	public int get_maze_size() {
 		return maze_size;
 	}
 
+	/**
+	 * Gets the maze.
+	 *
+	 * @return the maze
+	 */
 	public Maze get_maze() {
 		return maze;
 	}
 
+	/**
+	 * Gets the hero.
+	 *
+	 * @return the hero
+	 */
 	public Hero get_hero() {
 		return hero;
 	}
 
+	/**
+	 * Gets the sword.
+	 *
+	 * @return the sword
+	 */
 	public Sword get_sword() {
 		return sword;
 	}
 
+	/**
+	 * Gets the shield.
+	 *
+	 * @return the shield
+	 */
 	public Shield get_shield() {
 		return shield;
 	}
 
+	/**
+	 * Gets the darts.
+	 *
+	 * @return the darts
+	 */
 	public ArrayList<Dart> get_darts() {
 		return darts;
 	}
 
+	/**
+	 * Gets the exit.
+	 *
+	 * @return the exit
+	 */
 	public Exit get_exit() {
 		return exit;
 	}
 
+	/**
+	 * Gets the dragons.
+	 *
+	 * @return the dragons
+	 */
 	public ArrayList<Dragon> get_dragons() {
 		return dragons;
 	}
 
+	/**
+	 * Gets the number of dragons.
+	 *
+	 * @return the number of dragons
+	 */
 	public int get_number_dragons() {
 		return number_dragons;
 	}
 
+	/**
+	 * Gets the dragon type.
+	 *
+	 * @return the dragon type
+	 */
 	public int get_dragon_type() {
 		return dragon_type;
 	}
 
+	/**
+	 * Gets the number of darts.
+	 *
+	 * @return the number of darts
+	 */
 	public int get_number_darts() {
 		return number_darts;
 	}
 
+	/**
+	 * Decreases the number of dragons.
+	 */
 	void dec_number_dragons() {
 		number_dragons--;
 	}
 
+	/**
+	 * Decreases the number of darts.
+	 */
 	void dec_number_darts() {
 		number_darts--;
 	}
 
+	/**
+	 * Computes the game state, that is if the game continues, or the hero won, or the hero lost.
+	 */
 	public void compute_game_state() {
 		if (hero.get_state() == ' ') state = 2;
 		else {
@@ -332,10 +534,20 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Gets the game state.
+	 *
+	 * @return the game state
+	 */
 	public int get_game_state() {
 		return state;
 	}
 
+	/**
+	 * Determines the dragons close to the hero.
+	 *
+	 * @return the array list with the indices of the dragons close to the hero
+	 */
 	public ArrayList<Integer> dragons_close() {
 		int[][] pos_neigh = hero.get_neighbour_positions();
 		ArrayList<Integer> result = new ArrayList<Integer>();
@@ -348,6 +560,13 @@ public class Game {
 		return result;
 	}
 
+	/**
+	 * Determines if there is a free path (no walls) between to elements.
+	 *
+	 * @param elem1 the first element, usually the hero or a dragon
+	 * @param elem2 the second element, usually a dragon or the hero
+	 * @return true, if the path is clear
+	 */
 	public boolean free_path(Element elem1, Element elem2) {
 		int[] pos1 = elem1.get_position();
 		int[] pos2 = elem2.get_position();
@@ -372,6 +591,11 @@ public class Game {
 		else return false;
 	}
 
+	/**
+	 * Determines a list of dragons that can burn the hero
+	 *
+	 * @return the array list with the indices of the dragons that can burn the hero
+	 */
 	private ArrayList<Integer> dragons_burn() {
 		int[][] pos_burn = hero.get_burn_positions();
 		ArrayList<Integer> result = new ArrayList<Integer>();
@@ -391,6 +615,11 @@ public class Game {
 		return result;
 	}
 
+	/**
+	 * Whenever the hero is close to one or more dragons, this function determines the result of the fight.
+	 *
+	 * @param dragons_c the dragons close to the hero
+	 */
 	private void hero_vs_dragons(ArrayList<Integer> dragons_c) {
 		char hero_state = hero.get_state();
 		if (hero_state == 'A' || hero_state == 'a') {
@@ -419,6 +648,11 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Tries to burn the hero.
+	 *
+	 * @return true, if the hero is burned
+	 */
 	public boolean burn_hero() {
 		if (!get_shielded_hero()) {
 			ArrayList<Integer> dragons_b = dragons_burn();
@@ -432,12 +666,22 @@ public class Game {
 		return false;
 	}
 
+	/**
+	 * Determines if the hero has a shield
+	 *
+	 * @return true. if the hero has a shield
+	 */
 	private boolean get_shielded_hero() {
 		char state = hero.get_state();
 		if (state == 'H' || state == 'A') return true;
 		return false;
 	}
 
+	/**
+	 * Chooses the next movement for a dragon.
+	 *
+	 * @param dragon the dragon
+	 */
 	private void choose_dragon_movement(Dragon dragon) {
 		Move_Dragon md = new Move_Dragon();
 		int direction = md.getMove(); 
@@ -457,6 +701,11 @@ public class Game {
 		}		
 	}
 
+	/**
+	 * Chooses the next movement for the hero.
+	 *
+	 * @param direction the direction the hero wishes to follow
+	 */
 	public void choose_hero_movement(int direction) {
 		Move_Hero mh = new Move_Hero();
 		switch (direction) {
@@ -475,6 +724,11 @@ public class Game {
 		}				
 	}
 
+	/**
+	 * Chooses the movement of a dar thrown by the hero.
+	 *
+	 * @param direction the direction of the dart
+	 */
 	private void choose_dart_movement(int direction) {
 		Throw_Dart td = new Throw_Dart();
 		switch (direction) {
@@ -493,6 +747,11 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Computes the hero's turn in the game.
+	 *
+	 * @param direction the direction the hero wishes to follow
+	 */
 	public void hero_turn(int direction) {
 		remove_element(hero);
 		choose_hero_movement(direction);
@@ -500,6 +759,11 @@ public class Game {
 		compute_game_state();
 	}
 
+	/**
+	 * To use when the hero throws a dart.
+	 *
+	 * @param direction the direction the dart is thrown
+	 */
 	public void hero_dart(int direction) {
 		choose_dart_movement(direction);
 		if (number_dragons == 0) {
@@ -508,6 +772,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Computes the dragons' turn.
+	 */
 	public void dragon_turn() {
 		Random rn = new Random();
 		for (int i = 0; i < number_dragons; i++) {
@@ -536,6 +803,11 @@ public class Game {
 		}		
 	}
 
+	/**
+	 * Computes a fight and its result.
+	 *
+	 * @param dragons_c the dragons close to the hero
+	 */
 	public void fight(ArrayList<Integer> dragons_c) {
 		hero_vs_dragons(dragons_c);
 		for (int i = 0; i < number_darts; i++) place_element(darts.get(i));
@@ -546,6 +818,9 @@ public class Game {
 		compute_game_state();
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		String res = "";
 		res += maze_type + newline + maze_size + newline + dragon_type + newline + maze + newline 

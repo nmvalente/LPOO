@@ -2,8 +2,17 @@ package logic;
 
 import java.util.Random;
 
+/**
+ * The Class Random_Exit is used to randomly generate a board exit for the game.
+ */
 class Random_Exit {
 	
+	/**
+	 * Instantiates a new random_exit.
+	 *
+	 * @param g the game
+	 * @param exit the previously instantiated exit we whose position we will randomize
+	 */
 	Random_Exit(Game g, Exit exit) {
 		Random rn = new Random();
 		int exit_wall = rn.nextInt(4);

@@ -5,12 +5,27 @@ import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ * The Class Random_Maze is used to generate a random maze for the game.
+ */
 class Random_Maze extends Maze{
 
+	/**
+	 * Instantiates a new random_maze.
+	 *
+	 * @param size the size of the board
+	 * @param exit the exit
+	 */
 	Random_Maze(int size, Exit exit) {
 		make_random_maze(size, exit);
 	}
 	
+	/**
+	 * Makes a random maze board.
+	 *
+	 * @param size the size
+	 * @param exit the exit
+	 */
 	private void make_random_maze(int size, Exit exit) {
 		Random rn = new Random();
 		int[] exit_position = exit.get_position();

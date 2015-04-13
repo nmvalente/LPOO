@@ -1,7 +1,16 @@
 package logic;
 
+/**
+ * The Class Move_Hero is used to move the hero in the game board.
+ */
 public class Move_Hero {
 	
+	/**
+	 * Moves the hero.
+	 *
+	 * @param g the game
+	 * @param new_pos the new position where we want to place the hero
+	 */
 	private void move_hero(Game g, int[] new_pos) {
 		Maze m = g.get_maze();
 		Hero h = g.get_hero();
@@ -37,24 +46,44 @@ public class Move_Hero {
 		}
 	}
 	
+	/**
+	 * Moves the hero to the right.
+	 *
+	 * @param g the game
+	 */
 	public void move_hero_right(Game g) {
 		int[] current_pos = g.get_hero().get_position();
 		int[] new_pos = {current_pos[0], current_pos[1] + 1};
 		move_hero(g, new_pos);
 	}
 	
+	/**
+	 * Moves the hero to the left.
+	 *
+	 * @param g the game
+	 */
 	public void move_hero_left(Game g) {
 		int[] current_pos = g.get_hero().get_position();
 		int[] new_pos = {current_pos[0], current_pos[1] - 1};
 		move_hero(g, new_pos);
 	}
 
+	/**
+	 * Moves the hero up.
+	 *
+	 * @param g the game
+	 */
 	public void move_hero_up(Game g) {
 		int[] current_pos = g.get_hero().get_position();
 		int[] new_pos = {current_pos[0] - 1, current_pos[1]};
 		move_hero(g, new_pos);
 	}
 
+	/**
+	 * Moves the hero down.
+	 *
+	 * @param g the game
+	 */
 	public void move_hero_down(Game g) {
 		int[] current_pos = g.get_hero().get_position();
 		int[] new_pos = {current_pos[0] + 1, current_pos[1]};
