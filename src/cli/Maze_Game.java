@@ -47,7 +47,10 @@ public class Maze_Game {
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				int[] position = {i, j};
-				System.out.print(game.get_maze().get_board_position(position) + " ");
+				char board_position = game.get_maze().get_board_position(position);
+				if (board_position == 'G' || board_position == 'K') board_position = 'F';
+				else if (board_position == 'g' || board_position == 'k') board_position = 'f';
+				System.out.print(board_position + " ");
 			}
 			System.out.println();
 		}
@@ -65,6 +68,12 @@ public class Maze_Game {
 			return 0;
 		case 'i' :
 			return 4;
+		case 'j' :
+			return 5;
+		case 'k' :
+			return 6;
+		case 'l' :
+			return 7;
 		}
 		return -1;
 	}
@@ -74,14 +83,14 @@ public class Maze_Game {
 		if (mg.game.get_game_state() == 0 
 			&& mg.game.get_number_dragons() > 0 
 			&& mg.game.get_hero().get_hero_darts() > 0) {
-			System.out.print("Hero: w, a, s, d, i? ");
+			System.out.print("Hero: w, a, s, d, i, j , k, l? ");
 			char hero_direction = scan.next().charAt(0);
 			int direction = choose_direction(hero_direction);
-			if (direction == 4) {
+			if (direction >= 4 && direction <= 7) {
+				mg.game.hero_dart(direction);
 				System.out.println();
 				mg.print_maze();
-				hero_dart(scan, mg);				
-			}
+				}
 			else if (direction >= 0) {
 				mg.game.hero_turn(direction);
 				System.out.println();
@@ -96,16 +105,6 @@ public class Maze_Game {
 			System.out.println();
 			mg.print_maze();
 		}
-	}
-
-	private static void hero_dart(Scanner scan, Maze_Game mg) {
-		System.out.println();		
-		System.out.print("Dart: w, a, s, d, q? ");
-		char dart_direction = scan.next().charAt(0);
-		int direction = choose_direction(dart_direction);
-		if (direction >= 0 && direction < 4) mg.game.hero_dart(direction);
-		System.out.println();
-		mg.print_maze();
 	}
 
 	private static void play_dragon(Maze_Game mg) {
@@ -183,7 +182,7 @@ public class Maze_Game {
 	public static void main(String[] args) throws IOException {
 		Scanner scan = new Scanner (System.in);
 //		Maze_Game mg = new Maze_Game(scan);
-		Maze_Game mg = new Maze_Game("save_file.txt");
+		Maze_Game mg = new Maze_Game("save_bug.txt");
 		play(scan, mg);
 		game_result(mg);
 		scan.close();

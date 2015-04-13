@@ -21,10 +21,16 @@ class Move_Dragon {
 			d.unarm_dragon();
 			d.set_position(new_pos);
 		}
-		else if (board_symbol == g.get_sword().get_state() 
-				|| board_symbol == g.get_shield().get_state()
-				|| board_symbol == 'i') {
+		else if (board_symbol == g.get_sword().get_state()) {
 			d.arm_dragon();
+			d.set_position(new_pos);
+		}
+		else if (board_symbol == g.get_shield().get_state()) {
+			d.shield_dragon();
+			d.set_position(new_pos);
+		}
+		else if (board_symbol == 'i') {
+			d.dart_dragon();
 			d.set_position(new_pos);
 		}
 	}

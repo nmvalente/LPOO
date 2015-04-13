@@ -382,6 +382,8 @@ public class Game {
 						&& dragon.get_state() != ' ' 
 						&& dragon.get_state() != 'd' 
 						&& dragon.get_state() != 'f'
+						&& dragon.get_state() != 'g'
+						&& dragon.get_state() != 'k'
 						&& free_path(hero, dragon)
 						) result.add(i);
 			}
@@ -404,7 +406,7 @@ public class Game {
 			for (int i = 0; i < dragons_c.size(); i++) {
 				int index = dragons_c.get(i);
 				Dragon d = dragons.get(index);
-				if (d.get_state() != 'd' && d.get_state() != 'f') {
+				if (d.get_state() != 'd' && d.get_state() != 'f' && d.get_state() != 'g' && d.get_state() != 'k') {
 					hero.set_state(' ');
 					maze.set_position(hero);
 					break;
@@ -476,16 +478,16 @@ public class Game {
 	private void choose_dart_movement(int direction) {
 		Throw_Dart td = new Throw_Dart();
 		switch (direction) {
-		case 0 :
+		case 4 :
 			td.throw_dart_right(this);
 			break;
-		case 1 :
+		case 5 :
 			td.throw_dart_left(this);
 			break;
-		case 2 :
+		case 6 :
 			td.throw_dart_up(this);
 			break;
-		case 3 :
+		case 7 :
 			td.throw_dart_down(this);
 			break;
 		}
@@ -500,6 +502,10 @@ public class Game {
 
 	public void hero_dart(int direction) {
 		choose_dart_movement(direction);
+		if (number_dragons == 0) {
+			exit.open_exit();
+			maze.set_position(exit);
+		}
 	}
 
 	public void dragon_turn() {
@@ -522,7 +528,9 @@ public class Game {
 					place_element(shield);
 					place_element(sword);
 					place_element(hero);
-					place_element(dragon);
+					for (int j = 0; j < number_dragons; j++) {
+						place_element(dragons.get(j));
+					}
 				}
 			}
 		}		
