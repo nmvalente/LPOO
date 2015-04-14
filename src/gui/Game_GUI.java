@@ -30,6 +30,7 @@ public class Game_GUI extends JFrame{
 	public JFrame aux = new JFrame();
 	public Configurations c = null;
 	public desenho d = null;
+	public ChangeButtons dialog = null;
 	public int type = 1, size = 17, nr_of_dragons = 1, dragon_type = 1, nr_of_darts = 1;
 	char left='a', right='d', up='w', down='s';
 	JPanel panel_game = null;
@@ -108,6 +109,14 @@ public class Game_GUI extends JFrame{
 		Start.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+				if(dialog != null){
+					left = dialog.getLeft();
+					right = dialog.getRight();
+					up = dialog.getUp();
+					down = dialog.getDown();
+					System.out.println(left);
+				}
 
 				if(c != null) {
 					type = c.getmType();
@@ -150,6 +159,8 @@ public class Game_GUI extends JFrame{
 		Configurations.setBounds(0, 100, 100, 25);
 		panel.add(Configurations);
 
+		//Save button////////////////////////////////////////////////////
+
 		JButton Save = new JButton("Save");
 		Save.addMouseListener(new MouseAdapter() {
 			@Override
@@ -163,6 +174,8 @@ public class Game_GUI extends JFrame{
 		});
 		Save.setBounds(0, 150, 100, 25);
 		panel.add(Save);
+
+		//Reset button////////////////////////////////////////////
 
 		JButton Load = new JButton("Load");
 		Load.addMouseListener(new MouseAdapter() {
@@ -211,19 +224,17 @@ public class Game_GUI extends JFrame{
 		reset.setBounds(0, 250, 100, 25);
 		panel.add(reset);
 
+		//Keys Button////////////////////////////////////////////
+
 		JButton ChangeKeys = new JButton("Keys");
 		ChangeKeys.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		ChangeKeys.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					ChangeButtons dialog = new ChangeButtons();
+					dialog = new ChangeButtons();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
-					left = dialog.getLeft();
-					right = dialog.getRight();
-					up = dialog.getUp();
-					down = dialog.getDown();
 				} 
 				catch (Exception e1) 
 				{
@@ -233,17 +244,20 @@ public class Game_GUI extends JFrame{
 		});
 		ChangeKeys.setBounds(0, 300, 100, 25);
 		panel.add(ChangeKeys);
-		
+
+		//Help Button////////////////////////////////////////////
+
 		JButton help = new JButton("Help");
 		help.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JOptionPane.showMessageDialog(null, "To move hero: w - up, a - left, s - down, d - right \nTo throw dart: i - up, j - left, k - down, l - right");
-				}
+			}
 		});
 		help.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		help.setBounds(0, 350, 100, 25);
 		panel.add(help);
 
+		///////////////////////////////////////////////////////////
 	}
 }
