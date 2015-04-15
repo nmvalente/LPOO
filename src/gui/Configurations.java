@@ -21,6 +21,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Window.Type;
+import java.awt.Cursor;
 
 public class Configurations extends JDialog {
 
@@ -55,6 +57,9 @@ public class Configurations extends JDialog {
 	 * Create the dialog.
 	 */
 	public Configurations() {
+		setModal(true);
+		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		setResizable(false);
 
 		contentPanel = new JPanel();
 		contentPanel.setBackground(Color.BLACK);
