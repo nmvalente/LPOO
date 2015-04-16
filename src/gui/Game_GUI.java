@@ -123,19 +123,6 @@ public class Game_GUI extends JFrame{
 				{
 					type = 0;
 					size = 10;
-					//nr_of_dragons = customMaze.getNrDragons();
-//					char[][] b = new char[][]{
-//							{'X','X','X','X','X','X','X','X','X','X'},
-//							{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
-//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
-//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
-//							{'X',' ',' ',' ',' ',' ',' ','X',' ','X'},
-//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
-//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
-//							{'X',' ','X','X',' ',' ',' ',' ',' ','X'},
-//							{'X','X','X','X','X','X','X','X','X','X'}};
-
 					char[][] b = customMaze.getLabirinto();
 					d = new desenho(0, 10, customMaze.exit_pos, customMaze.hero_pos, customMaze.sword_pos, 
 							customMaze.shield_pos, customMaze.dragon_pos, b, left, right, up, down);

@@ -229,27 +229,6 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		}
 	}
 
-	//	public void jogada(){
-	//		//String nome = JOptionPane.showInputDialog("Choose movement");
-	//			char hero_direction = 0;
-	//				int direction = 0;
-	//				switch (hero_direction) {
-	//				case 'w' :
-	//					direction = 2;
-	//					break;
-	//				case 'a' :
-	//					direction = 1;
-	//					break;
-	//				case 's' :
-	//					direction = 3;
-	//					break;
-	//				case 'd' :
-	//					direction = 0;
-	//					break;
-	//				}			
-	//		game.hero_turn(direction);
-	//	}
-
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		print_maze(g);
@@ -265,32 +244,6 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		else if (e.getKeyCode() == dartright) play(4);
 		else if (e.getKeyCode() == dartdown) play(6);
 		else if (e.getKeyCode() == darteup) play(7);
-		/*switch(e.getKeyCode()){
-		case KeyEvent.VK_A: 
-			play(1);
-			break;
-		case KeyEvent.VK_D: 
-			play(0);
-			break;
-		case KeyEvent.VK_W: 
-			play(2);
-			break;
-		case KeyEvent.VK_S: 
-			play(3);
-			break;
-		case KeyEvent.VK_J:
-			play(5);
-			break;
-		case KeyEvent.VK_L: 
-			play(4);
-			break;
-		case KeyEvent.VK_I: 
-			play(6);
-			break;
-		case KeyEvent.VK_K: 
-			play(7);
-			break;
-		}*/
 	}
 
 	private void play(int direction) {
