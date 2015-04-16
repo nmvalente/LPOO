@@ -17,8 +17,12 @@ public class CustomMaze extends JFrame {
 	public Icon clicked;
 	char[][] result = new char[10][10];
 	public ArrayList<ArrayList<JButton>> botoes = new ArrayList<ArrayList<JButton>>();
-	public int posEx, posEy; 
-	public int[] getPos() {int p[]={posEy,posEx}; return p;}
+//	public int posEx, posEy;
+	public int[] exit_pos;
+	public int[] hero_pos;
+	public int[] sword_pos;
+	public int[] shield_pos;
+	public int[] dragon_pos;
 	public char[][] getLabirinto() {return result;}
 	public ImageIcon iexitclosed = new ImageIcon("images/exitclosed.gif");
 	public ImageIcon ishield = new ImageIcon("images/shield.gif");
@@ -191,16 +195,34 @@ public class CustomMaze extends JFrame {
 				
 				if(icon.equals((Icon)iwall))
 					result[i][j] = 'X';
-				else if(icon.equals(iexitclosed))
-				{posEx = i; posEy =j;}
-				else if(icon.equals(ihero))
-					result[i][j] = 'h';
-				else if(icon.equals(ishield))
-					result[i][j] = 'V';
-				else if(icon.equals(idragon))
-					result[i][j] = 'd';
-				else if(icon.equals(isword))
-					result[i][j] = 'S';
+				else if(icon.equals(iexitclosed)) {
+					exit_pos[0] = i;
+					exit_pos[1] = j;
+					result[i][j] = ' ';					
+				}
+				else if(icon.equals(ihero)) {
+					hero_pos[0] = i;
+					hero_pos[1] = j;
+					result[i][j] = ' ';					
+			}
+				else if(icon.equals(idragon)) {
+					dragon_pos[0] = i;
+					dragon_pos[1] = j;
+					result[i][j] = ' ';					
+				}
+				else if(icon.equals(isword)) {
+					sword_pos[0] = i;
+					sword_pos[1] = j;
+					result[i][j] = ' ';					
+				}
+				else if(icon.equals(ishield)) {
+					shield_pos[0] = i;
+					shield_pos[1] = j;
+					result[i][j] = ' ';					
+				}
+				else {
+					result[i][j] = ' ';					
+				}
 			}
 		}
 	}

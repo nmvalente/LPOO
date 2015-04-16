@@ -134,53 +134,31 @@ public class Game {
 		place_element(dragon);
 	}
 
-	public void start_custom_game(char[][]b, int[] e) {
-
-
+	public void start_custom_game(char[][] board, int[] exit_pos, int[] hero_pos, int[] sword_pos, int[] shield_pos, int[] dragon_pos) {
 
 		Maze_Builder mb = new Maze_Builder();
 		mb.set_maze_type(maze_type);
 		mb.set_maze_size(maze_size);
 		exit = new Exit();
-		exit.set_position(e);
+		exit.set_position(exit_pos);
 		hero = new Hero();
+		hero.set_position(hero_pos);
 		sword = new Sword();
+		sword.set_position(sword_pos);
 		shield = new Shield();
+		shield.set_position(shield_pos);
 		darts = new ArrayList<Dart>();
 		dragons = new ArrayList<Dragon>();
-		maze = mb.get_maze(exit, b);
-
-
-		shield.kill_shield();
-		hero.shield_hero();
+		Dragon dragon = new Dragon();
+		dragon.set_position(dragon_pos);
+		dragons.add(dragon);
+		maze = mb.get_maze(exit, board);
 		place_element(shield);
 		place_element(exit);
 		place_element(hero);
 		place_element(sword);
-		Dragon dragon = new Dragon();
-		dragons.add(dragon);
 		place_element(dragon);
-		//		mb.set_maze_type(maze_type);
-		//		mb.set_maze_size(maze_size);
-		//		exit = new Exit();
-		//		hero = new Hero();
-		//		sword = new Sword();
-		//		shield = new Shield();
-		//		darts = new ArrayList<Dart>();
-		//		dragons = new ArrayList<Dragon>();
-
-		//		maze = mb.get_maze(exit);
-
-		//		shield.kill_shield();
-		//		hero.shield_hero();
-		//shield.set_position(new_position);
-		//		exit.set_position(new_position);
-		//		hero.set_position(new_position);
-		//		sword.set_position(new_position);
-		//		Dragon dragon = new Dragon();
-		//		dragon.set_position(new_position);
-		//		dragons.add(dragon);
-
+		
 	}
 
 	/**

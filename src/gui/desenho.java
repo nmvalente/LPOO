@@ -103,7 +103,8 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		game.start_game();
 	}
 
-	desenho(int type, int size, int[] e, char[][] b, char a, char d, char w, char s) {
+	desenho(int type, int size, int[] exit_pos, int[] hero_pos, int[] sword_pos, 
+			int[] shield_pos, int[] dragon_pos, char[][] board, char a, char d, char w, char s) {
 
 		this.addKeyListener(this);
 		keyCodeleft = KeyEvent.getExtendedKeyCodeForChar(a);
@@ -117,7 +118,7 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		game.set_number_dragons(1);
 		game.set_dragon_type(0);
 		game.set_number_darts(0);
-		game.start_custom_game(b, e);
+		game.start_custom_game(board, exit_pos, hero_pos, sword_pos, shield_pos, dragon_pos);
 	}
 
 

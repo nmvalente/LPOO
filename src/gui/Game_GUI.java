@@ -124,7 +124,6 @@ public class Game_GUI extends JFrame{
 					type = 0;
 					size = 10;
 					//nr_of_dragons = customMaze.getNrDragons();
-					int[] exit = customMaze.getPos();
 //					char[][] b = new char[][]{
 //							{'X','X','X','X','X','X','X','X','X','X'},
 //							{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
@@ -138,7 +137,8 @@ public class Game_GUI extends JFrame{
 //							{'X','X','X','X','X','X','X','X','X','X'}};
 
 					char[][] b = customMaze.getLabirinto();
-					d = new desenho(0, 10, exit, b, left, right, up, down);
+					d = new desenho(0, 10, customMaze.exit_pos, customMaze.hero_pos, customMaze.sword_pos, 
+							customMaze.shield_pos, customMaze.dragon_pos, b, left, right, up, down);
 					customMaze = null;
 					c = null;
 					panel_game = d;
