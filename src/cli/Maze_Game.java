@@ -4,11 +4,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @author 
+ * Classe Maze_Game para criar um jogo do tipo
+ */
 public class Maze_Game {
 
-	private static final int SLEEP_TIME = 1000;
+	private static final int SLEEP_TIME = 10;
 	logic.Game game;
 
+	/**
+	 * @param scan para permitir a leitura do teclado da configuracao do jogo
+	 */
 	public Maze_Game(Scanner scan) {
 		game = new logic.Game();
 		System.out.print("Maze type (0 - static, 1 - random)? ");
@@ -27,14 +34,6 @@ public class Maze_Game {
 			System.out.print("Number of darts? ");
 			number = scan.nextInt();
 			game.set_number_darts(number);
-			System.out.println("To move hero: w - up, a - left, s - down, d - right.");
-			System.out.println("To throw dart: i - up, j - left, k - down, l - right.");
-			try {
-				Thread.sleep(4 * SLEEP_TIME);
-			}
-			catch(Exception e) {
-				System.out.println("Exception caught");
-			}			
 		}
 		else { 
 			game.set_maze_size(10);
@@ -45,11 +44,18 @@ public class Maze_Game {
 		game.start_game();
 	}
 
+	/**
+	 * @param filename representa o nome do ficheiro para se carregar o jogo
+	 * @throws IOException designa a excecao que pode ser causada por uma falta de abertura do ficheiro para leitura
+	 */
 	public Maze_Game(String filename) throws IOException {
 		game = new logic.Game();
 		game.load_game_file(filename);
 	}
 	
+	/**
+	 * mostra o labirinto no ecra
+	 */
 	public void print_maze() {
 		int size = game.get_maze_size();
 		for (int i = 0; i < size; i++) {
@@ -64,6 +70,11 @@ public class Maze_Game {
 		}
 	}
 
+	
+	/**
+	 * @param direction_char representa a direcao escolhida para o movimento no tabuleiro
+	 * @return retorna -1 no caso de o movimento selecionado nao ser wasd ou ijkl.
+	 */
 	private static int choose_direction(char direction_char) {
 		switch (direction_char) {
 		case 'w' :
@@ -86,6 +97,10 @@ public class Maze_Game {
 		return -1;
 	}
 
+	/**
+	 * @param scan para permitir a leitura do teclado da configuracao do jogo
+	 * @param mg representa um jogo que e uma instancia desta classe
+	 */
 	private static void play_hero(Scanner scan, Maze_Game mg) {
 		System.out.println();		
 		if (mg.game.get_game_state() == 0 
@@ -115,6 +130,9 @@ public class Maze_Game {
 		}
 	}
 
+	/**
+	 * @param mg representa um jogo que e uma instancia desta classe
+	 */
 	private static void play_dragon(Maze_Game mg) {
 		System.out.println();		
 		System.out.print("Dragons...");
@@ -129,6 +147,9 @@ public class Maze_Game {
 		mg.print_maze();
 	}
 
+	/**
+	 * @param mg representa um jogo que e uma instancia desta classe
+	 */
 	private static void maybe_fight(Maze_Game mg) {
 		ArrayList<Integer> dragons_c = mg.game.dragons_close();
 		if (!dragons_c.isEmpty()) {
@@ -146,6 +167,9 @@ public class Maze_Game {
 		}
 	}
 
+	/**
+	 * @param mg representa um jogo que e uma instancia desta classe
+	 */
 	private static void maybe_burn(Maze_Game mg) {
 		if (mg.game.burn_hero()) {
 			System.out.println();		
@@ -161,12 +185,19 @@ public class Maze_Game {
 		}
 	}
 
+	/**
+	 * @param mg representa um jogo que e uma instancia desta classe
+	 */
 	private static void game_result(Maze_Game mg) {
 		System.out.println();		
 		if (mg.game.get_game_state() == 1) System.out.print("You Win!!!");
 		else System.out.print("You Lose!!!");
 	}
 	
+	/**
+	 * @param scan para permitir a leitura do teclado da configuracao do jogo
+	 * @param mg representa um jogo que e uma instancia desta classe
+	 */
 	private static void play(Scanner scan, Maze_Game mg) {
 		System.out.println();
 		mg.print_maze();
@@ -187,9 +218,14 @@ public class Maze_Game {
 		while (mg.game.get_game_state() == 0);
 	}
 	
+	/**
+	 * @param args argumentos da linha de comandos
+	 * @throws IOException designa a excecao que pode ser causada por uma falta de abertura do ficheiro para escrita
+	 */
 	public static void main(String[] args) throws IOException {
 		Scanner scan = new Scanner (System.in);
-		Maze_Game mg = new Maze_Game(scan);
+//		Maze_Game mg = new Maze_Game(scan);
+		Maze_Game mg = new Maze_Game("save_bug.txt");
 		play(scan, mg);
 		game_result(mg);
 		scan.close();

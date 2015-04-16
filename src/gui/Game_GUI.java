@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 
 import java.awt.BorderLayout;
@@ -31,6 +32,7 @@ public class Game_GUI extends JFrame{
 	public Configurations c = null;
 	public desenho d = null;
 	public ChangeButtons dialog = null;
+	public CustomMaze customMaze = null;
 	public int type = 1, size = 17, nr_of_dragons = 1, dragon_type = 1, nr_of_darts = 1;
 	char left='a', right='d', up='w', down='s';
 	JPanel panel_game = null;
@@ -101,7 +103,7 @@ public class Game_GUI extends JFrame{
 					System.exit(0);
 			}
 		});
-		Exit.setBounds(0, 400, 100, 25);
+		Exit.setBounds(0, 450, 100, 25);
 		panel.add(Exit);
 
 		//Start button///////////////////////////////////////////////////
@@ -109,32 +111,63 @@ public class Game_GUI extends JFrame{
 		Start.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 				if(dialog != null){
 					left = dialog.getLeft();
 					right = dialog.getRight();
 					up = dialog.getUp();
 					down = dialog.getDown();
-					System.out.println(left);
 				}
 
-				if(c != null) {
-					type = c.getmType();
-					size = c.getmSize();
-					nr_of_dragons = c.getNrDragons();
-					dragon_type = c.getDragonType();
-					nr_of_darts = c.getNrDarts();
+				if(customMaze != null)
+				{
+					type = 0;
+					size = 10;
+					//nr_of_dragons = customMaze.getNrDragons();
+					int[] exit = customMaze.getPos();
+//					char[][] b = new char[][]{
+//							{'X','X','X','X','X','X','X','X','X','X'},
+//							{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
+//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
+//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
+//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
+//							{'X',' ',' ',' ',' ',' ',' ','X',' ','X'},
+//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
+//							{'X',' ','X','X',' ','X',' ','X',' ','X'},
+//							{'X',' ','X','X',' ',' ',' ',' ',' ','X'},
+//							{'X','X','X','X','X','X','X','X','X','X'}};
+
+					char[][] b = customMaze.getCustomBoard();
+					d = new desenho(0, 10, exit, b, left, right, up, down);
+					customMaze = null;
 					c = null;
-					d = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts, left, right, up, down);
 					panel_game = d;
 					getContentPane().add(panel_game);
 					getContentPane().setPreferredSize(new Dimension(d.game.get_maze_size() * 50 + 100, d.game.get_maze_size() * 50));
 					pack();
 					panel_game.setVisible(true);
 				}
-				else {
-					JOptionPane.showMessageDialog(null, "Please, configure game first");
-				}
+
+				else 
+					if(c != null) 
+					{
+						type = c.getmType();
+						size = c.getmSize();
+						nr_of_dragons = c.getNrDragons();
+						dragon_type = c.getDragonType();
+						nr_of_darts = c.getNrDarts();
+						c = null;
+						d = new desenho(type, size, nr_of_dragons, dragon_type, nr_of_darts, left, right, up, down);
+						panel_game = d;
+						getContentPane().add(panel_game);
+						getContentPane().setPreferredSize(new Dimension(d.game.get_maze_size() * 50 + 100, d.game.get_maze_size() * 50));
+						pack();
+						panel_game.setVisible(true);
+					}
+					else 
+					{
+						JOptionPane.showMessageDialog(null, "Please, configure game first");
+					}
 			}
 		});
 		Start.setBounds(0, 50, 100, 25);
@@ -210,14 +243,6 @@ public class Game_GUI extends JFrame{
 					panel_game.setVisible(false);
 					pack();
 
-					//				
-					//					try {
-					//						c = new Configurations();
-					//						c.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					//						c.setVisible(true);
-					//					} catch (Exception e1) {
-					//						e1.printStackTrace();
-					//					}
 				}
 			}
 		});
@@ -255,9 +280,26 @@ public class Game_GUI extends JFrame{
 			}
 		});
 		help.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		help.setBounds(0, 350, 100, 25);
+		help.setBounds(0, 400, 100, 25);
 		panel.add(help);
 
-		///////////////////////////////////////////////////////////
+		//Custom Maze////////////////////////////////////////////////
+
+		JButton custom = new JButton("Custom Maze");
+		custom.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					customMaze = new CustomMaze();
+					customMaze.setVisible(true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		custom.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		custom.setBounds(0, 349, 100, 25);
+		panel.add(custom);
+
 	}
 }

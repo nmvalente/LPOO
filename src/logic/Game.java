@@ -13,46 +13,46 @@ public class Game {
 
 	/** The type of maze: 0 - static, 1 - random. */
 	private int maze_type;
-	
+
 	/** The size of the maze. */
 	private int maze_size;
-	
+
 	/** The type of dragons: 0 - not moving; 1 - moving; 2 - sleeping and moving. */
 	private int dragon_type;
-	
+
 	/** The maze for the game. */
 	private Maze maze;
-	
+
 	/** The exit of the board. */
 	private Exit exit;
-	
+
 	/** The hero. */
 	private Hero hero;
-	
+
 	/** The sword. */
 	private Sword sword;
-	
+
 	/** The shield. */
 	private Shield shield;
-	
+
 	/** The darts. */
 	private ArrayList<Dart> darts;
-	
+
 	/** The dragons. */
 	private ArrayList<Dragon> dragons;
-	
+
 	/** The number of live dragons in the game. */
 	private int number_dragons;
-	
+
 	/** The number of darts on the board. */
 	private int number_darts;
-	
+
 	/** The state of the game: 0 - game continues; 1 - hero wins, 2 - hero loses. */
 	private int state = 0;
-	
+
 	/** The newline character. */
 	private static String newline = System.getProperty("line.separator");
-	
+
 	/**
 	 * Starts a new test_game with the provided elements, to use during tests.
 	 *
@@ -114,7 +114,7 @@ public class Game {
 		if (maze_type == 1) {
 			start_random_game();
 		}
-		else {
+		else if(maze_type == 0){
 			start_static_game();
 		}
 	}
@@ -132,6 +132,55 @@ public class Game {
 		Dragon dragon = new Dragon();
 		dragons.add(dragon);
 		place_element(dragon);
+	}
+
+	public void start_custom_game(char[][]b, int[] e) {
+
+
+
+		Maze_Builder mb = new Maze_Builder();
+		mb.set_maze_type(maze_type);
+		mb.set_maze_size(maze_size);
+		exit = new Exit();
+		exit.set_position(e);
+		hero = new Hero();
+		sword = new Sword();
+		shield = new Shield();
+		darts = new ArrayList<Dart>();
+		dragons = new ArrayList<Dragon>();
+		maze = mb.get_maze(exit, b);
+
+
+		shield.kill_shield();
+		hero.shield_hero();
+		place_element(shield);
+		place_element(exit);
+		place_element(hero);
+		place_element(sword);
+		Dragon dragon = new Dragon();
+		dragons.add(dragon);
+		place_element(dragon);
+		//		mb.set_maze_type(maze_type);
+		//		mb.set_maze_size(maze_size);
+		//		exit = new Exit();
+		//		hero = new Hero();
+		//		sword = new Sword();
+		//		shield = new Shield();
+		//		darts = new ArrayList<Dart>();
+		//		dragons = new ArrayList<Dragon>();
+
+		//		maze = mb.get_maze(exit);
+
+		//		shield.kill_shield();
+		//		hero.shield_hero();
+		//shield.set_position(new_position);
+		//		exit.set_position(new_position);
+		//		hero.set_position(new_position);
+		//		sword.set_position(new_position);
+		//		Dragon dragon = new Dragon();
+		//		dragon.set_position(new_position);
+		//		dragons.add(dragon);
+
 	}
 
 	/**
@@ -170,7 +219,7 @@ public class Game {
 			place_element(dragon);
 		}
 	}
-	
+
 	/**
 	 * Loads a game file, making a new game with the information on the file.
 	 *
@@ -178,51 +227,51 @@ public class Game {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public void load_game_file(String filename) throws IOException {
-	    try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
-	        String line = br.readLine();
-	        maze_type = Integer.parseInt(line);
-	        line = br.readLine();
-	        maze_size = Integer.parseInt(line);
-	        line = br.readLine();
-	        dragon_type = Integer.parseInt(line);
-	        line = br.readLine();
-	        char[][] board = load_board(line);
-	        line = br.readLine();
-	        load_exit(line);
+		try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
+			String line = br.readLine();
+			maze_type = Integer.parseInt(line);
+			line = br.readLine();
+			maze_size = Integer.parseInt(line);
+			line = br.readLine();
+			dragon_type = Integer.parseInt(line);
+			line = br.readLine();
+			char[][] board = load_board(line);
+			line = br.readLine();
+			load_exit(line);
 			Maze_Builder mb = new Maze_Builder();
 			mb.set_maze_type(0);
 			mb.set_maze_size(maze_size);
 			maze = mb.get_maze(exit, board);
-	        line = br.readLine();
-	        load_hero(line);
-	        line = br.readLine();
-	        load_sword(line);
-	        line = br.readLine();
-	        load_shield(line);
-	        line = br.readLine();
+			line = br.readLine();
+			load_hero(line);
+			line = br.readLine();
+			load_sword(line);
+			line = br.readLine();
+			load_shield(line);
+			line = br.readLine();
 			place_element(exit);
 			place_element(sword);
 			place_element(shield);
-	        number_darts = Integer.parseInt(line);
+			number_darts = Integer.parseInt(line);
 			darts = new ArrayList<Dart>();
-	        for (int i = 0; i < number_darts; i++) {
-	        	line = br.readLine();
-		        Dart dart = load_dart(line);
-		        darts.add(dart);
+			for (int i = 0; i < number_darts; i++) {
+				line = br.readLine();
+				Dart dart = load_dart(line);
+				darts.add(dart);
 				place_element(dart);
-	        }
-	        line = br.readLine();
-	        number_dragons = Integer.parseInt(line);
+			}
+			line = br.readLine();
+			number_dragons = Integer.parseInt(line);
 			dragons = new ArrayList<Dragon>();
-	        for (int i = 0; i < number_dragons; i++) {
-	        	line = br.readLine();
-		        Dragon dragon = load_dragon(line);
-		        dragons.add(dragon);
+			for (int i = 0; i < number_dragons; i++) {
+				line = br.readLine();
+				Dragon dragon = load_dragon(line);
+				dragons.add(dragon);
 				place_element(dragon);
-	        }
+			}
 			place_element(hero);
-	    }
-		
+		}
+
 	}
 
 	/**
@@ -813,7 +862,7 @@ public class Game {
 		for (int i = 0; i < number_dragons; i++) place_element(dragons.get(i));
 		compute_game_state();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

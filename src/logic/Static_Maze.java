@@ -17,7 +17,7 @@ class Static_Maze extends Maze {
 	 *
 	 * @param stat_maze the static maze we which to use
 	 */
-	Static_Maze(char[][] stat_maze) {
+	public Static_Maze(char[][] stat_maze) {
 		board = stat_maze;
 	}
 
@@ -36,6 +36,5 @@ class Static_Maze extends Maze {
 				{'X',' ','X','X',' ','X',' ','X',' ','X'},
 				{'X',' ','X','X',' ',' ',' ',' ',' ','X'},
 				{'X','X','X','X','X','X','X','X','X','X'}};
-	}
-		
+	}	
 }

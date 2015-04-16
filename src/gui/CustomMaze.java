@@ -37,13 +37,15 @@ public class CustomMaze extends JFrame {
 	public Icon clicked;
 
 	public int posEx, posEy; 
-	public int[] getPos() {int p[]={posEx,posEy}; return p;}
+	public int[] getPos() {int p[]={posEy,posEx}; return p;}
 	public ImageIcon iexitclosed = new ImageIcon("images/exitclosed.gif");
 	public ImageIcon ishield = new ImageIcon("images/shield.gif");
 	public ImageIcon ihero = new ImageIcon("images/hero.gif");
 	public ImageIcon idragon = new ImageIcon("images/dragon.gif");
 	public ImageIcon iwall = new ImageIcon("images/wall.gif");
 	public ImageIcon isword = new ImageIcon("images/sword.gif");
+
+	
 
 	/**
 	 * 
@@ -69,38 +71,36 @@ public class CustomMaze extends JFrame {
 		});
 	}
 
+	
 	@SuppressWarnings("null")
 	public char[][] getCustomBoard(){
-		char[][] result = null;
+		char[][] resultado = new char[10][10];
 		Enumeration<AbstractButton> tmp = buttonGroup.getElements();
 		for(int i = 0 ; i < 10 ; i++)
 		{
 			for(int j = 0 ; j < 10 ; j++)
 			{
-				System.out.println(10);
-				if(tmp.hasMoreElements())
-				{
-					Icon icon = tmp.nextElement().getIcon();
-					if(icon.equals(iwall))
-						result[i][j] = 'X';
-					else result[i][j] = ' ';
+				Icon icon = idragon;//tmp.nextElement().getIcon();
+				if(icon.equals(iwall))
+					resultado[i][j] = 'X';
+					///7System.out.println(10);//result[i][j] = 'X';
+				else resultado[i][j] = ' ';
 
-					//				if(icon.equals(ihero))
-					//					result[i][j] = 'h';
-					if(icon.equals(iexitclosed))
-					{posEx = i; posEy =j;}
-					//				else if(icon.equals(ishield))
-					//					result[i][j] = 'V';
-					//				else if(icon.equals(idragon))
-					//					result[i][j] = 'd';
-					//				else if(icon.equals(iwall))
-					//					result[i][j] = 'X';
-					//				else if(icon.equals(isword))
-					//					result[i][j] = 'S';
-				}
+				//				if(icon.equals(ihero))
+				//					result[i][j] = 'h';
+				//					if(icon.equals(iexitclosed))
+				//					{posEx = i; posEy =j;}
+				//				else if(icon.equals(ishield))
+				//					result[i][j] = 'V';
+				//				else if(icon.equals(idragon))
+				//					result[i][j] = 'd';
+				//				else if(icon.equals(iwall))
+				//					result[i][j] = 'X';
+				//				else if(icon.equals(isword))
+				//					result[i][j] = 'S';
 			}
 		}
-		return result;
+		return resultado;
 	}
 	/**
 	 * Create the frame.
@@ -112,18 +112,6 @@ public class CustomMaze extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-
-		ImageIcon iexitclosed = new ImageIcon("images/exitclosed.gif");
-		ImageIcon ishield = new ImageIcon("images/shield.gif");
-		ImageIcon ihero = new ImageIcon("images/hero.gif");
-		ImageIcon idragon = new ImageIcon("images/dragon.gif");
-		ImageIcon iwall = new ImageIcon("images/wall.gif");
-		ImageIcon isword = new ImageIcon("images/sword.gif");
-
-		
-
-
 
 		JButton btnNewButton = new JButton("New button");
 		btnNewButton.addMouseListener(new MouseAdapter() {
@@ -201,6 +189,7 @@ public class CustomMaze extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				b00.setIcon(clicked);
+				posEx = 0; posEy = 0;
 			}
 		});
 		b00.setBounds(0, 0, 97, 63);
@@ -213,6 +202,7 @@ public class CustomMaze extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				b10.setIcon(clicked);
+				posEx = 1; posEy = 0;
 			}
 		});
 		b10.setBounds(0, 56, 97, 63);
@@ -1412,6 +1402,7 @@ public class CustomMaze extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				b99.setIcon(clicked);
+				
 			}
 		});
 		b99.setBounds(855, 534, 97, 63);
@@ -1423,7 +1414,6 @@ public class CustomMaze extends JFrame {
 		btnOk.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				getCustomBoard();
 				System.out.println(posEx + " " + posEy);
 				dispose();
 			}

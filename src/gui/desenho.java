@@ -18,19 +18,18 @@ import javax.swing.JPanel;
 public class desenho extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	logic.Game game;
-	
+
 	int keyCodeleft , keyCoderight, keyCodeup, keyCodedown;
 	int dartleft = KeyEvent.getExtendedKeyCodeForChar('j');
 	int dartright = KeyEvent.getExtendedKeyCodeForChar('l');
-	int dartup = KeyEvent.getExtendedKeyCodeForChar('i');
+	int darteup = KeyEvent.getExtendedKeyCodeForChar('i');
 	int dartdown = KeyEvent.getExtendedKeyCodeForChar('k');
 
 	ImageIcon iwall = new ImageIcon("images/wall.gif");
 	Image wall = iwall.getImage();
 	ImageIcon ihero = new ImageIcon("images/hero.gif");
-//	JButton b= new JButton(ihero);
 	Image hero = ihero.getImage();
 	ImageIcon iherosword = new ImageIcon("images/herosword.gif");
 	Image herosword = iherosword.getImage();
@@ -80,7 +79,7 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 	Image nada = inada.getImage();
 
 	desenho(int type, int size, int nr_of_dragons, int dragon_type, int nr_of_darts, char a, char d, char w, char s) {
-	
+
 		this.addKeyListener(this);
 		keyCodeleft = KeyEvent.getExtendedKeyCodeForChar(a);
 		keyCoderight = KeyEvent.getExtendedKeyCodeForChar(d);
@@ -104,6 +103,25 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		game.start_game();
 	}
 
+	desenho(int type, int size, int[] e, char[][] b, char a, char d, char w, char s) {
+
+		this.addKeyListener(this);
+		keyCodeleft = KeyEvent.getExtendedKeyCodeForChar(a);
+		keyCoderight = KeyEvent.getExtendedKeyCodeForChar(d);
+		keyCodeup = KeyEvent.getExtendedKeyCodeForChar(w);
+		keyCodedown = KeyEvent.getExtendedKeyCodeForChar(s);
+		setBackground(Color.BLACK);
+		game = new logic.Game();
+		game.set_maze_size(10);
+		game.set_maze_type(0);
+		game.set_number_dragons(1);
+		game.set_dragon_type(0);
+		game.set_number_darts(0);
+		game.start_custom_game(b, e);
+	}
+
+
+
 	desenho(String filename, char a, char d, char w, char s) throws IOException {
 		this.addKeyListener(this);
 		keyCodeleft = KeyEvent.getExtendedKeyCodeForChar(a);
@@ -114,11 +132,13 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		game = new logic.Game();
 		game.load_game_file(filename);
 	}
-	
+
+
+
 	logic.Game get_game() {
 		return game;
 	}
-	
+
 	public void print_maze(Graphics g) {
 		requestFocus();
 		int size = game.get_maze_size();
@@ -211,26 +231,26 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		}
 	}
 
-//	public void jogada(){
-//		//String nome = JOptionPane.showInputDialog("Choose movement");
-//			char hero_direction = 0;
-//				int direction = 0;
-//				switch (hero_direction) {
-//				case 'w' :
-//					direction = 2;
-//					break;
-//				case 'a' :
-//					direction = 1;
-//					break;
-//				case 's' :
-//					direction = 3;
-//					break;
-//				case 'd' :
-//					direction = 0;
-//					break;
-//				}			
-//		game.hero_turn(direction);
-//	}
+	//	public void jogada(){
+	//		//String nome = JOptionPane.showInputDialog("Choose movement");
+	//			char hero_direction = 0;
+	//				int direction = 0;
+	//				switch (hero_direction) {
+	//				case 'w' :
+	//					direction = 2;
+	//					break;
+	//				case 'a' :
+	//					direction = 1;
+	//					break;
+	//				case 's' :
+	//					direction = 3;
+	//					break;
+	//				case 'd' :
+	//					direction = 0;
+	//					break;
+	//				}			
+	//		game.hero_turn(direction);
+	//	}
 
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -239,7 +259,6 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		/*
 		if (e.getKeyCode() == keyCodeleft) play(1);
 		else if (e.getKeyCode() == keyCoderight) play(0);
 		else if (e.getKeyCode() == keyCodeup) play(2);
@@ -247,9 +266,8 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		else if (e.getKeyCode() == dartleft) play(5);
 		else if (e.getKeyCode() == dartright) play(4);
 		else if (e.getKeyCode() == dartdown) play(6);
-		else if (e.getKeyCode() == dartup) play(7);
-		*/
-		switch(e.getKeyCode()){
+		else if (e.getKeyCode() == darteup) play(7);
+		/*switch(e.getKeyCode()){
 		case KeyEvent.VK_A: 
 			play(1);
 			break;
@@ -274,8 +292,7 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		case KeyEvent.VK_K: 
 			play(7);
 			break;
-		}
-		
+		}*/
 	}
 
 	private void play(int direction) {
@@ -298,8 +315,8 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 	private void play_hero(int direction) {
 		if (direction >= 4 && direction <= 7) {
 			if (game.get_game_state() == 0 
-			&& game.get_number_dragons() > 0 
-			&& game.get_hero().get_hero_darts() > 0) {
+					&& game.get_number_dragons() > 0 
+					&& game.get_hero().get_hero_darts() > 0) {
 				game.hero_dart(direction);
 			}
 		}
@@ -308,7 +325,7 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		}
 		repaint();
 	}
-	
+
 	private void play_dragon() {
 		game.dragon_turn();
 		repaint(); 
@@ -321,7 +338,7 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 			repaint(); 
 		}
 	}
-	
+
 	private void maybe_burn() {
 		repaint();
 		if (game.burn_hero()) {
