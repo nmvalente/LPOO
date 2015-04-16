@@ -137,7 +137,7 @@ public class Game_GUI extends JFrame{
 //							{'X',' ','X','X',' ',' ',' ',' ',' ','X'},
 //							{'X','X','X','X','X','X','X','X','X','X'}};
 
-					char[][] b = customMaze.getCustomBoard();
+					char[][] b = customMaze.getLabirinto();
 					d = new desenho(0, 10, exit, b, left, right, up, down);
 					customMaze = null;
 					c = null;
