@@ -134,6 +134,16 @@ public class Game {
 		place_element(dragon);
 	}
 
+	/**
+	 * Starts a new game using the settings provided by the user.
+	 *
+	 * @param board the board
+	 * @param exit_pos the position of the exit
+	 * @param hero_pos the position of the hero
+	 * @param sword_pos the position of the sword
+	 * @param shield_pos the position of the shield
+	 * @param dragon_pos the position of the dragon
+	 */
 	public void start_custom_game(char[][] board, int[] exit_pos, int[] hero_pos, int[] sword_pos, int[] shield_pos, int[] dragon_pos) {
 
 		Maze_Builder mb = new Maze_Builder();

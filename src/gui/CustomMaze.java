@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.Insets;
 
 public class CustomMaze extends JFrame {
 
@@ -67,7 +68,7 @@ public class CustomMaze extends JFrame {
 	 */
 	public CustomMaze() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(400, 50, 1100, 950);
+		setBounds(400, 50, 750, 632);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -85,7 +86,7 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnNewButton.setIcon(ihero);
-		btnNewButton.setBounds(985, 426, 80, 80);
+		btnNewButton.setBounds(650, 400, 60, 60);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("New button");
@@ -97,7 +98,7 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnNewButton_1.setIcon(iexitclosed);
-		btnNewButton_1.setBounds(985, 529, 80, 80);
+		btnNewButton_1.setBounds(650, 320, 60, 60);
 		contentPane.add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("New button");
@@ -109,7 +110,7 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnNewButton_2.setIcon(ishield);
-		btnNewButton_2.setBounds(985, 323, 80, 80);
+		btnNewButton_2.setBounds(650, 240, 60, 60);
 		contentPane.add(btnNewButton_2);
 
 		JButton btnNewButton_3 = new JButton("New button");
@@ -121,7 +122,7 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnNewButton_3.setIcon(iwall);
-		btnNewButton_3.setBounds(985, 219, 80, 80);
+		btnNewButton_3.setBounds(650, 160, 60, 60);
 		contentPane.add(btnNewButton_3);
 
 		JButton button = new JButton("New button");
@@ -133,7 +134,7 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		button.setIcon(idragon);
-		button.setBounds(985, 116, 80, 80);
+		button.setBounds(650, 90, 60, 60);
 		contentPane.add(button);
 
 		JButton button_1 = new JButton("New button");
@@ -148,12 +149,17 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		button_1.setIcon(isword);
-		button_1.setBounds(985, 632, 80, 80);
+		button_1.setBounds(650, 480, 60, 60);
 		contentPane.add(button_1);
 
 		/////////////////////////////////////////////////////////////
 
 		JButton btnOk = new JButton("OK");
+		btnOk.setVerifyInputWhenFocusTarget(false);
+		btnOk.setMaximumSize(new Dimension(60, 30));
+		btnOk.setPreferredSize(new Dimension(60, 30));
+		btnOk.setMargin(new Insets(0, 0, 0, 0));
+		btnOk.setMinimumSize(new Dimension(60, 30));
 		btnOk.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -162,7 +168,7 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnOk.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnOk.setBounds(985, 735, 90, 30);
+		btnOk.setBounds(642, 560, 74, 30);
 		contentPane.add(btnOk);
 
 		JButton button_2 = new JButton("blank");
@@ -173,7 +179,7 @@ public class CustomMaze extends JFrame {
 				clicked = button_2.getIcon();
 			}
 		});
-		button_2.setBounds(985, 13, 80, 80);
+		button_2.setBounds(650, 20, 60, 60);
 		contentPane.add(button_2);
 	}
 
@@ -191,7 +197,7 @@ public class CustomMaze extends JFrame {
 				button.setIcon(inada);
 				button.setBorder(new LineBorder(Color.LIGHT_GRAY));
 				button.setActionCommand("");
-				button.setBounds(contentPane.getWidth() / 10 + i * 82, contentPane.getHeight() / 10 + j * 82, 80, 80);
+				button.setBounds(contentPane.getWidth() / 10 + i * 61, contentPane.getHeight() / 10 + j * 61, 60, 60);
 				button.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {

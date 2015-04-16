@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-//import javax.swing.JButton;
+//import javax.swin2g.JButton;
 import javax.swing.JPanel;
 
 public class desenho extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
