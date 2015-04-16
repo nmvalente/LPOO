@@ -200,6 +200,10 @@ public class CustomMaze extends JFrame {
 				button.setBounds(contentPane.getWidth() / 10 + i * 61, contentPane.getHeight() / 10 + j * 61, 60, 60);
 				button.addMouseListener(new MouseAdapter() {
 					@Override
+					public void mouseEntered(MouseEvent e) {
+						if (e.getModifiers() == MouseEvent.BUTTON1_MASK)
+							button.setIcon(clicked);
+					}
 					public void mousePressed(MouseEvent e) {
 						button.setIcon(clicked);
 					}
@@ -217,9 +221,7 @@ public class CustomMaze extends JFrame {
 		{
 			for(int j = 0 ; j < 10 ; j++)
 			{
-				System.out.println(botoes.size());
 				Icon icon = botoes.get(j).get(i).getIcon();
-				System.out.println(i + ", " + j);
 
 				if(icon.equals((Icon)iwall))
 					result[i][j] = 'X';

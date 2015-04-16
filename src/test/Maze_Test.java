@@ -552,7 +552,7 @@ public class Maze_Test {
 	 * Repetidamente gera uma instancia do tipo T usando a funcao geradora, e verifica se a instancia
 	 * gerada obedece a um dos predicados (funcoes de T em Boolean). No caso de nao obedecer a nenhum, 
 	 * falha, mostrando a mensagem gerada pela funcao errorMessage (de T em String).
-	 * Repete ate cada teste ter sucedido pelo menos uma vez, num minimo de numIter iteracoes.
+	 * Repete ate cada teste ter sucedido pelo menos umae vez, num minimo de numIter iteracoes.
 	 * @param generator - gera uma instancia (funcao de () em T);
 	 * @param errorMessage - gera uma mensagem em caso de erro (funcao de T em String);
 	 * @param predicates - lista de predicados de teste (funcoes de T em Boolean).
