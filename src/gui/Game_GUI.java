@@ -285,7 +285,7 @@ public class Game_GUI extends JFrame{
 
 		//Custom Maze////////////////////////////////////////////////
 
-		JButton custom = new JButton("Custom Maze");
+		JButton custom = new JButton("Custom");
 		custom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -297,7 +297,7 @@ public class Game_GUI extends JFrame{
 				}
 			}
 		});
-		custom.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		custom.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		custom.setBounds(0, 349, 100, 25);
 		panel.add(custom);
 

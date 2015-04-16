@@ -11,29 +11,34 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 public class CustomMaze extends JFrame {
 
-	public Icon clicked;
+
 	char[][] result = new char[10][10];
 	public ArrayList<ArrayList<JButton>> botoes = new ArrayList<ArrayList<JButton>>();
-//	public int posEx, posEy;
-	public int[] exit_pos;
-	public int[] hero_pos;
-	public int[] sword_pos;
-	public int[] shield_pos;
-	public int[] dragon_pos;
+	public int[] exit_pos={2,0};
+	public int[] hero_pos={2,1};
+	public int[] sword_pos={6,8};
+	public int[] shield_pos={4,8};
+	public int[] dragon_pos={2,8};
 	public char[][] getLabirinto() {return result;}
-	public ImageIcon iexitclosed = new ImageIcon("images/exitclosed.gif");
-	public ImageIcon ishield = new ImageIcon("images/shield.gif");
-	public ImageIcon ihero = new ImageIcon("images/hero.gif");
-	public ImageIcon idragon = new ImageIcon("images/dragon.gif");
-	public ImageIcon iwall = new ImageIcon("images/wall.gif");
-	public ImageIcon isword = new ImageIcon("images/sword.gif");
-	public ImageIcon inada = new ImageIcon("images/nothing.gif");
 
+	ImageIcon iwall = new ImageIcon("images/wall90.gif");
+	ImageIcon ihero = new ImageIcon("images/hero90.gif");
+	ImageIcon idragon = new ImageIcon("images/dragon90.gif");
+	ImageIcon isword = new ImageIcon("images/sword90.gif");
+	ImageIcon ishield = new ImageIcon("images/shield90.gif");
+	ImageIcon iexitclosed = new ImageIcon("images/exitclosed90.gif");
+	ImageIcon inada = new ImageIcon("images/nothing.gif");
 
-
+	public Icon clicked = inada;
 	/**
 	 * 
 	 */
@@ -58,14 +63,12 @@ public class CustomMaze extends JFrame {
 	}
 
 
-
-
 	/**
 	 * Create the frame.
 	 */
 	public CustomMaze() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(400, 200, 1103, 653);
+		setBounds(400, 50, 1100, 950);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,6 +78,7 @@ public class CustomMaze extends JFrame {
 		///////////////////////////////////////////////////
 
 		JButton btnNewButton = new JButton("New button");
+		btnNewButton.setIconTextGap(0);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -82,10 +86,11 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnNewButton.setIcon(ihero);
-		btnNewButton.setBounds(976, 334, 97, 63);
+		btnNewButton.setBounds(985, 426, 80, 80);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("New button");
+		btnNewButton_1.setIconTextGap(0);
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -93,10 +98,11 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnNewButton_1.setIcon(iexitclosed);
-		btnNewButton_1.setBounds(976, 410, 97, 63);
+		btnNewButton_1.setBounds(985, 529, 80, 80);
 		contentPane.add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("New button");
+		btnNewButton_2.setIconTextGap(0);
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -104,10 +110,11 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnNewButton_2.setIcon(ishield);
-		btnNewButton_2.setBounds(976, 253, 97, 68);
+		btnNewButton_2.setBounds(985, 323, 80, 80);
 		contentPane.add(btnNewButton_2);
 
 		JButton btnNewButton_3 = new JButton("New button");
+		btnNewButton_3.setIconTextGap(0);
 		btnNewButton_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -115,10 +122,11 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnNewButton_3.setIcon(iwall);
-		btnNewButton_3.setBounds(976, 175, 97, 65);
+		btnNewButton_3.setBounds(985, 219, 80, 80);
 		contentPane.add(btnNewButton_3);
 
 		JButton button = new JButton("New button");
+		button.setIconTextGap(0);
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -126,10 +134,14 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		button.setIcon(idragon);
-		button.setBounds(976, 97, 97, 65);
+		button.setBounds(985, 116, 80, 80);
 		contentPane.add(button);
 
 		JButton button_1 = new JButton("New button");
+		button_1.setIconTextGap(0);
+		button_1.setMaximumSize(new Dimension(90, 25));
+		button_1.setMinimumSize(new Dimension(90, 25));
+		button_1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		button_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -137,12 +149,12 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		button_1.setIcon(isword);
-		button_1.setBounds(976, 486, 97, 65);
+		button_1.setBounds(985, 632, 80, 80);
 		contentPane.add(button_1);
 
 		/////////////////////////////////////////////////////////////
 
-		JButton btnOk = new JButton("Ok");
+		JButton btnOk = new JButton("OK");
 		btnOk.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -151,8 +163,19 @@ public class CustomMaze extends JFrame {
 			}
 		});
 		btnOk.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnOk.setBounds(976, 564, 97, 25);
+		btnOk.setBounds(985, 735, 90, 30);
 		contentPane.add(btnOk);
+
+		JButton button_2 = new JButton("blank");
+		button_2.setIconTextGap(0);
+		button_2.setIcon(inada);
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				clicked = button_2.getIcon();
+			}
+		});
+		button_2.setBounds(985, 13, 80, 80);
+		contentPane.add(button_2);
 	}
 
 	//////////////////////////////////////////////////////////
@@ -164,11 +187,12 @@ public class CustomMaze extends JFrame {
 			colunas = new ArrayList<JButton>();
 			for(int j = 0 ; j < 10 ; j++)
 			{
-				String s = "b"+j+i;
+				String s = "b"+i+j;
 				JButton button = new JButton(s);
 				button.setIcon(inada);
+				button.setBorder(new LineBorder(Color.LIGHT_GRAY));
 				button.setActionCommand("");
-				button.setBounds(contentPane.getWidth() / 10 + i * 95, contentPane.getHeight() / 10 + j * 60, 95, 60);
+				button.setBounds(contentPane.getWidth() / 10 + i * 82, contentPane.getHeight() / 10 + j * 82, 80, 80);
 				button.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
@@ -190,9 +214,9 @@ public class CustomMaze extends JFrame {
 			for(int j = 0 ; j < 10 ; j++)
 			{
 				System.out.println(botoes.size());
-				Icon icon = botoes.get(i).get(j).getIcon();
+				Icon icon = botoes.get(j).get(i).getIcon();
 				System.out.println(i + ", " + j);
-				
+
 				if(icon.equals((Icon)iwall))
 					result[i][j] = 'X';
 				else if(icon.equals(iexitclosed)) {
@@ -204,7 +228,7 @@ public class CustomMaze extends JFrame {
 					hero_pos[0] = i;
 					hero_pos[1] = j;
 					result[i][j] = ' ';					
-			}
+				}
 				else if(icon.equals(idragon)) {
 					dragon_pos[0] = i;
 					dragon_pos[1] = j;

@@ -116,13 +116,10 @@ public class desenho extends JPanel implements MouseListener, MouseMotionListene
 		game.set_maze_size(10);
 		game.set_maze_type(0);
 		game.set_number_dragons(1);
-		game.set_dragon_type(0);
+		game.set_dragon_type(2);
 		game.set_number_darts(0);
 		game.start_custom_game(board, exit_pos, hero_pos, sword_pos, shield_pos, dragon_pos);
 	}
-
-
-
 	desenho(String filename, char a, char d, char w, char s) throws IOException {
 		this.addKeyListener(this);
 		keyCodeleft = KeyEvent.getExtendedKeyCodeForChar(a);
