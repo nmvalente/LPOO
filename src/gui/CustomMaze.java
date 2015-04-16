@@ -14,7 +14,6 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 
@@ -206,7 +205,6 @@ public class CustomMaze extends JFrame {
 			botoes.add(colunas);
 		}
 	}
-
 
 	public void getCustomBoard(){
 		for(int i = 0 ; i < 10 ; i++)

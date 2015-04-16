@@ -190,8 +190,8 @@ public class ChangeButtons extends JDialog implements KeyListener{
 	}
 
 	public boolean verificaTeclas(){
-		ArrayList<Character> lista = new ArrayList();
-		ArrayList<Character> aux = new ArrayList();
+		ArrayList<Character> lista = new ArrayList<Character>();
+		ArrayList<Character> aux = new ArrayList<Character>();
 
 		lista.add(right);
 		lista.add(left);
