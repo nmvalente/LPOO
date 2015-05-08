@@ -1,4 +1,5 @@
 package gui;
+import audio.*;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -11,8 +12,9 @@ public class StartScreen extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	public StartScreen() {
-		initUI();
+	public StartScreen() throws Exception {
+		new LoopSound();
+				initUI();
 	}
 
 	private void initUI() {
@@ -36,7 +38,13 @@ public class StartScreen extends JFrame {
 
 			@Override
 			public void run() {
-				StartScreen start = new StartScreen();
+				StartScreen start = null;
+				try {
+					start = new StartScreen();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				start.setVisible(true);
 			}
 		});
