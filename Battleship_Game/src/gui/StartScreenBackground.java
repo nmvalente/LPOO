@@ -3,27 +3,49 @@ package gui;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import java.awt.Color;
+
 import javax.swing.SwingConstants;
+
+import audio.IntroSound;
+
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
+import java.io.File;
 
 public class StartScreenBackground extends JPanel implements KeyListener{
 
 	private static final long serialVersionUID = 1L;
-	private static JLabel help = new JLabel("Help"), start = new JLabel("Start Game") , exit = new JLabel("Quit"), statistics = new JLabel("Statistics");
+	private static JLabel help = new JLabel("Help"), start = new JLabel("Start Game") , exit = new JLabel("Quit"), load = new JLabel("Load Game");
 	private static Font change = new Font("Tahoma", Font.BOLD | Font.ITALIC, 24), defaultFont = new Font("Tahoma", Font.PLAIN | Font.BOLD, 20);
-	private static JLabel[] options = {start, help, statistics, exit};
-
+	private static JLabel[] options = {start, help, load, exit};
+	//private static JButton play;
+	//private static Clip clip;
+	private static ImageIcon imageOn, imageOff;
+	//private static boolean playTouch = false;
 	private static int optionNr = 0;
 	private int lastOptionNr;
 
+	private static Toolkit toolkit = Toolkit.getDefaultToolkit();  
+	private static Dimension scrnsize = toolkit.getScreenSize();   
+	private static final int screenH = (int)scrnsize.getHeight();
+	private static final int screenW = (int)scrnsize.getWidth();
+	private static final String musicFilename = "musics/KissesinParadise.wav";
 	private HelpMenu helpmenu;// = new HelpMenu();
 	private StartMenu startmenu;// = new StartMenu();
 	private StatisticsMenu statmenu;// = new StatisticsMenu();
@@ -34,9 +56,11 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	/**
 	 * Create the panel.
 	 */
-	public StartScreenBackground(String path) {
-		//setFocusable(true);
-
+	public StartScreenBackground(String path) throws Exception {
+		/*
+		imageOn = new ImageIcon("images/SoundOn.png");
+		imageOff = new ImageIcon("images/SoundOff.jpeg");
+*/
 		start.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -64,19 +88,19 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 		help.setHorizontalAlignment(SwingConstants.CENTER);
 		add(help);
 
-		statistics.addMouseListener(new MouseAdapter() {
+		load.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				removeFont();
-				statistics.setFont(change);
+				load.setFont(change);
 				optionNr = 2;
-				statmenu = new StatisticsMenu();
+				loadmenu = new LoadGameMenu();
 			}
 		});
-		statistics.setPreferredSize(new Dimension(200, 25));
-		statistics.setHorizontalTextPosition(SwingConstants.CENTER);
-		statistics.setHorizontalAlignment(SwingConstants.CENTER);
-		add(statistics);
+		load.setPreferredSize(new Dimension(200, 25));
+		load.setHorizontalTextPosition(SwingConstants.CENTER);
+		load.setHorizontalAlignment(SwingConstants.CENTER);
+		add(load);
 
 		exit.addMouseListener(new MouseAdapter() {
 			@Override
@@ -96,8 +120,9 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 
 		//Fundamental que a propriedade seja colocada a false ou a imagem não vai aparecer
 		setOpaque(false);
-		//setPreferredSize(new Dimension (1280, 900));
-		//setSize(new Dimension(getWidth(), getHeight()));
+		setSize(screenW, screenH);
+		
+
 		for(int i = 0 ; i < options.length ; i++)
 		{
 			options[i].setFocusable(true);
@@ -108,6 +133,25 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 			options[i].addKeyListener(this);
 		}
 		options[0].setFont(change); // aplicacao poe enfase no primeiro botao
+
+		JButton audio = new IntroSound(musicFilename);
+	/*	File file = new File(musicFilename);
+		clip = AudioSystem.getClip();
+		AudioInputStream ais = AudioSystem.getAudioInputStream(file);
+		clip.open(ais);
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		play = new JButton("");
+		play.setSize(new Dimension(25, 25));
+		play.setContentAreaFilled(false);
+		play.setBorderPainted(false);
+		add(play);
+		play.setOpaque(false);
+		play.setIcon(imageOn);
+		play.setName("Play");
+		play.addActionListener(this);
+		*/
+		add(audio);
+	
 	}
 
 	public void removeFont(){
@@ -121,17 +165,8 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 
 	@Override
 	public void paintComponent(Graphics g) {
-		//g.drawImage(image, 0, 0, getWidth(), getHeight(), 0, 0, Window.WIDTH, Window.HEIGHT, null);
-		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		g.drawImage(image, 0, 0, screenW, screenH, null);
 		super.paintComponent(g);
-	}
-	@Override
-	public int getWidth() {
-		return image.getWidth(null);
-	}
-	@Override
-	public int getHeight() {
-		return image.getHeight(null);
 	}
 
 	@Override
@@ -157,11 +192,11 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 		else if(e.getKeyCode() == KeyEvent.VK_ENTER)
 		{
 			if(options[0].getFont().equals(change))
-				helpmenu = new HelpMenu();
-			else if(options[1].getFont().equals(change))
 				startmenu = new StartMenu();
+			else if(options[1].getFont().equals(change))
+				helpmenu = new HelpMenu();
 			else if(options[2].getFont().equals(change))
-				statmenu = new StatisticsMenu();
+				loadmenu = new LoadGameMenu();
 			else if(options[3].getFont().equals(change))
 				exitmenu = new ExitMenu();
 		}
@@ -170,4 +205,19 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	public void keyReleased(KeyEvent arg0) {}
 	@Override
 	public void keyTyped(KeyEvent arg0) {}
+
+	/*@Override
+	public void actionPerformed(ActionEvent ae) {
+		if (playTouch == false){
+			clip.stop();
+			play.setIcon(imageOff);
+			play.setFocusable(false);
+		} 
+		else{
+			play.setIcon(imageOn);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			play.setFocusable(false);
+		}
+		playTouch = !playTouch;
+	}*/
 }

@@ -4,28 +4,28 @@ import javax.swing.*;
 
 import java.io.*;
 
-public class LoadGameMenu extends JFileChooser
+public class SaveGameMenu extends JFileChooser
 {
 	private static final long serialVersionUID = 1L;
 
-	public LoadGameMenu()
+	public SaveGameMenu()
 	{
 		int retorno = 0;
 		@SuppressWarnings("unused")
 		File arquivoSelec = null;
-		JFileChooser abreArquivo = new JFileChooser();
-		abreArquivo.setCurrentDirectory(new File("."));
-		abreArquivo.setSelectedFile(new File("load_game.xml")); 
-		retorno = abreArquivo.showOpenDialog(this);
+		JFileChooser guardaArquivo = new JFileChooser();
+		guardaArquivo.setCurrentDirectory(new File("."));
+		guardaArquivo.setSelectedFile(new File("load_game.xml")); 
+		retorno = guardaArquivo.showSaveDialog(this);
 
 		if (retorno == JFileChooser.APPROVE_OPTION)
-			arquivoSelec = abreArquivo.getSelectedFile();
+			arquivoSelec = guardaArquivo.getSelectedFile();
 	}
 
 	public static void main (String[] args)
 	{
 		try {
-			LoadGameMenu fr = new LoadGameMenu();
+			SaveGameMenu fr = new SaveGameMenu();
 			fr.setVisible(false);
 		} catch (Exception e) {
 			e.printStackTrace();

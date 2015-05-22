@@ -1,54 +1,48 @@
 package gui;
-import audio.*;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.Dimension;
 
 public class StartScreen extends JFrame {
-	private static JPanel background;
-	private static JFrame helpFrame;
-
+	private static JPanel background = null;
 	private static final long serialVersionUID = 1L;
+    private static final String filename = "images/BattleshipStartScreen.gif";
 	
 	public StartScreen() throws Exception {
-		new LoopSound();
-				initUI();
+		setUndecorated(true);
+		initUI();
 	}
 
-	private void initUI() {
+	private void initUI() throws Exception {
 
-		setMinimumSize(new Dimension(1000, 400));
-		getContentPane().setLayout(null);
-		background = new StartScreenBackground("images/BattleshipStartScreen.gif");
-		setContentPane(background);
-		//setExtendedState(JFrame.MAXIMIZED_BOTH);  
-		setPreferredSize(new Dimension(1280, 720));
-		pack();
-		setTitle("Battleship");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        pack();
+        setVisible(true);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);  
+		//setTitle("Battleship");
 		setLocationRelativeTo(null);   
-		//setResizable(false);
+		initComponents();
 	}
 
+	private void initComponents() throws Exception {  
+		background = new StartScreenBackground(filename);
+        getContentPane().add(background, BorderLayout.CENTER);
+    }
+	
+	
 	public static void main(String[] args) {
-
 		EventQueue.invokeLater(new Runnable() {
-
 			@Override
 			public void run() {
 				StartScreen start = null;
-				try {
-					start = new StartScreen();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				try {start = new StartScreen();} 
+				catch (Exception e){e.printStackTrace();}
 				start.setVisible(true);
 			}
 		});
 	}
 }
-
 
