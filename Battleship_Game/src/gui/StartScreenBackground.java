@@ -29,7 +29,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	
 	private static final String musicFilename = "musics/KissesinParadise.wav";
 	private HelpMenu helpmenu;// = new HelpMenu();
-	private StartMenu startmenu;// = new StartMenu();
+	private StartMenu startmenu;
 	private StatisticsMenu statmenu;// = new StatisticsMenu();
 	private ExitMenu exitmenu;// = new ExitMenu();
 	private LoadGameMenu loadmenu;// = new LoadGameMenu();
@@ -38,9 +38,9 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	/**
 	 * Create the panel.
 	 */
-	public StartScreenBackground(double width, double height, String path) throws Exception {
-		screenH = (int) height;
-		screenW = (int) width;
+	public StartScreenBackground(int width, int height, String path) throws Exception {
+		screenH = height;
+		screenW = width;
 		
 		start.addMouseListener(new MouseAdapter() {
 			@Override
