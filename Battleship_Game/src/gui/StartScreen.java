@@ -22,13 +22,12 @@ public class StartScreen extends JFrame {
         pack();
         setVisible(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);  
-		//setTitle("Battleship");
 		setLocationRelativeTo(null);   
 		initComponents();
 	}
 
 	private void initComponents() throws Exception {  
-		background = new StartScreenBackground(filename);
+		background = new StartScreenBackground(getBounds().getWidth(), getBounds().getHeight(), filename);
         getContentPane().add(background, BorderLayout.CENTER);
     }
 	
