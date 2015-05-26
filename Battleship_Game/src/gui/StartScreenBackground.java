@@ -3,13 +3,20 @@ package gui;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import java.awt.Color;
+
 import javax.swing.SwingConstants;
+
 import audio.IntroSound;
+
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -18,7 +25,11 @@ import java.awt.event.MouseAdapter;
 
 public class StartScreenBackground extends JPanel implements KeyListener{
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
+	
 	private static JLabel help = new JLabel("Help"), start = new JLabel("Start Game") , exit = new JLabel("Quit"), load = new JLabel("Load Game");
 	private static Font change = new Font("Tahoma", Font.BOLD | Font.ITALIC, 24), defaultFont = new Font("Tahoma", Font.PLAIN | Font.BOLD, 20);
 	private static JLabel[] options = {start, help, load, exit};
@@ -26,29 +37,33 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	private int lastOptionNr;
 	private static int screenH ;
 	private static int screenW ;
-	
 	private static final String musicFilename = "musics/KissesinParadise.wav";
 	private HelpMenu helpmenu;// = new HelpMenu();
-	private StartMenu startmenu;
+	private GameSettings startmenu;
 	private StatisticsMenu statmenu;// = new StatisticsMenu();
 	private ExitMenu exitmenu;// = new ExitMenu();
 	private LoadGameMenu loadmenu;// = new LoadGameMenu();
-
 	private Image image;
+	private JFrame frame;
+	private IntroSound audio;
 	/**
 	 * Create the panel.
 	 */
-	public StartScreenBackground(int width, int height, String path) throws Exception {
+	public StartScreenBackground(int width, int height, String path, JFrame startScreen) throws Exception {
 		screenH = height;
 		screenW = width;
-		
+		frame = startScreen;
 		start.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				removeFont();
 				start.setFont(change);
 				optionNr = 0;
-				startmenu = new StartMenu();
+				
+				frame.setVisible(false);
+				audio.stop();
+				startmenu = new GameSettings(screenW, screenH, frame, audio);
+				startmenu.setVisible(true);
 			}
 		});
 		start.setPreferredSize(new Dimension(200, 25));
@@ -115,7 +130,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 		}
 		options[0].setFont(change); // aplicacao poe enfase no primeiro botao
 
-		JButton audio = new IntroSound(musicFilename);
+		audio = new IntroSound(musicFilename);
 		add(audio);
 	
 	}
@@ -158,17 +173,24 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 		else if(e.getKeyCode() == KeyEvent.VK_ENTER)
 		{
 			if(options[0].getFont().equals(change))
-				startmenu = new StartMenu();
+			{
+				frame.setVisible(false);
+				audio.stop();
+				startmenu = new GameSettings(screenW, screenH, frame, audio);
+				startmenu.setVisible(true);
+			}
 			else if(options[1].getFont().equals(change))
-				helpmenu = new HelpMenu();
+			{
+				helpmenu = new HelpMenu();		
+			}
+			
 			else if(options[2].getFont().equals(change))
 				loadmenu = new LoadGameMenu();
 			else if(options[3].getFont().equals(change))
 				exitmenu = new ExitMenu();
 		}
 	}
-	@Override
 	public void keyReleased(KeyEvent arg0) {}
-	@Override
 	public void keyTyped(KeyEvent arg0) {}
+	
 }

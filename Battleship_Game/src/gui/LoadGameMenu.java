@@ -7,19 +7,21 @@ import java.io.*;
 public class LoadGameMenu extends JFileChooser
 {
 	private static final long serialVersionUID = 1L;
-
+	private static File arquivoSelec = null;
+	private static JFileChooser abreArquivo = new JFileChooser();
 	public LoadGameMenu()
 	{
 		int retorno = 0;
-		@SuppressWarnings("unused")
-		File arquivoSelec = null;
-		JFileChooser abreArquivo = new JFileChooser();
+
 		abreArquivo.setCurrentDirectory(new File("."));
-		abreArquivo.setSelectedFile(new File("load_game.xml")); 
+		abreArquivo.setSelectedFile(new File("game.xml")); 
 		retorno = abreArquivo.showOpenDialog(this);
 
 		if (retorno == JFileChooser.APPROVE_OPTION)
-			arquivoSelec = abreArquivo.getSelectedFile();
+		{
+			setArquivoSelec(abreArquivo.getSelectedFile());
+			System.out.println(arquivoSelec);
+		}
 	}
 
 	public static void main (String[] args)
@@ -30,5 +32,13 @@ public class LoadGameMenu extends JFileChooser
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static File getArquivoSelec() {
+		return arquivoSelec;
+	}
+
+	public static void setArquivoSelec(File arquivoSelec) {
+		LoadGameMenu.arquivoSelec = arquivoSelec;
 	}
 }

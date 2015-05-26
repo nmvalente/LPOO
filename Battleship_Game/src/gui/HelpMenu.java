@@ -1,11 +1,18 @@
 package gui;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
-public class HelpMenu {
+public class HelpMenu extends JDialog{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public HelpMenu() {
-		JOptionPane.showMessageDialog(null, "To move hero: w - up, a - left, s - down, d - right \nTo throw dart: i - up, j - left, k - down, l - right");
+		JOptionPane.showMessageDialog(null, "H to hit, ...");
 	}
 }
-
