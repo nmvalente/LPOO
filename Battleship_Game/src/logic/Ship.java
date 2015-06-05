@@ -1,5 +1,7 @@
 package logic;
 
+import javafx.geometry.Pos;
+
 import java.util.Vector;
 
 public class Ship {
@@ -40,7 +42,7 @@ public class Ship {
         state = new Vector<Boolean>();
         for (int i = 0; i < dim; i++) state.add(true);
         life = dims;
-        position = new Position(26, 26);
+        position = Position.Instance(26, 26); /* initial position outside of the board */
         orientation = true;
     }
 
@@ -113,8 +115,7 @@ public class Ship {
      * @param newPosition - line and column where we want to place the ship
      **/
     void setPosition(Position newPosition) {
-        position.setLine(newPosition.getLine());
-        position.setColumn(newPosition.getColumn());
+        position = newPosition;
     }
 
     /**
@@ -137,15 +138,6 @@ public class Ship {
     }
 
     /**
-     * Returns the ship's position with letters (e.g. Ab = line 0, column 1)
-     **/
-    private String positionLetters() {
-        String out = "";
-        out += (char)(position.getLine() + 65) + (char)(position.getColumn() + 97);
-        return out;
-    }
-
-    /**
      * Writes the ship's information to a string
      *
      * @return string with the symbol, dimension, position and orientation of the ship
@@ -153,8 +145,9 @@ public class Ship {
     @Override
     public String toString() {
         String out = "";
-        String orienta = orientation ? "H" : "V";
-        out += symbol + " " + dim + " " + positionLetters() + " " + orienta /*+ " " + color->getBit()*/;
+        String orient = orientation ? "H" : "V";
+        out += type + " - " + symbol + " - " + dim + " - " + position + " - " + orient;
+        for (Boolean cellState : state) out += " - " + cellState;
         return out;
     }
 
@@ -167,11 +160,11 @@ public class Ship {
         Vector<Position> cells = new Vector<Position>();
         for (int i = 0; i < dim; i ++) {
             if (orientation) {/* horizontal */
-                Position cellPosition = new Position(position.getLine(), position.getColumn() + i);
+                Position cellPosition = Position.Instance(position.getLine(), position.getColumn() + i);
                 cells.add(cellPosition);
             }
             else {
-                Position cellPosition = new Position(position.getLine() + i, position.getColumn());
+                Position cellPosition = Position.Instance(position.getLine() + i, position.getColumn());
                 cells.add(cellPosition);
             }
         }

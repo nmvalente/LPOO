@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.*;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Vector;
 
@@ -70,7 +71,7 @@ public class Player {
      *
      * @return string with the name of the player
      **/
-    String getName() {
+    public String getName() {
         return name;
     }
 
@@ -97,7 +98,7 @@ public class Player {
      *
      * @return Board - player's board
      **/
-    Board getBoard() {
+    public Board getBoard() {
         return board;
     }
 
@@ -113,16 +114,15 @@ public class Player {
     /**
      * Writes the player's ships to a file
      *
-     * @param shipFile - name of the file where we want to write
+     * @param writer - connection to the file where we want to write
      **/
-    void writeShips(String shipFile) {
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(shipFile), "utf-8"))) {
-            writer.write(board.getDimV());
-            writer.write(" x ");
-            writer.write(board.getDimH());
-            for (int i = 0; i < ships.size(); i++) writer.write((ships.get(i)).toString());
-        } catch (IOException ioexception) {
-            ioexception.printStackTrace();
+    void writeShips(Writer writer) throws IOException {
+        String boardDim = board.getDimV() + " - " + board.getDimH() + " - " + ships.size();
+        writer.write(boardDim);
+        writer.write("\n");
+        for (Ship ship : ships) {
+            writer.write(ship.toString());
+            writer.write("\n");
         }
     }
 
@@ -151,7 +151,9 @@ public class Player {
         for (int i = 0; i < ships.size(); i++) {
             Ship ship = ships.get(i);
             do {
-                ship.setPosition(new Position(random.nextInt(dimVb), random.nextInt(dimHb)));
+                int line = random.nextInt(dimVb);
+                int column = random.nextInt(dimHb);
+                ship.setPosition(Position.Instance(line, column));
                 ship.setOrientation(random.nextInt(2) != 0); /* random orientation */
             }
             while (shipOverlaps(i) || ship.exceedsDim(dimVb, dimHb));
@@ -191,8 +193,8 @@ public class Player {
         int shipIndex = board.getPosition(oldPosition);
         if (shipIndex < 0) return false; /* if there is no ship in the given position we do nothing else */
         else {
-            Position realOldPos = ships.get(shipIndex).getPosition();
-            boolean realOldOri = ships.get(shipIndex).getOrientation();
+            oldPosition = ships.get(shipIndex).getPosition();
+            oldOrient = ships.get(shipIndex).getOrientation();
             removeShipBoard(shipIndex);
             if (manualPlaceShip(shipIndex, newPosition, newOrient)) {
                 placeShipBoard(shipIndex);
@@ -200,7 +202,7 @@ public class Player {
             /* if the new position is valid, we place the ship in the board */
             }
             else {
-                manualPlaceShip(shipIndex, realOldPos, realOldOri);
+                manualPlaceShip(shipIndex, oldPosition, oldOrient);
                 placeShipBoard(shipIndex);
                 return false;
             /* otherwise we place the ship back where it was */
@@ -246,7 +248,7 @@ public class Player {
      **/
     @Override
     public String toString() {
-        String out = "";
+        String out = "   ";
         for (int i = 0; i < board.getDimH(); i++) {
             out += (char)(i + 97) + " ";
         }
@@ -260,7 +262,7 @@ public class Player {
         for (int i = 0; i < board.getDimV(); i++) {
             out += " " + (char)(i + 65) + " ";
             for (int j = 0; j < board.getDimH(); j++) {
-                int index = board.getPosition(new Position(i, j));
+                int index = board.getPosition(Position.Instance(i, j));
                 if (index == -1) out += ". ";
                 else if (index == -2) out += "- ";
                 else if (index == -3) out += "* ";
@@ -269,7 +271,7 @@ public class Player {
             if (opponent != null) {
                 out += "       " + (char)(i + 65) + " ";
                 for (int j = 0; j < opponent.getDimH(); j++) {
-                    int index = opponent.getPosition(new Position(i, j));
+                    int index = opponent.getPosition(Position.Instance(i, j));
                     if (index == -1) out += ". ";
                     else if (index == -2) out += "- ";
                     else out += "* ";
@@ -280,24 +282,24 @@ public class Player {
         return out;
     }
 
-    private void attackFailure(Position position) {
+    public void attackFailure(Position position) {
         opponent.setPosition(position, -2);
     }
 
-    private void defendFailure(Position position) {
+    public void defendFailure(Position position) {
         board.setPosition(position, -2);
     }
 
-    private void attackSucceess(Position position) {
+    public void attackSuccess(Position position) {
         opponent.setPosition(position, -3);
     }
 
-    private void defendSucceess(Position position) {
+    public void defendSuccess(Position position) {
         int index = board.getPosition(position);
         Ship ship = ships.get(index);
         boolean shipOrientation = ship.getOrientation();
         Position shipPosition = ship.getPosition();
-        int cellPos = 0;
+        int cellPos;
         if (shipOrientation) cellPos = position.getLine() - shipPosition.getLine();
         else cellPos = position.getColumn() - shipPosition.getColumn();
         ship.killCell(cellPos);
@@ -305,4 +307,83 @@ public class Player {
         board.setPosition(position, -3);
     }
 
+    public void setName(String playerName) {
+        name = playerName;
+    }
+
+    public void writeOpponent(Writer writer) throws IOException {
+        String boardDim = opponent.getDimV() + " - " + opponent.getDimH();
+        writer.write(boardDim);
+        String water = "";
+        String fire = "";
+        for (int i = 0; i < opponent.getDimV(); i++) {
+            for (int j = 0; j < opponent.getDimH(); j++) {
+                Position position = Position.Instance(i, j);
+                if (opponent.getPosition(position) == -2) water += " - " + position;
+                else if (opponent.getPosition(position) == -3) fire += " - " + position;
+            }
+        }
+        if (water.length() > 0) water = water.substring(3);
+        if (fire.length() > 0) fire = fire.substring(3);
+        writer.write(water + "\n");
+        writer.write(fire + "\n");
+    }
+
+    public void readFile(String playerFile) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(playerFile));
+        String fileLine = reader.readLine();
+        String[] dimensions = fileLine.split(" - ");
+        int dimV = Integer.parseInt(dimensions[0]);
+        int dimH = Integer.parseInt(dimensions[1]);
+        int numberShips = Integer.parseInt(dimensions[2]);
+        Board playerBoard = new Board(dimV, dimH);
+        setBoard(playerBoard);
+        for (int i = 0; i < numberShips; i++) {
+            fileLine = reader.readLine();
+            String[] shipSpecs = fileLine.split(" - ");
+            Ship ship = new Ship(shipSpecs[0], Integer.parseInt(shipSpecs[2]), shipSpecs[1].charAt(0));
+            int line = shipSpecs[3].charAt(0) - 65;
+            int column = shipSpecs[3].charAt(1) - 97;
+            Position position = Position.Instance(line, column);
+            ship.setPosition(position);
+            boolean orientation = Objects.equals(shipSpecs[4], "H");
+            ship.setOrientation(orientation);
+            for (int j = 0; j < ship.getDim(); j++) {
+                if (Objects.equals(shipSpecs[5 + j], "false")) ship.killCell(i);
+            }
+            addShip(ship);
+        }
+        placeShipsBoard();
+        fileLine = reader.readLine();
+        dimensions = fileLine.split(" - ");
+        dimV = Integer.parseInt(dimensions[0]);
+        dimH = Integer.parseInt(dimensions[1]);
+        Board opponentBoard = new Board(dimV, dimH);
+        fileLine = reader.readLine();
+        if (fileLine != null) {
+            String[] waters = fileLine.split(" - ");
+            for (String water : waters) {
+                if (water.length() > 1) {
+                    int line = water.charAt(0) - 65;
+                    int column = water.charAt(1) - 97;
+                    Position position = Position.Instance(line, column);
+                    opponentBoard.setPosition(position, -2);
+                }
+            }
+        }
+        fileLine = reader.readLine();
+        if (fileLine != null) {
+            String[] fires = fileLine.split(" - ");
+            for (String fire : fires) {
+                if (fire.length() > 1) {
+                    int line = fire.charAt(0) - 65;
+                    int column = fire.charAt(1) - 97;
+                    Position position = Position.Instance(line, column);
+                    opponentBoard.setPosition(position, -3);
+                }
+            }
+        }
+        setOpponent(opponentBoard);
+        reader.close();
+    }
 }

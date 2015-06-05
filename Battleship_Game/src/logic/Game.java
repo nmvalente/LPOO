@@ -1,8 +1,6 @@
 package logic;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 import java.util.Vector;
 
@@ -11,25 +9,53 @@ import java.util.Vector;
  */
 public class Game {
 
-    /** first player - always human **/
+    private static Game instance = null;
+
+    private int numberPlayers;
+
+    /**
+     * player 1 - always human
+     **/
     private Player player1;
 
-    /** second player - may be human or not **/
+    /**
+     * player 2 - may be human or not
+     **/
     private Player player2;
 
-    /** state of the game - 0 if not finished, 1 if player 1 wins, 2 if player 2 wins **/
+    private String configFile;
+
+    private String player1File;
+
+    private String player2File;
+
+    /**
+     * state of the game - 0 if not finished, 1 if player 1 wins, 2 if player 2 wins
+     **/
     private int state;
 
     /**
      * Instantiates a new game
-     *
-     * @param namePlayer1 - name of the first player
-     * @param namePlayer2 - name of the second player
      **/
-    public Game(String namePlayer1, String namePlayer2) {
-        player1 = new Player(namePlayer1);
-        player2 = new Player(namePlayer2);
+    private Game() {
+        numberPlayers = 1;
+        player1 = new Player("");
+        player2 = new Player("");
+        configFile = "";
+        player1File = "";
+        player2File = "";
         state = 0;
+    }
+
+    public static Game Instance() {
+        if (instance == null) {
+            instance = new Game();
+        }
+        return instance;
+    }
+
+    public int getNumberPlayers() {
+        return numberPlayers;
     }
 
     /**
@@ -37,7 +63,7 @@ public class Game {
      *
      * @return Player - first player
      **/
-    private Player getPlayer1() {
+    public Player getPlayer1() {
         return player1;
     }
 
@@ -46,7 +72,7 @@ public class Game {
      *
      * @return Player - second player
      **/
-    private Player getPlayer2() {
+    public Player getPlayer2() {
         return player2;
     }
 
@@ -55,7 +81,7 @@ public class Game {
      *
      * @return int - 0 if not finished, 1 if player 1 wins, 2 if player 2 wins
      **/
-    private int getState() {
+    public int getState() {
         return state;
     }
 
@@ -72,12 +98,10 @@ public class Game {
     }
 
     /**
-     * Reads the game specifications (board size and properties of the ships from a configuration file
-     *
-     * @param file - path to the configuration file
+     * Reads the game specifications (board size and properties of the ships from the configuration file
      **/
-    public void readConfig(String file) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(file));
+    public void readConfig() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(configFile));
         String line = reader.readLine();
         String[] dimensions = line.split(" - ")[1].split(" x ");
         int dimV = Integer.parseInt(dimensions[0]);
@@ -88,10 +112,10 @@ public class Game {
         player2.setBoard(boardPlayer2);
         while ((line = reader.readLine()) != null) {
             String[] shipSpecs = line.split(" - ");
-            for (int i = 0; i < Integer.parseInt(shipSpecs[3]); i++) {
-                Ship shipPlayer1 = new Ship(shipSpecs[0], Integer.parseInt(shipSpecs[2]), shipSpecs[1].charAt(0));
+            for (int i = 0; i < Integer.parseInt(shipSpecs[0]); i++) {
+                Ship shipPlayer1 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0));
                 player1.addShip(shipPlayer1);
-                Ship shipPlayer2 = new Ship(shipSpecs[0], Integer.parseInt(shipSpecs[2]), shipSpecs[1].charAt(0));
+                Ship shipPlayer2 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0));
                 player2.addShip(shipPlayer2);
             }
         }
@@ -149,7 +173,7 @@ public class Game {
             numberShipCells += (ships.get(i)).getDim();
             for (int j = 0; j < i; j++) {
                 if (!(ships.get(i)).getType().equals((ships.get(j)).getType())
-                && (ships.get(i)).getSymbol() == (ships.get(j)).getSymbol()) return 3; /* repeated symbols */
+                        && (ships.get(i)).getSymbol() == (ships.get(j)).getSymbol()) return 3; /* repeated symbols */
             }
         }
         if (2 * numberShipCells > numberBoardCells) return 2; /* board to small for the ships */
@@ -176,7 +200,7 @@ public class Game {
         else return printPlayer(player2, player1);
     }
 
-    private String printPlayer(Player playerA, Player playerB) {
+    public String printPlayer(Player playerA, Player playerB) {
         String out = "";
         Board opponent = playerA.getOpponent();
         if (opponent != null) {
@@ -200,9 +224,9 @@ public class Game {
         player.placeShipsBoard();
     }
 
-    public boolean changeShipPosition(int playerNumber, int oldLin, int oldCol, boolean oldOri, int newLin, int newCol, boolean newOri) {
-        if (playerNumber == 1) return player1.changeShipPosition(new Position(oldLin, oldCol), oldOri, new Position(newLin, newCol), newOri);
-        else return player2.changeShipPosition(new Position(oldLin, oldCol), oldOri, new Position(newLin, newCol), newOri);
+    public boolean changeShipPosition(int playerNumber, Position oldPos, boolean oldOri, Position newPos, boolean newOri) {
+        if (playerNumber == 1) return player1.changeShipPosition(oldPos, oldOri, newPos, newOri);
+        else return player2.changeShipPosition(oldPos, oldOri, newPos, newOri);
     }
 
     public String printShip(int playerNumber, int shipIndex) {
@@ -217,9 +241,9 @@ public class Game {
         return out;
     }
 
-    public boolean manualPlaceShip(int playerNumber, int shipIndex, int line, int column, boolean orientation) {
-        if (playerNumber == 1) return player1.manualPlaceShip(shipIndex, new Position(line, column), orientation);
-        else return player2.manualPlaceShip(shipIndex, new Position(line, column), orientation);
+    public boolean manualPlaceShip(int playerNumber, int shipIndex, Position position, boolean orientation) {
+        if (playerNumber == 1) return player1.manualPlaceShip(shipIndex, position, orientation);
+        else return player2.manualPlaceShip(shipIndex, position, orientation);
     }
 
     public void placeShipBoard(int playerNumber, int shipIndex) {
@@ -227,9 +251,62 @@ public class Game {
         else player2.placeShipBoard(shipIndex);
     }
 
-    public void writeShips(int playerNumber, String file) {
-        if (playerNumber == 1) player1.writeShips(file);
-        else player2.writeShips(file);
+    public void saveGame() {
+        try (Writer writer1 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(player1File), "utf-8"))) {
+            player1.writeShips(writer1);
+            player1.writeOpponent(writer1);
+            writer1.close();
+        } catch (IOException IOExcept) {
+            IOExcept.printStackTrace();
+        }
+        try (Writer writer2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(player2File), "utf-8"))) {
+            player2.writeShips(writer2);
+            player2.writeOpponent(writer2);
+            writer2.close();
+        } catch (IOException IOExcept) {
+            IOExcept.printStackTrace();
+        }
+    }
+
+    public void loadGame() {
+        try {
+            player1.readFile(player1File);
+            player2.readFile(player2File);
+        } catch (IOException IOExcept) {
+            IOExcept.printStackTrace();
+        }
+    }
+
+    public void setNumberPlayers(int newNumberPlayers) {
+        numberPlayers = newNumberPlayers;
+    }
+
+    public void setPlayer1Name(String player1Name) {
+        player1.setName(player1Name);
+    }
+
+    public void setPlayer2Name(String player2Name) {
+        player2.setName(player2Name);
+    }
+
+    public void setConfigFile(String newConfigFile) {
+        configFile = newConfigFile;
+    }
+
+    public void setPlayer1File(String newPlayer1File) {
+        player1File = newPlayer1File;
+    }
+
+    public void setPlayer2File(String newPlayer2File) {
+        player2File = newPlayer2File;
+    }
+
+    public String getPlayer1Name() {
+        return player1.getName();
+    }
+
+    public String getPlayer2Name() {
+        return player2.getName();
     }
 
 }

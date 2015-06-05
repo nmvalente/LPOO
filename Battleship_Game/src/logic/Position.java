@@ -5,6 +5,9 @@ package logic;
  **/
 public class Position {
 
+    private static Position[][] instance = new Position[26][26];
+    private static Position outside = new Position(26, 26);
+
     /** line of the board of the position **/
     private int line;
 
@@ -14,12 +17,23 @@ public class Position {
     /**
      * Instantiates a new Position
      *
-     * @param linep - line of the position
-     * @param columnp - column of the position
+     * @param newLine - line of the position
+     * @param newColumn - column of the position
      **/
-    Position(int linep, int columnp) {
-        line = linep;
-        column = columnp;
+    private Position(int newLine, int newColumn) {
+        line = newLine;
+        column = newColumn;
+    }
+
+    public static Position Instance(int newLine, int newColumn) {
+        if (newLine == 26 && newColumn == 26) return outside;
+        else if (newLine > 25 || newColumn > 25) return null;
+        else {
+            if (instance[newLine][newColumn] == null) {
+                instance[newLine][newColumn] = new Position(newLine, newColumn);
+            }
+            return instance[newLine][newColumn];
+        }
     }
 
     /**
@@ -27,7 +41,7 @@ public class Position {
      *
      * @return int with the position's line
      **/
-    int getLine() {
+    public int getLine() {
         return line;
     }
 
@@ -36,26 +50,19 @@ public class Position {
      *
      * @return int with the position's column
      **/
-    int getColumn() {
+    public int getColumn() {
         return column;
     }
 
     /**
-     * Sets the position's line
-     *
-     * @param newLine - position's new line
+     * Returns the position with letters (e.g. Ab = line 0, column 1)
      **/
-    void setLine(int newLine) {
-        line = newLine;
-    }
-
-    /**
-     * Returns the position's column
-     *
-     * @param newColumn - position's new column
-     **/
-    void setColumn(int newColumn) {
-        column = newColumn;
+    @Override
+    public String toString() {
+        String out = "";
+        out += (char)(line + 65);
+        out += (char)(column + 97);
+        return out;
     }
 
     /**

@@ -58,7 +58,7 @@ public class Board {
      *
      * @return int - value of the board position
      **/
-    int getPosition(Position position) {
+    public int getPosition(Position position) {
         return matrix[position.getLine()][position.getColumn()];
     }
 
