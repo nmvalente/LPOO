@@ -15,6 +15,7 @@ import java.awt.Color;
 
 import javax.swing.SwingConstants;
 
+import extras.GameSettings;
 import audio.IntroSound;
 
 import java.awt.Dimension;
