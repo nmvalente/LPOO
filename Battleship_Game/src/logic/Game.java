@@ -275,9 +275,7 @@ public class Game {
             if (playerNumber == 2) writer2.write("\n" + "true");
             else writer2.write("\n" + "false");
             writer2.close();
-        } catch (IOException IOExcept) {
-            IOExcept.printStackTrace();
-        }
+        } catch (IOException ignored) {}
     }
 
     public void loadGame() {
@@ -291,9 +289,7 @@ public class Game {
             player2.readOpponent(reader2);
             player1.getBombResults(player2);
             player2.getBombResults(player1);
-        } catch (IOException IOExcept) {
-            IOExcept.printStackTrace();
-        }
+        } catch (IOException ignored) {}
     }
 
     public void setNumberPlayers(int newNumberPlayers) {
