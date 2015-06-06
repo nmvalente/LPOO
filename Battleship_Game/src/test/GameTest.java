@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.util.Random;
+import java.util.Vector;
 
 import static org.junit.Assert.*;
 
@@ -354,6 +355,13 @@ public class GameTest {
                      " I . . D . . . . . . .        I . . . . . . . . . . \n" +
                      " J . . . . . . . . . .        J . . . . . . . . . . \n", game.printPlayer(2));
         assertEquals(1, game.getStartingPlayer());
+        Vector<Position> neighbors = new Vector<>();
+        neighbors.add(Position.Instance(2, 0));
+        neighbors.add(Position.Instance(1, 1));
+        neighbors.add(Position.Instance(0, 0));
+        Position position = Position.Instance(1, 0);
+        assert position != null;
+        assertEquals(neighbors, position.getNeighbors(10, 10));
     }
 
 }
