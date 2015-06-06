@@ -46,7 +46,7 @@ public class Place {
                 System.out.println(game.printShip(playerNumber, i));
                 System.out.print("LINE (A.." + maxLine + ") COLUMN (a.." + maxColumn + ") ORIENTATION (H V)? ");
                 String pos = scan.nextLine();
-                Vector shipPosition = readShipPosition(pos);
+                Vector<Object> shipPosition = readShipPosition(pos);
                 validPosition = (boolean)(shipPosition.get(0));
                 if (validPosition) {
                     line = (int) (shipPosition.get(1));
@@ -70,7 +70,7 @@ public class Place {
         } while (Objects.equals(reposition, "y"));
     }
 
-    private Vector readShipPosition(String position) {
+    private Vector<Object> readShipPosition(String position) {
         int dimV = game.getDimV();
         int dimH = game.getDimH();
         Vector<Object> result = new Vector<>();
@@ -101,7 +101,7 @@ public class Place {
             System.out.println("");
             System.out.print("Current position: LINE (A.." + maxLine + ") COLUMN (a.." + maxColumn + ") ORIENTATION (H V)? ");
             String oldPos = scan.nextLine();
-            Vector oldShipPosition = readShipPosition(oldPos);
+            Vector<Object> oldShipPosition = readShipPosition(oldPos);
             validOldPos = (boolean)(oldShipPosition.get(0));
             if (validOldPos) {
                 oldLin = (int) (oldShipPosition.get(1));
@@ -109,7 +109,7 @@ public class Place {
                 oldPosition = Position.Instance(oldLin, oldCol);
                 System.out.print("New position: LINE (A.." + maxLine + ") COLUMN (a.." + maxColumn + ") ORIENTATION (H V)? ");
                 String newPos = scan.nextLine();
-                Vector newShipPosition = readShipPosition(newPos);
+                Vector<Object> newShipPosition = readShipPosition(newPos);
                 validNewPos = (boolean) (newShipPosition.get(0));
                 if (validNewPos) {
                     newLin = (int) (newShipPosition.get(1));

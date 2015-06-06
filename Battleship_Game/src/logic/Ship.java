@@ -1,7 +1,5 @@
 package logic;
 
-import javafx.geometry.Pos;
-
 import java.util.Vector;
 
 public class Ship {
@@ -39,7 +37,7 @@ public class Ship {
         type = types;
         dim = dims;
         symbol = symbols;
-        state = new Vector<Boolean>();
+        state = new Vector<>();
         for (int i = 0; i < dim; i++) state.add(true);
         life = dims;
         position = Position.Instance(26, 26); /* initial position outside of the board */
@@ -71,15 +69,6 @@ public class Ship {
      **/
     char getSymbol() {
         return symbol;
-    }
-
-    /**
-     * Returns the ship's state
-     *
-     * @return vector<boolean> with the state of each cell of the ship
-     **/
-    Vector<Boolean> getState() {
-        return state;
     }
 
     /**
@@ -157,7 +146,7 @@ public class Ship {
      * @return vector with all the positions of the ship's cells
      **/
     Vector<Position> getCells() {
-        Vector<Position> cells = new Vector<Position>();
+        Vector<Position> cells = new Vector<>();
         for (int i = 0; i < dim; i ++) {
             if (orientation) {/* horizontal */
                 Position cellPosition = Position.Instance(position.getLine(), position.getColumn() + i);

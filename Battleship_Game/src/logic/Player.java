@@ -217,7 +217,7 @@ public class Player {
      *
      * @param shipIndex - index of the ship in the vector of ships of the player
      **/
-    private void removeShipBoard(int shipIndex) {
+    void removeShipBoard(int shipIndex) {
         Ship ship = ships.get(shipIndex);
         Vector<Position> cells = ship.getCells();
         int dim = ship.getDim();

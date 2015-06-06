@@ -121,6 +121,7 @@ public class Game {
                 player2.addShip(shipPlayer2);
             }
         }
+        reader.close();
     }
 
     /**
@@ -253,6 +254,11 @@ public class Game {
     public void placeShipBoard(int playerNumber, int shipIndex) {
         if (playerNumber == 1) player1.placeShipBoard(shipIndex);
         else player2.placeShipBoard(shipIndex);
+    }
+
+    public void removeShipBoard(int playerNumber, int shipIndex) {
+        if (playerNumber == 1) player1.removeShipBoard(shipIndex);
+        else player2.removeShipBoard(shipIndex);
     }
 
     public void saveGame(int playerNumber) {

@@ -61,7 +61,7 @@ public class Play {
             System.out.println(playerAttack.getName() + ": choose target.");
             System.out.print("LINE (A.." + maxLine + ") COLUMN (a.." + maxColumn + ")? ");
             String pos = scan.nextLine();
-            Vector bombPosition = readBombPosition(pos);
+            Vector<Object> bombPosition = readBombPosition(pos);
             validPosition = (boolean)(bombPosition.get(0));
             if (validPosition) {
                 int line = (int)(bombPosition.get(1));
@@ -78,7 +78,7 @@ public class Play {
         return true;
     }
 
-    private Vector readBombPosition(String position) {
+    private Vector<Object> readBombPosition(String position) {
         int dimV = game.getDimV();
         int dimH = game.getDimH();
         Vector<Object> result = new Vector<>();
