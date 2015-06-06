@@ -20,6 +20,8 @@ public class GameTest {
         assertEquals(2, game.getNumberPlayers());
         game.setPlayer1Name("Tony");
         assertEquals("Tony", game.getPlayer1().getName());
+        game.setPlayer2Name("John");
+        assertEquals("John", game.getPlayer2().getName());
         game.setPlayer2Name("Player 2");
         assertEquals("Player 2", game.getPlayer2().getName());
         game.setPlayer1File("/Users/Angie/Documents/MIEIC/2A2S/LPOO/praticas/Battleship/txt/board1.txt");

@@ -92,7 +92,7 @@ public class Game {
     }
 
     public int getDimH() {
-        return player1.getBoard().getDimH();
+        return player2.getBoard().getDimH();
     }
 
     public int getNumberShips() {
