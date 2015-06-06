@@ -25,7 +25,7 @@ public class Start {
             new Place(scan, random);
             game.startGame();
         }
-        new Play(scan, random);
+        new Play(scan);
     }
 
     public static void main(String[] args) {

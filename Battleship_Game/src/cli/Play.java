@@ -1,20 +1,21 @@
 package cli;
 
+import javafx.geometry.Pos;
 import logic.Game;
 import logic.Player;
 import logic.Position;
 
-import java.util.Objects;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Vector;
+import java.util.*;
 
 public class Play {
 
     private Game game;
 
-    Play(Scanner scan, Random random) {
+    private Vector<Position> computerBombs;
+
+    Play(Scanner scan) {
         game = Game.Instance();
+        computerBombs = new Vector<>();
         Player firstPlayer;
         Player secondPlayer;
         boolean exit = false;
@@ -26,6 +27,17 @@ public class Play {
             firstPlayer = game.getPlayer2();
             secondPlayer = game.getPlayer1();
         }
+        if (game.getNumberPlayers() == 1) {
+            int dimV = game.getDimV();
+            int dimH = game.getDimH();
+            for (int i = 0; i < dimV; i++) {
+                for (int j = 0; j < dimH; j++) {
+                    Position position = Position.Instance(i, j);
+                    computerBombs.add(position);
+                }
+            }
+            Collections.shuffle(computerBombs);
+        }
         while (game.getState() == 0 && !exit) {
             if (game.getNumberPlayers() == 2) {
                 if (!playerTurn(firstPlayer, secondPlayer, scan)) exit = true;
@@ -36,10 +48,10 @@ public class Play {
                 if (game.getStartingPlayer() == 1) {
                     if (!playerTurn(firstPlayer, secondPlayer, scan)) exit = true;
                     else if (game.getState() != 0) break;
-                    else computerTurn(secondPlayer, firstPlayer, random);
+                    else computerTurn(secondPlayer, firstPlayer);
                 }
                 else {
-                    computerTurn(firstPlayer, secondPlayer, random);
+                    computerTurn(firstPlayer, secondPlayer);
                     if (game.getState() != 0) break;
                     else if (!playerTurn(secondPlayer, firstPlayer, scan)) exit = true;
                 }
@@ -99,14 +111,20 @@ public class Play {
         return true;
     }
 
-    private void computerTurn(Player playerAttack, Player playerDefend, Random random) {
-        int dimV = game.getDimV();
-        int dimH = game.getDimH();
-        int line = random.nextInt(dimV);
-        int column = random.nextInt(dimH);
-        Position position = Position.Instance(line, column);
+    private void computerTurn(Player playerAttack, Player playerDefend) {
+        Position position = computerBombs.remove(0);
         boolean attackResult = game.attackPosition(playerAttack, playerDefend, position);
-        if (game.getState() == 0 && attackResult) computerTurn(playerAttack, playerDefend, random);
+        if (game.getState() == 0 && attackResult) {
+            Vector<Position> neighbors = position.getNeighbors(game.getDimV(), game.getDimH());
+            for (Position neighbor : neighbors) {
+                int neighborIndex = computerBombs.indexOf(neighbor);
+                if (neighborIndex >= 0) {
+                    computerBombs.remove(neighborIndex);
+                    computerBombs.add(0, neighbor);
+                }
+            }
+            computerTurn(playerAttack, playerDefend);
+        }
     }
 
     private Vector<Object> readBombPosition(String position) {

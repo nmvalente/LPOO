@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.Vector;
+
 /**
  * Class Position - contains the line and the column of the position in the board
  **/
@@ -75,4 +77,12 @@ public class Position {
         return (obj != null && obj instanceof Position && ((Position)obj).line == line && ((Position)obj).column == column);
     }
 
+    public Vector<Position> getNeighbors(int dimV, int dimH) {
+        Vector<Position> result = new Vector<>();
+        if (line < dimV - 1) result.add(Position.Instance(line + 1, column));
+        if (column < dimH - 1) result.add(Position.Instance(line, column + 1));
+        if (line > 0) result.add(Position.Instance(line - 1, column));
+        if (column > 0) result.add(Position.Instance(line, column - 1));
+        return result;
+    }
 }
