@@ -1,8 +1,6 @@
 package gui;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 public class HelpMenu extends JDialog{

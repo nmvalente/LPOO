@@ -2,16 +2,9 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.DisplayMode;
 import java.awt.EventQueue;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.Window;
-
-import javafx.scene.layout.Background;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -28,7 +21,6 @@ public class StartScreen extends JFrame {
 	private void initUI() throws Exception {
 		//		setCaracteristics();
 		//		setMaximizedWindow();
-		//setAlwaysOnTop(true);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

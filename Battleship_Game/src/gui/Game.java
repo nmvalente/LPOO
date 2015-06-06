@@ -1,46 +1,25 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import java.awt.Dimension;
-
 import javax.swing.JButton;
-
 import java.awt.Component;
-import java.awt.GridBagLayout;
-
-import javax.swing.BoxLayout;
-
-import java.awt.FlowLayout;
-import java.awt.SystemColor;
-
 import javax.swing.JLabel;
-
-import java.awt.GridLayout;
-import java.awt.GridBagConstraints;
-
 import javax.swing.SwingConstants;
-
-
-
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
 
 public class Game extends JFrame implements ActionListener {
-	private static final int NUM_ROWS = 10;
+	/*private static final int NUM_ROWS = 10;
 	private static final int NUM_COLS = 10;
 	private static final int PANEL_WIDTH = 600;
-	private static final int PANEL_HEIGHT = 600;
+	private static final int PANEL_HEIGHT = 600;*/
+	private JFrame startFrame;
 	/**
 	 * 
 	 */
@@ -53,7 +32,8 @@ public class Game extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Game frame = new Game();
+					JFrame frameStart = new JFrame();
+					Game frame = new Game(frameStart);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -65,7 +45,8 @@ public class Game extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public Game() {
+	public Game(JFrame startFrame) {
+		this.startFrame = startFrame;
 		setBackground(Color.BLACK);
 		setName("Battleship");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -172,12 +153,13 @@ public class Game extends JFrame implements ActionListener {
 			int confirmDialog = JOptionPane.showConfirmDialog(null, "You selected quit! \nAre you sure you want to quit?", "Selected Quit", JOptionPane.YES_NO_OPTION);
 
 			if(confirmDialog == JOptionPane.YES_OPTION) {               
-				System.exit(0);           
+				dispose();
+				startFrame.setVisible(true);         
 				//focus under this comment here                     
 			} else {                    
 				//game.reset();                 
 				//displayBoard();
-				System.out.println("you quit the game");
+				System.out.println("you almost quit the game");
 			}
 		}
 		else if(item.equals("Save"))

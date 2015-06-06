@@ -2,9 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -13,15 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.SpinnerListModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import com.sun.glass.ui.Window;
 
 import audio.IntroSound;
 
@@ -38,14 +28,9 @@ public class GameSettings extends JDialog{
 	private JPanel choicesPane;
 	private static JRadioButton againstPC;
 	private static JRadioButton againstHuman;
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-
-
+	private Thread t1,t2;
 
 	/**
 	 * Launch the application.
@@ -61,10 +46,7 @@ public class GameSettings extends JDialog{
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 * @param audio 
-	 */
+
 	public GameSettings(int w, int h, JFrame frame, IntroSound audio) {
 		width = w;
 		height = h;
@@ -85,6 +67,9 @@ public class GameSettings extends JDialog{
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			buttonPane.setBackground(Color.BLACK);
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			ProgressBarDemo progressBarDemo = new ProgressBarDemo();
+			progressBarDemo.setBackground(Color.BLACK);
+			buttonPane.add(progressBarDemo);
 
 			{
 				JButton okButton = new JButton("OK");
@@ -96,21 +81,60 @@ public class GameSettings extends JDialog{
 				okButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						if((againstPC.isSelected()) == true)
-						{
-							int n = JOptionPane.showConfirmDialog(null,"Confirm", "Configurations accepted",JOptionPane.YES_NO_OPTION);
-							if(n==0)
-							{
-								
-								dispose();
-								frame.dispose();
-								JFrame game = new Game(); // game against pc
-								game.setVisible(true);
-								game.setLocationRelativeTo(null);
-							}
+						
+						if((againstPC.isSelected() == true) || (againstHuman.isSelected() == true))
+						{	
+							t1 = new Thread(){
+								public @Override void run() { 
+									progressBarDemo.getStart();
+									try {
+										Thread.sleep(4000);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							};
+
+							t2 = new Thread(){
+								public @Override void run() { 
+									if (t1.getState() != State.TERMINATED)
+										try {
+											t1.join();
+
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									int n = JOptionPane.showConfirmDialog(null,"Confirm", "Configurations accepted",JOptionPane.YES_NO_OPTION);
+									if(n==0)
+									{
+
+										dispose();
+										frame.dispose();
+										JFrame game;
+										if((againstPC.isSelected() == true))		
+										{
+											game = new Game(frame); // game against pc
+											game.setVisible(true);
+											//game.setLocationRelativeTo(null);
+										}
+										else
+										{
+											game = new Game(frame); // game against human
+											game.setVisible(true);
+											//game.setLocationRelativeTo(null);
+										}
+
+									}
+
+								}
+							};
+							t1.start();
+							t2.start();
+
+							
 						}
-						else if((againstHuman.isSelected()) == true) new Game(); // game against human
-						else JOptionPane.showMessageDialog(null, "Please, select a opponent");
 					}
 				});
 				buttonPane.add(okButton);
@@ -121,6 +145,7 @@ public class GameSettings extends JDialog{
 				cancelButton.setActionCommand("Cancel");
 
 				cancelButton.addMouseListener(new MouseAdapter() {
+
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						dispose();

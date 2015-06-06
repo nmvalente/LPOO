@@ -3,20 +3,13 @@ package gui;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import java.awt.Color;
-
 import javax.swing.SwingConstants;
-
 import audio.IntroSound;
-
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -61,7 +54,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				optionNr = 0;
 				//frame.setVisible(false);
 				audio.stop();
-				startmenu = new GameSettings(screenW, screenH,frame, audio);
+				startmenu = new GameSettings(screenW, screenH, frame, audio);
 				startmenu.setVisible(true);
 				startmenu.setLocationRelativeTo(null);
 			}

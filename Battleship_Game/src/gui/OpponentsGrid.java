@@ -10,7 +10,7 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
-public class Grid extends JPanel {
+public class OpponentsGrid extends JPanel {
 	/**
 	 * 
 	 */
@@ -19,7 +19,7 @@ public class Grid extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Grid(int row, int col) {
+	public OpponentsGrid(int row, int col) {
 		grid = new JPanel [row][col];
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
@@ -63,7 +63,7 @@ public class Grid extends JPanel {
         JFrame frame = new JFrame("Testing");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.add(new Grid(10,10));
+        frame.add(new OpponentsGrid(10,10));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
