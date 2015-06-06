@@ -6,32 +6,34 @@ import java.util.Random;
 import java.util.Vector;
 
 /**
- *  Class Player - contains all the information of a game player
- **/
+ *  Class Player contains all the information of a game player
+ */
 public class Player {
 
+    /** number of the player (1 or 2) */
     private int number;
 
-    /** name of the player **/
+    /** name of the player */
     private String name;
 
-    /** vector with pointers for the player's ships **/
+    /** vector with pointers for the player's ships */
     private Vector<Ship> ships;
 
-    /** number of live ships of the player **/
+    /** number of live ships of the player */
     private int liveShips;
 
-    /** player's board, initially empty, later with the players ships **/
+    /** player's board, initially empty, later with the players ships */
     private Board board;
 
-    /** player's idea of the opponent's board, with the player's guesses **/
+    /** player's idea of the opponent's board, with the player's guesses */
     private Board opponent;
 
     /**
      * Instantiates a new Player
      *
-     * @param newName - player's name
-     **/
+     * @param newNumber player's number
+     * @param newName player's name
+     */
     Player(int newNumber, String newName) {
         number = newNumber;
         name = newName;
@@ -44,8 +46,8 @@ public class Player {
     /**
      * Adds a ship to the player's ships
      *
-     * @param ship - ship we want to add
-     **/
+     * @param ship ship we want to add
+     */
     void addShip(Ship ship) {
         ships.add(ship);
         liveShips++;
@@ -54,8 +56,8 @@ public class Player {
     /**
      * Sets the board of the player
      *
-     * @param newBoard - new board
-     **/
+     * @param newBoard new board
+     */
     void setBoard(Board newBoard) {
         board = newBoard;
     }
@@ -63,8 +65,8 @@ public class Player {
     /**
      * Sets the idea of the board of the opponent
      *
-     * @param newOpponent - new board for the opponent
-     **/
+     * @param newOpponent new board for the opponent
+     */
     void setOpponent(Board newOpponent) {
         opponent = newOpponent;
     }
@@ -73,7 +75,7 @@ public class Player {
      * Returns the name of the player
      *
      * @return string with the name of the player
-     **/
+     */
     public String getName() {
         return name;
     }
@@ -81,8 +83,8 @@ public class Player {
     /**
      * Returns the vector ships of the player
      *
-     * @return vector<Ship> with the player's ships
-     **/
+     * @return vector with the player's ships
+     */
     Vector<Ship> getShips() {
         return ships;
     }
@@ -91,7 +93,7 @@ public class Player {
      * Returns the number of live ships of the player
      *
      * @return int with the number of live ships
-     **/
+     */
     int getLiveShips() {
         return liveShips;
     }
@@ -99,8 +101,8 @@ public class Player {
     /**
      * Returns the board of the player
      *
-     * @return Board - player's board
-     **/
+     * @return Board player's board
+     */
     Board getBoard() {
         return board;
     }
@@ -108,8 +110,8 @@ public class Player {
     /**
      * Returns the board of the opponent
      *
-     * @return Board - opponent's board
-     **/
+     * @return Board opponent's board
+     */
     Board getOpponent() {
         return opponent;
     }
@@ -117,8 +119,10 @@ public class Player {
     /**
      * Writes the player's ships to a file
      *
-     * @param writer - connection to the file where we want to write
-     **/
+     * @param writer connection to the file where we want to write
+     *
+     * @throws IOException if there is some problem with the file writer
+     */
     void writeShips(Writer writer) throws IOException {
         String boardDim = board.getDimV() + " - " + board.getDimH() + " - " + ships.size();
         writer.write(boardDim);
@@ -132,10 +136,10 @@ public class Player {
     /**
      * Checks if a given ship overlaps any other ship of the player
      *
-     * @param shipIndex - index of the ship we want to check
+     * @param shipIndex index of the ship we want to check
      *
-     * @return boolean - true if there is some overlap with the given ship, false otherwise
-     **/
+     * @return boolean true if there is some overlap with the given ship, false otherwise
+     */
     private boolean shipOverlaps(int shipIndex) {
         for (int i = 0; i < ships.size(); i++) {
             if (i != shipIndex && (ships.get(shipIndex)).overlaps(ships.get(i))) return true;
@@ -146,8 +150,10 @@ public class Player {
     /**
      * Randomly places the player's ships
      *
+     * @param random random number generator
+     *
      * Note: the ships are not placed on the board, only their information is altered
-     **/
+     */
     void autoPlaceShips(Random random) {
         int dimVb = board.getDimV();
         int dimHb = board.getDimH();
@@ -167,12 +173,12 @@ public class Player {
     /**
      * Sets the position of a player's ship
      *
-     * @param shipIndex - index of the ship whose position we want to change
-     * @param position - position of the board where we want to place the ship
-     * @param orientation - orientation vertical or horizontal for the ship
+     * @param shipIndex index of the ship whose position we want to change
+     * @param position position of the board where we want to place the ship
+     * @param orientation orientation vertical or horizontal for the ship
      *
-     * @return boolean - true if the position is valid, false otherwise
-     **/
+     * @return boolean true if the position is valid, false otherwise
+     */
     boolean manualPlaceShip(int shipIndex, Position position, boolean orientation) {
         int dimVb = board.getDimV();
         int dimHb = board.getDimH();
@@ -185,12 +191,12 @@ public class Player {
     /**
      * Changes the position of a player's ship
      *
-     * @param oldPosition - current position of the board where the ship is
-     * @param newPosition - position of the board where we want to place the ship
-     * @param newOrient - intended orientation for the ship
+     * @param oldPosition current position of the board where the ship is
+     * @param newPosition position of the board where we want to place the ship
+     * @param newOrient intended orientation for the ship
      *
-     * @return boolean - true if the change is valid, false otherwise
-     **/
+     * @return boolean true if the change is valid, false otherwise
+     */
     boolean changeShipPosition(Position oldPosition, Position newPosition, boolean newOrient) {
         int shipIndex = board.getPosition(oldPosition);
         if (shipIndex < 0) return false; /* if there is no ship in the given position we do nothing else */
@@ -215,8 +221,8 @@ public class Player {
     /**
      * Removes a player's ship from the board
      *
-     * @param shipIndex - index of the ship in the vector of ships of the player
-     **/
+     * @param shipIndex index of the ship in the vector of ships of the player
+     */
     void removeShipBoard(int shipIndex) {
         Ship ship = ships.get(shipIndex);
         Vector<Position> cells = ship.getCells();
@@ -227,8 +233,8 @@ public class Player {
     /**
      * Places a player's ship on the board
      *
-     * @param shipIndex - index of the ship in the vector of ships of the player
-     **/
+     * @param shipIndex index of the ship in the vector of ships of the player
+     */
     void placeShipBoard(int shipIndex) {
         Ship ship = ships.get(shipIndex);
         Vector<Position> cells = ship.getCells();
@@ -238,7 +244,7 @@ public class Player {
 
     /**
      * Places all the ships in the board
-     **/
+     */
     void placeShipsBoard() {
         for (int i = 0; i < ships.size(); i++) placeShipBoard(i);
     }
@@ -247,7 +253,7 @@ public class Player {
      * Writes the player's and the opponent's boards to a string
      *
      * @return string with the boards containing the ships or the guesses
-     **/
+     */
     @Override
     public String toString() {
         String out = "   ";
@@ -284,18 +290,38 @@ public class Player {
         return out;
     }
 
+    /**
+     * Attacks water
+     *
+     * @param position position of the attack
+     */
     void attackFailure(Position position) {
         opponent.setPosition(position, -2);
     }
 
+    /**
+     * Defends water
+     *
+     * @param position position of the defense
+     */
     void defendFailure(Position position) {
         board.setPosition(position, -2);
     }
 
+    /**
+     * Attacks a ship
+     *
+     * @param position position of the attack
+     */
     void attackSuccess(Position position) {
         opponent.setPosition(position, -3);
     }
 
+    /**
+     * Defends a ship
+     *
+     * @param position position of the defense
+     */
     void defendSuccess(Position position) {
         int index = board.getPosition(position);
         Ship ship = ships.get(index);
@@ -309,10 +335,22 @@ public class Player {
         board.setPosition(position, -3);
     }
 
+    /**
+     * Sets the name of the player
+     *
+     * @param playerName intended name for the player
+     */
     void setName(String playerName) {
         name = playerName;
     }
 
+    /**
+     * Writes the attack results in the player file
+     *
+     * @param writer connection to the file where we want to write
+     *
+     * @throws IOException if there is some problem with the writer
+     */
     void writeOpponent(Writer writer) throws IOException {
         String boardDim = opponent.getDimV() + " - " + opponent.getDimH();
         writer.write(boardDim);
@@ -331,6 +369,15 @@ public class Player {
         writer.write("\n" + fire);
     }
 
+    /**
+     * Reads the attack results from a file
+     *
+     * @param reader connection to the file where we want to read
+     *
+     * @return true if this is the player that gets the first turn
+     *
+     * @throws IOException if there is some problem with the reader
+     */
     boolean readOpponent(BufferedReader reader) throws IOException {
         String fileLine;
         String[] dimensions;
@@ -370,6 +417,13 @@ public class Player {
         return Objects.equals(fileLine, "true");
     }
 
+    /**
+     * Reads the ships information from a file
+     *
+     * @param reader connection to the file where we want to read
+     *
+     * @throws IOException if there is some problem with the reader
+     */
     void readShips(BufferedReader reader) throws IOException {
         String fileLine = reader.readLine();
         String[] dimensions = fileLine.split(" - ");
@@ -396,6 +450,11 @@ public class Player {
         placeShipsBoard();
     }
 
+    /**
+     * Writes the attack results in the player's board, using the opponents idea of their board
+     *
+     * @param otherPlayer opponent from which we obtain the attacks
+     */
     void getBombResults(Player otherPlayer) {
         Board opponentBoard = otherPlayer.getOpponent();
         int dimV = opponentBoard.getDimV();
@@ -409,10 +468,18 @@ public class Player {
         }
     }
 
+    /**
+     * Returns the player's number
+     *
+     * @return int with the player number
+     */
     public int getNumber() {
         return number;
     }
 
+    /**
+     * Removes all the player's ships
+     */
     public void clearShips() {
         ships.clear();
         liveShips = 0;

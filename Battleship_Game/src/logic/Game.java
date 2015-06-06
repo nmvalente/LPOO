@@ -5,40 +5,40 @@ import java.util.Random;
 import java.util.Vector;
 
 /**
- * Class Game - contains all elements necessary for the game
+ * Class Game contains all elements necessary for the game
  */
 public class Game {
 
+    /** unique instance of a game */
     private static Game instance = null;
 
+    /** number of human players of the game (1 or 2) */
     private int numberPlayers;
 
-    /**
-     * player 1 - always human
-     **/
+    /** player 1 - always human */
     private Player player1;
 
-    /**
-     * player 2 - may be human or not
-     **/
+    /** player 2 - may be human or not */
     private Player player2;
 
+    /** path to the configuration file, with information on board dimension and types of ships */
     private String configFile;
 
+    /** path to the save file of player 1, where all relevant player info is stored */
     private String player1File;
 
+    /** path to the save file of player 1, where all relevant player info is stored */
     private String player2File;
 
-    /**
-     * state of the game - 0 if not finished, 1 if player 1 wins, 2 if player 2 wins
-     **/
+    /** state of the game - 0 if not finished, 1 if player 1 wins, 2 if player 2 wins */
     private int state;
 
+    /** randomly determined player that gets the first turn (1 or 2) */
     private int startingPlayer;
 
     /**
      * Instantiates a new game
-     **/
+     */
     private Game() {
         numberPlayers = 1;
         player1 = new Player(1, "");
@@ -49,6 +49,11 @@ public class Game {
         state = 0;
     }
 
+    /**
+     * Returns the unique game instance
+     *
+     * @return Game unique instance of the game
+     */
     public static Game Instance() {
         if (instance == null) {
             instance = new Game();
@@ -56,6 +61,11 @@ public class Game {
         return instance;
     }
 
+    /**
+     * Returns the number of players
+     *
+     * @return int number of human players
+     */
     public int getNumberPlayers() {
         return numberPlayers;
     }
@@ -63,8 +73,8 @@ public class Game {
     /**
      * Returns the first player
      *
-     * @return Player - first player
-     **/
+     * @return Player first player
+     */
     public Player getPlayer1() {
         return player1;
     }
@@ -72,8 +82,8 @@ public class Game {
     /**
      * Returns the second player
      *
-     * @return Player - second player
-     **/
+     * @return Player second player
+     */
     public Player getPlayer2() {
         return player2;
     }
@@ -81,27 +91,44 @@ public class Game {
     /**
      * Returns the game state
      *
-     * @return int - 0 if not finished, 1 if player 1 wins, 2 if player 2 wins
-     **/
+     * @return int 0 if not finished, 1 if player 1 wins, 2 if player 2 wins
+     */
     public int getState() {
         return state;
     }
 
+    /**
+     * Returns the number of lines of the game board (it's the same for both players)
+     *
+     * @return int with the number of lines of the game board
+     */
     public int getDimV() {
         return player1.getBoard().getDimV();
     }
 
+    /**
+     * Returns the number of columns of the game board (it's the same for both players)
+     *
+     * @return int with the number of columns of the game board
+     */
     public int getDimH() {
         return player2.getBoard().getDimH();
     }
 
+    /**
+     * Returns the number of ships for each player (it's the same for both players)
+     *
+     * @return int with the number of ships of each player
+     */
     public int getNumberShips() {
         return player1.getShips().size();
     }
 
     /**
-     * Reads the game specifications (board size and properties of the ships from the configuration file
-     **/
+     * Reads the game specifications (board size and properties of the ships) from the configuration
+     *
+     * @throws IOException if there is some problem openning the configuration file
+     */
     public void readConfig() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(configFile));
         String line = reader.readLine();
@@ -126,7 +153,7 @@ public class Game {
 
     /**
      * Loads the base game specifications when reading the configuration file fails
-     **/
+     */
     public void loadConfig() {
         Board boardPlayer1 = new Board(10, 10);
         Board boardPlayer2 = new Board(10, 10);
@@ -165,9 +192,9 @@ public class Game {
      * @return int:
      * 0 - valid configuration
      * 1 - board to big (more than 26 cells horizontally or vertically)
-     * 2 - board to small (space occupied by all ships cells > 2 * board cells)
+     * 2 - board to small (space occupied by all ships cells greater than double of board cells)
      * 3 - different type ships with the same symbol
-     **/
+     */
     public int validateConfig() {
         Board board = player1.getBoard();
         Vector<Ship> ships = player1.getShips();
@@ -185,6 +212,9 @@ public class Game {
         return 0;
     }
 
+    /**
+     * Initiates the board for the opponents for each player, where bomb results will be registered
+     */
     public void startGame() {
         int dimV = (player1.getBoard()).getDimV();
         int dimH = (player1.getBoard()).getDimH();
@@ -194,17 +224,35 @@ public class Game {
         player2.setOpponent(opponent2);
     }
 
+    /**
+     * Computes the state of the game, that is, if some player has won and which one
+     */
     public void computeState() {
         if (player1.getLiveShips() == 0) state = 2;
         else if (player2.getLiveShips() == 0) state = 1;
         else state = 0;
     }
 
+    /**
+     * Prints the player with the given number
+     *
+     * @param playerNumber number of the player we want to print (1 or 2)
+     *
+     * @return string with the result of the print
+     */
     public String printPlayer(int playerNumber) {
         if (playerNumber == 1) return printPlayer(player1, player2);
         else return printPlayer(player2, player1);
     }
 
+    /**
+     * Prints a given player as well as the opponents board as viewed by the player
+     *
+     * @param playerA player we want to print
+     * @param playerB opponent of the player we want to print
+     *
+     * @return string with the players board and their idea of the opponents board
+     */
     public String printPlayer(Player playerA, Player playerB) {
         String out = "";
         Board opponent = playerA.getOpponent();
@@ -219,26 +267,64 @@ public class Game {
         return out;
     }
 
+    /**
+     * Randomly determines the position and orientation of a given player's ships
+     *
+     * @param random random number generator
+     * @param playerNumber number of the player whose ships we want to place
+     */
     public void autoPlaceShips(Random random, int playerNumber) {
         if (playerNumber == 1) autoPlaceShips(random, player1);
         else autoPlaceShips(random, player2);
     }
 
+    /**
+     * Randomly determines the position and orientation of a given player's ships
+     *
+     * @param random random number generator
+     * @param player player whose ships we want to place
+     */
     private void autoPlaceShips(Random random, Player player) {
         player.autoPlaceShips(random);
         player.placeShipsBoard();
     }
 
+    /**
+     * Tries to change the position of a ship of a given player
+     *
+     * @param playerNumber number of the player whose ship we want to move
+     * @param oldPos position of the ship we want to move
+     * @param newPos position where we want to place the ship
+     * @param newOri orientation we wish for the ship
+     *
+     * @return true if the change is successful, false otherwise
+     */
     public boolean changeShipPosition(int playerNumber, Position oldPos, Position newPos, boolean newOri) {
         if (playerNumber == 1) return player1.changeShipPosition(oldPos, newPos, newOri);
         else return player2.changeShipPosition(oldPos, newPos, newOri);
     }
 
+    /**
+     * Prints the symbol, name and size of a given ship
+     *
+     * @param playerNumber number of the player whose ship we want to print
+     * @param shipIndex index of the ship in the vector of player's ships
+     *
+     * @return string with the result of ship's information
+     */
     public String printShip(int playerNumber, int shipIndex) {
         if (playerNumber == 1) return printShip(player1, shipIndex);
         else return printShip(player2, shipIndex);
     }
 
+    /**
+     * Prints the symbol, name and size of a given ship
+     *
+     * @param player player whose ship we want to print
+     * @param shipIndex index of the ship in the vector of player's ships
+     *
+     * @return string with the result of ship's information
+     */
     private String printShip(Player player, int shipIndex) {
         String out = "";
         Ship ship = player.getShips().get(shipIndex);
@@ -246,21 +332,48 @@ public class Game {
         return out;
     }
 
+    /**
+     * Tries to determine a given player's ship position and orientation
+     *
+     * @param playerNumber number of the player whose ship we want to place
+     * @param shipIndex index of the ship in the player's vector
+     * @param position position where we want to place the ship
+     * @param orientation orientation we want for the ship
+     *
+     * @return true if it is possible to place the ship in the given position and orientation, false otherwise
+     */
     public boolean manualPlaceShip(int playerNumber, int shipIndex, Position position, boolean orientation) {
         if (playerNumber == 1) return player1.manualPlaceShip(shipIndex, position, orientation);
         else return player2.manualPlaceShip(shipIndex, position, orientation);
     }
 
+    /**
+     * Places a given player's ship on the board
+     *
+     * @param playerNumber number of the player whose ship we want to place
+     * @param shipIndex index of the ship in the player's vector
+     */
     public void placeShipBoard(int playerNumber, int shipIndex) {
         if (playerNumber == 1) player1.placeShipBoard(shipIndex);
         else player2.placeShipBoard(shipIndex);
     }
 
+    /**
+     * Removes a given player's ship from the board
+     *
+     * @param playerNumber number of the player whose ship we want to place
+     * @param shipIndex index of the ship in the player's vector
+     */
     public void removeShipBoard(int playerNumber, int shipIndex) {
         if (playerNumber == 1) player1.removeShipBoard(shipIndex);
         else player2.removeShipBoard(shipIndex);
     }
 
+    /**
+     * Saves both players ships and turns in the respective files as well as information on the next player
+     *
+     * @param playerNumber number of the player that is playing next
+     */
     public void saveGame(int playerNumber) {
         try {
             Writer writer1 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(player1File), "utf-8"));
@@ -278,6 +391,9 @@ public class Game {
         } catch (IOException ignored) {}
     }
 
+    /**
+     * Loads a game from the player's files
+     */
     public void loadGame() {
         try {
             BufferedReader reader1 = new BufferedReader(new FileReader(player1File));
@@ -292,38 +408,87 @@ public class Game {
         } catch (IOException ignored) {}
     }
 
+    /**
+     * Sets the number of human players of the game
+     *
+     * @param newNumberPlayers number of intended players (1 or 2)
+     */
     public void setNumberPlayers(int newNumberPlayers) {
         numberPlayers = newNumberPlayers;
     }
 
+    /**
+     * Sets the name of player 1
+     *
+     * @param player1Name intended name for player 1
+     */
     public void setPlayer1Name(String player1Name) {
         player1.setName(player1Name);
     }
 
+    /**
+     * Sets the name of player 2
+     *
+     * @param player2Name intended name for player 2
+     */
     public void setPlayer2Name(String player2Name) {
         player2.setName(player2Name);
     }
 
+    /**
+     * Sets the configuration file for the game
+     *
+     * @param newConfigFile path to the configuration file
+     */
     public void setConfigFile(String newConfigFile) {
         configFile = newConfigFile;
     }
 
+    /**
+     * Sets the save file for player 1
+     *
+     * @param newPlayer1File path to the save file for player 1
+     */
     public void setPlayer1File(String newPlayer1File) {
         player1File = newPlayer1File;
     }
 
+    /**
+     * Sets the save file for player 2
+     *
+     * @param newPlayer2File path to the save file for player 1
+     */
     public void setPlayer2File(String newPlayer2File) {
         player2File = newPlayer2File;
     }
 
+    /**
+     * Returns the number of the player that gets the first turn
+     *
+     * @return 1 if player 1 has the first turn, 2 otherwise
+     */
     public int getStartingPlayer() {
         return startingPlayer;
     }
 
+    /**
+     * Sets the number of the starting player
+     *
+     * @param newStartingPlayer 1 if player 1 has the first turn, 2 otherwise
+     */
     public void setStartingPlayer(int newStartingPlayer) {
         startingPlayer = newStartingPlayer;
     }
 
+    /**
+     * Attacks a given position, considering the attacking and defending players
+     *
+     * @param playerAttack player that is attacking
+     * @param playerDefend player that is defending
+     * @param position position that is being attacked
+     *
+     * @return true if the attack is successful, false otherwise
+     */
     public boolean attackPosition(Player playerAttack, Player playerDefend, Position position) {
         int index = playerDefend.getBoard().getPosition(position);
         if (index == -1) {
@@ -342,14 +507,27 @@ public class Game {
         }
     }
 
+    /**
+     * Returns the path to the save file for player 1
+     *
+     * @return path to the save file of player 1
+     */
     public String getPlayer1File() {
         return player1File;
     }
 
+    /**
+     * Returns the path to the save file for player 2
+     *
+     * @return path to the save file of player 2
+     */
     public String getPlayer2File() {
         return player2File;
     }
 
+    /**
+     * Resets the game configuration, removing the boards and ships for both players
+     */
     public void resetConfig() {
         player1.setBoard(null);
         player2.setBoard(null);
