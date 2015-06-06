@@ -412,4 +412,9 @@ public class Player {
     public int getNumber() {
         return number;
     }
+
+    public void clearShips() {
+        ships.clear();
+        liveShips = 0;
+    }
 }

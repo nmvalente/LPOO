@@ -1,0 +1,6 @@
+board - 10 x 10
+1 - Aircraft carrier - 5 - A
+1 - Battleship - 4 - B
+1 - Cruiser - 3 - C
+2 - Destroyer - 2 - D
+2 - Submarine - 1 - S

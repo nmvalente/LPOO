@@ -148,6 +148,8 @@ public class Game {
             player1.addShip(ship);
             ship = new Ship("Destroyer", 2, 'D');
             player2.addShip(ship);
+        }
+        for (int i = 0; i < 2; i++) {
             ship = new Ship("Submarine", 1, 'S');
             player1.addShip(ship);
             ship = new Ship("Submarine", 1, 'S');
@@ -239,7 +241,7 @@ public class Game {
     private String printShip(Player player, int shipIndex) {
         String out = "";
         Ship ship = player.getShips().get(shipIndex);
-        out += ship.getSymbol() + " - " + ship.getType() + ". Size = " + ship.getDim();
+        out += ship.getSymbol() + " - " + ship.getType() + ". Size = " + ship.getDim() + ".";
         return out;
     }
 
@@ -346,4 +348,10 @@ public class Game {
         return player2File;
     }
 
+    public void resetConfig() {
+        player1.setBoard(null);
+        player2.setBoard(null);
+        player1.clearShips();
+        player2.clearShips();
+    }
 }

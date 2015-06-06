@@ -1,0 +1,12 @@
+10 - 10 - 7
+Aircraft carrier - A - 5 - Bg - V - true - true - true - true - true
+Battleship - B - 4 - Gd - V - true - true - true - true
+Cruiser - C - 3 - Ab - V - true - true - true
+Destroyer - D - 2 - Ie - V - true - true
+Destroyer - D - 2 - Hf - V - true - true
+Submarine - S - 1 - Gf - H - true
+Submarine - S - 1 - Df - H - true
+10 - 10
+Aa
+Ca - Da - Ea
+true
