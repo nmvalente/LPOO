@@ -5,6 +5,7 @@ import logic.Player;
 import logic.Position;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -12,7 +13,7 @@ public class Play {
 
     private Game game;
 
-    Play(Scanner scan) {
+    Play(Scanner scan, Random random) {
         game = Game.Instance();
         Player firstPlayer;
         Player secondPlayer;
@@ -26,16 +27,36 @@ public class Play {
             secondPlayer = game.getPlayer1();
         }
         while (game.getState() == 0 && !exit) {
-            if (!playerTurn(firstPlayer, secondPlayer, scan)) exit = true;
-            else if (game.getState() != 0) break;
-            else if (!playerTurn(secondPlayer, firstPlayer, scan)) exit = true;
+            if (game.getNumberPlayers() == 2) {
+                if (!playerTurn(firstPlayer, secondPlayer, scan)) exit = true;
+                else if (game.getState() != 0) break;
+                else if (!playerTurn(secondPlayer, firstPlayer, scan)) exit = true;
+            }
+            else {
+                if (game.getStartingPlayer() == 1) {
+                    if (!playerTurn(firstPlayer, secondPlayer, scan)) exit = true;
+                    else if (game.getState() != 0) break;
+                    else computerTurn(secondPlayer, firstPlayer, random);
+                }
+                else {
+                    computerTurn(firstPlayer, secondPlayer, random);
+                    if (game.getState() != 0) break;
+                    else if (!playerTurn(secondPlayer, firstPlayer, scan)) exit = true;
+                }
+            }
         }
         System.out.println();
         if (exit) System.out.println("Goodbye!");
         else {
-            if (game.getState() == 1) System.out.print(game.getPlayer1().getName());
-            else System.out.print(game.getPlayer1().getName());
-            System.out.println(": Congratulations, you win!");
+            if (game.getNumberPlayers() == 2) {
+                if (game.getState() == 1) System.out.print(game.getPlayer1().getName());
+                else System.out.print(game.getPlayer1().getName());
+                System.out.println(": Congratulations, you win!");
+            }
+            else {
+                if (game.getState() == 1) System.out.println(game.getPlayer1().getName() + ": Congratulations, you win!");
+                else System.out.println(game.getPlayer1().getName() + ": Sorry, you lose!");
+            }
         }
     }
 
@@ -71,11 +92,21 @@ public class Play {
                 if (!attackResult) printAttackResult(playerAttack, playerDefend, position, "failed", scan);
                 else {
                     printAttackResult(playerAttack, playerDefend, position, "succeeded", scan);
-                    if (!playerTurn(playerAttack, playerDefend, scan)) return false;
+                    if (game.getState() == 0 && !playerTurn(playerAttack, playerDefend, scan)) return false;
                 }
             }
         } while (!validPosition);
         return true;
+    }
+
+    private void computerTurn(Player playerAttack, Player playerDefend, Random random) {
+        int dimV = game.getDimV();
+        int dimH = game.getDimH();
+        int line = random.nextInt(dimV);
+        int column = random.nextInt(dimH);
+        Position position = Position.Instance(line, column);
+        boolean attackResult = game.attackPosition(playerAttack, playerDefend, position);
+        if (game.getState() == 0 && attackResult) computerTurn(playerAttack, playerDefend, random);
     }
 
     private Vector<Object> readBombPosition(String position) {
