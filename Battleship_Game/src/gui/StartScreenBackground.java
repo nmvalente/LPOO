@@ -15,7 +15,6 @@ import java.awt.Color;
 
 import javax.swing.SwingConstants;
 
-import extras.GameSettings;
 import audio.IntroSound;
 
 import java.awt.Dimension;
@@ -60,17 +59,19 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				removeFont();
 				start.setFont(change);
 				optionNr = 0;
-				
-				frame.setVisible(false);
+				//frame.setVisible(false);
 				audio.stop();
-				startmenu = new GameSettings(screenW, screenH, frame, audio);
+				startmenu = new GameSettings(screenW, screenH,frame, audio);
 				startmenu.setVisible(true);
+				startmenu.setLocationRelativeTo(null);
 			}
 		});
 		start.setPreferredSize(new Dimension(200, 25));
 		start.setHorizontalTextPosition(SwingConstants.CENTER);
 		start.setHorizontalAlignment(SwingConstants.CENTER);
 		add(start);
+		
+		
 		help.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -177,7 +178,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 			{
 				frame.setVisible(false);
 				audio.stop();
-				startmenu = new GameSettings(screenW, screenH, frame, audio);
+				startmenu = new GameSettings(screenW, screenH,frame, audio);
 				startmenu.setVisible(true);
 			}
 			else if(options[1].getFont().equals(change))

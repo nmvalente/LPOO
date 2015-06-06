@@ -15,7 +15,7 @@ public class SaveGameMenu extends JFileChooser
 		File arquivoSelec = null;
 		JFileChooser guardaArquivo = new JFileChooser();
 		guardaArquivo.setCurrentDirectory(new File("."));
-		guardaArquivo.setSelectedFile(new File("load_game.xml")); 
+		guardaArquivo.setSelectedFile(new File("game.xml")); 
 		retorno = guardaArquivo.showSaveDialog(this);
 
 		if (retorno == JFileChooser.APPROVE_OPTION)
