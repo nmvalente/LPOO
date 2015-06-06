@@ -1,7 +1,5 @@
 package logic;
 
-import java.util.Vector;
-
 /**
  * Class Board - contains the structure of the game board
  **/
@@ -58,7 +56,7 @@ public class Board {
      *
      * @return int - value of the board position
      **/
-    public int getPosition(Position position) {
+    int getPosition(Position position) {
         return matrix[position.getLine()][position.getColumn()];
     }
 
@@ -72,4 +70,4 @@ public class Board {
         matrix[position.getLine()][position.getColumn()] = value;
     }
 
-};
+}

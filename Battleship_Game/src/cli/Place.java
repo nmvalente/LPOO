@@ -96,7 +96,6 @@ public class Place {
         Position newPosition = null;
         boolean validOldPos;
         boolean validNewPos = false;
-        boolean oldOri = true;
         boolean newOri = true;
         do {
             System.out.println("");
@@ -108,7 +107,6 @@ public class Place {
                 oldLin = (int) (oldShipPosition.get(1));
                 oldCol = (int) (oldShipPosition.get(2));
                 oldPosition = Position.Instance(oldLin, oldCol);
-                oldOri = (boolean) (oldShipPosition.get(3));
                 System.out.print("New position: LINE (A.." + maxLine + ") COLUMN (a.." + maxColumn + ") ORIENTATION (H V)? ");
                 String newPos = scan.nextLine();
                 Vector newShipPosition = readShipPosition(newPos);
@@ -121,7 +119,7 @@ public class Place {
                 }
             }
         }
-        while (!validOldPos || !validNewPos || !game.changeShipPosition(playerNumber, oldPosition, oldOri, newPosition, newOri));
+        while (!validOldPos || !validNewPos || !game.changeShipPosition(playerNumber, oldPosition, newPosition, newOri));
         System.out.println();
         System.out.println(game.printPlayer(playerNumber));
     }

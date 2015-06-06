@@ -54,19 +54,19 @@ public class Player {
     /**
      * Sets the board of the player
      *
-     * @param boardp - new board
+     * @param newBoard - new board
      **/
-    void setBoard(Board boardp) {
-        board = boardp;
+    void setBoard(Board newBoard) {
+        board = newBoard;
     }
 
     /**
      * Sets the idea of the board of the opponent
      *
-     * @param opponentp - new board for the opponent
+     * @param newOpponent - new board for the opponent
      **/
-    void setOpponent(Board opponentp) {
-        opponent = opponentp;
+    void setOpponent(Board newOpponent) {
+        opponent = newOpponent;
     }
 
     /**
@@ -101,7 +101,7 @@ public class Player {
      *
      * @return Board - player's board
      **/
-    public Board getBoard() {
+    Board getBoard() {
         return board;
     }
 
@@ -186,18 +186,17 @@ public class Player {
      * Changes the position of a player's ship
      *
      * @param oldPosition - current position of the board where the ship is
-     * @param oldOrient - current orientation of the ship on the board
      * @param newPosition - position of the board where we want to place the ship
      * @param newOrient - intended orientation for the ship
      *
      * @return boolean - true if the change is valid, false otherwise
      **/
-    boolean changeShipPosition(Position oldPosition, boolean oldOrient, Position newPosition, boolean newOrient) {
+    boolean changeShipPosition(Position oldPosition, Position newPosition, boolean newOrient) {
         int shipIndex = board.getPosition(oldPosition);
         if (shipIndex < 0) return false; /* if there is no ship in the given position we do nothing else */
         else {
             oldPosition = ships.get(shipIndex).getPosition();
-            oldOrient = ships.get(shipIndex).getOrientation();
+            boolean oldOrient = ships.get(shipIndex).getOrientation();
             removeShipBoard(shipIndex);
             if (manualPlaceShip(shipIndex, newPosition, newOrient)) {
                 placeShipBoard(shipIndex);
@@ -285,19 +284,19 @@ public class Player {
         return out;
     }
 
-    public void attackFailure(Position position) {
+    void attackFailure(Position position) {
         opponent.setPosition(position, -2);
     }
 
-    public void defendFailure(Position position) {
+    void defendFailure(Position position) {
         board.setPosition(position, -2);
     }
 
-    public void attackSuccess(Position position) {
+    void attackSuccess(Position position) {
         opponent.setPosition(position, -3);
     }
 
-    public void defendSuccess(Position position) {
+    void defendSuccess(Position position) {
         int index = board.getPosition(position);
         Ship ship = ships.get(index);
         boolean shipOrientation = ship.getOrientation();
@@ -310,11 +309,11 @@ public class Player {
         board.setPosition(position, -3);
     }
 
-    public void setName(String playerName) {
+    void setName(String playerName) {
         name = playerName;
     }
 
-    public void writeOpponent(Writer writer) throws IOException {
+    void writeOpponent(Writer writer) throws IOException {
         String boardDim = opponent.getDimV() + " - " + opponent.getDimH();
         writer.write(boardDim);
         String water = "";
@@ -332,30 +331,11 @@ public class Player {
         writer.write("\n" + fire);
     }
 
-    public boolean readFile(BufferedReader reader) throws IOException {
-        String fileLine = reader.readLine();
-        String[] dimensions = fileLine.split(" - ");
-        int dimV = Integer.parseInt(dimensions[0]);
-        int dimH = Integer.parseInt(dimensions[1]);
-        int numberShips = Integer.parseInt(dimensions[2]);
-        Board playerBoard = new Board(dimV, dimH);
-        setBoard(playerBoard);
-        for (int i = 0; i < numberShips; i++) {
-            fileLine = reader.readLine();
-            String[] shipSpecs = fileLine.split(" - ");
-            Ship ship = new Ship(shipSpecs[0], Integer.parseInt(shipSpecs[2]), shipSpecs[1].charAt(0));
-            int line = shipSpecs[3].charAt(0) - 65;
-            int column = shipSpecs[3].charAt(1) - 97;
-            Position position = Position.Instance(line, column);
-            ship.setPosition(position);
-            boolean orientation = Objects.equals(shipSpecs[4], "H");
-            ship.setOrientation(orientation);
-            for (int j = 0; j < ship.getDim(); j++) {
-                if (Objects.equals(shipSpecs[5 + j], "false")) ship.killCell(j);
-            }
-            addShip(ship);
-        }
-        placeShipsBoard();
+    boolean readOpponent(BufferedReader reader) throws IOException {
+        String fileLine;
+        String[] dimensions;
+        int dimV;
+        int dimH;
         fileLine = reader.readLine();
         dimensions = fileLine.split(" - ");
         dimV = Integer.parseInt(dimensions[0]);
@@ -390,7 +370,33 @@ public class Player {
         return Objects.equals(fileLine, "true");
     }
 
-    public void getBombResults(Player otherPlayer) {
+    void readShips(BufferedReader reader) throws IOException {
+        String fileLine = reader.readLine();
+        String[] dimensions = fileLine.split(" - ");
+        int dimV = Integer.parseInt(dimensions[0]);
+        int dimH = Integer.parseInt(dimensions[1]);
+        int numberShips = Integer.parseInt(dimensions[2]);
+        Board playerBoard = new Board(dimV, dimH);
+        setBoard(playerBoard);
+        for (int i = 0; i < numberShips; i++) {
+            fileLine = reader.readLine();
+            String[] shipSpecs = fileLine.split(" - ");
+            Ship ship = new Ship(shipSpecs[0], Integer.parseInt(shipSpecs[2]), shipSpecs[1].charAt(0));
+            int line = shipSpecs[3].charAt(0) - 65;
+            int column = shipSpecs[3].charAt(1) - 97;
+            Position position = Position.Instance(line, column);
+            ship.setPosition(position);
+            boolean orientation = Objects.equals(shipSpecs[4], "H");
+            ship.setOrientation(orientation);
+            for (int j = 0; j < ship.getDim(); j++) {
+                if (Objects.equals(shipSpecs[5 + j], "false")) ship.killCell(j);
+            }
+            addShip(ship);
+        }
+        placeShipsBoard();
+    }
+
+    void getBombResults(Player otherPlayer) {
         Board opponentBoard = otherPlayer.getOpponent();
         int dimV = opponentBoard.getDimV();
         int dimH = opponentBoard.getDimH();

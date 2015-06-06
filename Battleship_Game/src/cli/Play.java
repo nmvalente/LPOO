@@ -5,7 +5,6 @@ import logic.Player;
 import logic.Position;
 
 import java.util.Objects;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -54,11 +53,6 @@ public class Play {
             game.saveGame(playerAttack.getNumber());
             return false;
         }
-        Position position;
-        int line;
-        int column;
-        String pos;
-        Vector bombPosition;
         Boolean validPosition;
         do {
             Utils.clearScreen();
@@ -66,27 +60,17 @@ public class Play {
             System.out.println();
             System.out.println(playerAttack.getName() + ": choose target.");
             System.out.print("LINE (A.." + maxLine + ") COLUMN (a.." + maxColumn + ")? ");
-            pos = scan.nextLine();
-            bombPosition = readBombPosition(pos);
+            String pos = scan.nextLine();
+            Vector bombPosition = readBombPosition(pos);
             validPosition = (boolean)(bombPosition.get(0));
             if (validPosition) {
-                line = (int)(bombPosition.get(1));
-                column = (int)(bombPosition.get(2));
-                position = Position.Instance(line, column);
-                int index = playerDefend.getBoard().getPosition(position);
-                if (index == -1) {
-                    playerDefend.defendFailure(position);
-                    playerAttack.attackFailure(position);
-                    printAttackResult(playerAttack, playerDefend, position, "failed", scan);
-                }
-                else if (index < -1) {
-                    printAttackResult(playerAttack, playerDefend, position, "failed", scan);
-                }
+                int line = (int)(bombPosition.get(1));
+                int column = (int)(bombPosition.get(2));
+                Position position = Position.Instance(line, column);
+                boolean attackResult = game.attackPosition(playerAttack, playerDefend, position);
+                if (!attackResult) printAttackResult(playerAttack, playerDefend, position, "failed", scan);
                 else {
-                    playerDefend.defendSuccess(position);
-                    playerAttack.attackSuccess(position);
                     printAttackResult(playerAttack, playerDefend, position, "succeeded", scan);
-                    game.computeState();
                     if (!playerTurn(playerAttack, playerDefend, scan)) return false;
                 }
             }

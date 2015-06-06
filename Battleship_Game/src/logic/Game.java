@@ -226,9 +226,9 @@ public class Game {
         player.placeShipsBoard();
     }
 
-    public boolean changeShipPosition(int playerNumber, Position oldPos, boolean oldOri, Position newPos, boolean newOri) {
-        if (playerNumber == 1) return player1.changeShipPosition(oldPos, oldOri, newPos, newOri);
-        else return player2.changeShipPosition(oldPos, oldOri, newPos, newOri);
+    public boolean changeShipPosition(int playerNumber, Position oldPos, Position newPos, boolean newOri) {
+        if (playerNumber == 1) return player1.changeShipPosition(oldPos, newPos, newOri);
+        else return player2.changeShipPosition(oldPos, newPos, newOri);
     }
 
     public String printShip(int playerNumber, int shipIndex) {
@@ -254,16 +254,14 @@ public class Game {
     }
 
     public void saveGame(int playerNumber) {
-        try (Writer writer1 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(player1File), "utf-8"))) {
+        try {
+            Writer writer1 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(player1File), "utf-8"));
             player1.writeShips(writer1);
             player1.writeOpponent(writer1);
             if (playerNumber == 1) writer1.write("\n" + "true");
             else writer1.write("\n" + "false");
             writer1.close();
-        } catch (IOException IOExcept) {
-            IOExcept.printStackTrace();
-        }
-        try (Writer writer2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(player2File), "utf-8"))) {
+            Writer writer2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(player2File), "utf-8"));
             player2.writeShips(writer2);
             player2.writeOpponent(writer2);
             if (playerNumber == 2) writer2.write("\n" + "true");
@@ -277,10 +275,12 @@ public class Game {
     public void loadGame() {
         try {
             BufferedReader reader1 = new BufferedReader(new FileReader(player1File));
-            BufferedReader reader2 = new BufferedReader(new FileReader(player2File));
-            if (player1.readFile(reader1)) startingPlayer = 1;
+            player1.readShips(reader1);
+            if (player1.readOpponent(reader1)) startingPlayer = 1;
             else startingPlayer = 2;
-            player2.readFile(reader2);
+            BufferedReader reader2 = new BufferedReader(new FileReader(player2File));
+            player2.readShips(reader2);
+            player2.readOpponent(reader2);
             player1.getBombResults(player2);
             player2.getBombResults(player1);
         } catch (IOException IOExcept) {
@@ -312,14 +312,6 @@ public class Game {
         player2File = newPlayer2File;
     }
 
-    public String getPlayer1Name() {
-        return player1.getName();
-    }
-
-    public String getPlayer2Name() {
-        return player2.getName();
-    }
-
     public int getStartingPlayer() {
         return startingPlayer;
     }
@@ -327,4 +319,31 @@ public class Game {
     public void setStartingPlayer(int newStartingPlayer) {
         startingPlayer = newStartingPlayer;
     }
+
+    public boolean attackPosition(Player playerAttack, Player playerDefend, Position position) {
+        int index = playerDefend.getBoard().getPosition(position);
+        if (index == -1) {
+            playerDefend.defendFailure(position);
+            playerAttack.attackFailure(position);
+            return false;
+        }
+        else if (index < -1) {
+            return false;
+        }
+        else {
+            playerDefend.defendSuccess(position);
+            playerAttack.attackSuccess(position);
+            computeState();
+            return true;
+        }
+    }
+
+    public String getPlayer1File() {
+        return player1File;
+    }
+
+    public String getPlayer2File() {
+        return player2File;
+    }
+
 }
