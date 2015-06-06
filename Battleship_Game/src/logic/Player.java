@@ -10,6 +10,8 @@ import java.util.Vector;
  **/
 public class Player {
 
+    private int number;
+
     /** name of the player **/
     private String name;
 
@@ -28,10 +30,11 @@ public class Player {
     /**
      * Instantiates a new Player
      *
-     * @param namep - player's name
+     * @param newName - player's name
      **/
-    Player(String namep) {
-        name = namep;
+    Player(int newNumber, String newName) {
+        number = newNumber;
+        name = newName;
         ships = new Vector<>();
         liveShips = 0;
         board = null;
@@ -300,8 +303,8 @@ public class Player {
         boolean shipOrientation = ship.getOrientation();
         Position shipPosition = ship.getPosition();
         int cellPos;
-        if (shipOrientation) cellPos = position.getLine() - shipPosition.getLine();
-        else cellPos = position.getColumn() - shipPosition.getColumn();
+        if (shipOrientation) cellPos = position.getColumn() - shipPosition.getColumn();
+        else cellPos = position.getLine() - shipPosition.getLine();
         ship.killCell(cellPos);
         if (ship.getLife() == 0) liveShips--;
         board.setPosition(position, -3);
@@ -325,12 +328,11 @@ public class Player {
         }
         if (water.length() > 0) water = water.substring(3);
         if (fire.length() > 0) fire = fire.substring(3);
-        writer.write(water + "\n");
-        writer.write(fire + "\n");
+        writer.write("\n" + water);
+        writer.write("\n" + fire);
     }
 
-    public void readFile(String playerFile) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(playerFile));
+    public boolean readFile(BufferedReader reader) throws IOException {
         String fileLine = reader.readLine();
         String[] dimensions = fileLine.split(" - ");
         int dimV = Integer.parseInt(dimensions[0]);
@@ -349,7 +351,7 @@ public class Player {
             boolean orientation = Objects.equals(shipSpecs[4], "H");
             ship.setOrientation(orientation);
             for (int j = 0; j < ship.getDim(); j++) {
-                if (Objects.equals(shipSpecs[5 + j], "false")) ship.killCell(i);
+                if (Objects.equals(shipSpecs[5 + j], "false")) ship.killCell(j);
             }
             addShip(ship);
         }
@@ -384,6 +386,24 @@ public class Player {
             }
         }
         setOpponent(opponentBoard);
-        reader.close();
+        fileLine = reader.readLine();
+        return Objects.equals(fileLine, "true");
+    }
+
+    public void getBombResults(Player otherPlayer) {
+        Board opponentBoard = otherPlayer.getOpponent();
+        int dimV = opponentBoard.getDimV();
+        int dimH = opponentBoard.getDimH();
+        for (int i = 0; i < dimV; i++) {
+            for (int j = 0; j < dimH; j++) {
+                Position position = Position.Instance(i, j);
+                int value = opponentBoard.getPosition(position);
+                if (value!= -1) board.setPosition(position, value);
+            }
+        }
+    }
+
+    public int getNumber() {
+        return number;
     }
 }

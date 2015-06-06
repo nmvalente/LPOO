@@ -15,6 +15,7 @@ public class Place {
     public Place(Scanner scan, Random random) {
         game = Game.Instance();
         placeShips(scan, random);
+        game.setStartingPlayer(random.nextInt(2) + 1);
     }
 
     private void choosePlacing(Scanner scan, Random random, String playerName, int playerNumber) {

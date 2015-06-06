@@ -15,7 +15,7 @@ public class Utils {
 
     public static void clearScreen() {
         if (ide) {
-            for (int i = 0; i < 10; i++) System.out.println();
+            for (int i = 0; i < 20; i++) System.out.println();
         }
         else if (nix) {
             System.out.print("\033c");
@@ -24,7 +24,7 @@ public class Utils {
             try {
                 Runtime.getRuntime().exec("cls");
             } catch (IOException except) {
-                for (int i = 0; i < 10; i++) System.out.println();
+                for (int i = 0; i < 20; i++) System.out.println();
             }
         }
     }

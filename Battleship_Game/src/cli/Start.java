@@ -18,13 +18,14 @@ public class Start {
         new Setup(scan, name1Def, name2Def, file1Def, file2Def);
         if (Objects.equals(answer, "2")) {
             game.loadGame();
+            Utils.clearScreen();
         }
         else {
             new Config(scan, configDef);
             new Place(scan, random);
             game.startGame();
         }
-        new Play(scan, random);
+        new Play(scan);
     }
 
     public static void main(String[] args) {

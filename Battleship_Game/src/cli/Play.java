@@ -13,12 +13,12 @@ public class Play {
 
     private Game game;
 
-    Play(Scanner scan, Random random) {
+    Play(Scanner scan) {
         game = Game.Instance();
-        int startingPlayer = random.nextInt(2) + 1;
         Player firstPlayer;
         Player secondPlayer;
-        if (startingPlayer == 1) {
+        boolean exit = false;
+        if (game.getStartingPlayer() == 1) {
             firstPlayer = game.getPlayer1();
             secondPlayer = game.getPlayer2();
         }
@@ -26,15 +26,18 @@ public class Play {
             firstPlayer = game.getPlayer2();
             secondPlayer = game.getPlayer1();
         }
-        while (game.getState() == 0) {
-            if (!playerTurn(firstPlayer, secondPlayer, scan)) return;
-            if (game.getState() != 0) break;
-            if (!playerTurn(secondPlayer, firstPlayer, scan)) return;
+        while (game.getState() == 0 && !exit) {
+            if (!playerTurn(firstPlayer, secondPlayer, scan)) exit = true;
+            else if (game.getState() != 0) break;
+            else if (!playerTurn(secondPlayer, firstPlayer, scan)) exit = true;
         }
         System.out.println();
-        if (game.getState() == 1) System.out.print(game.getPlayer1().getName());
-        else System.out.print(game.getPlayer1().getName());
-        System.out.println(": Congratulations, you win!");
+        if (exit) System.out.println("Goodbye!");
+        else {
+            if (game.getState() == 1) System.out.print(game.getPlayer1().getName());
+            else System.out.print(game.getPlayer1().getName());
+            System.out.println(": Congratulations, you win!");
+        }
     }
 
     private boolean playerTurn(Player playerAttack, Player playerDefend, Scanner scan) {
@@ -45,10 +48,10 @@ public class Play {
         System.out.print(playerAttack.getName() + ": it's your turn. Press enter to continue, S to save, E to save and exit. ");
         String answer = scan.nextLine();
         if (Objects.equals(answer, "S")) {
-            game.saveGame();
+            game.saveGame(playerAttack.getNumber());
         }
         else if (Objects.equals(answer,"E")) {
-            game.saveGame();
+            game.saveGame(playerAttack.getNumber());
             return false;
         }
         Position position;
@@ -84,7 +87,7 @@ public class Play {
                     playerAttack.attackSuccess(position);
                     printAttackResult(playerAttack, playerDefend, position, "succeeded", scan);
                     game.computeState();
-                    playerTurn(playerAttack, playerDefend, scan);
+                    if (!playerTurn(playerAttack, playerDefend, scan)) return false;
                 }
             }
         } while (!validPosition);

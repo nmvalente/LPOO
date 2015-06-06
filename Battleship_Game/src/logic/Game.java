@@ -34,13 +34,15 @@ public class Game {
      **/
     private int state;
 
+    private int startingPlayer;
+
     /**
      * Instantiates a new game
      **/
     private Game() {
         numberPlayers = 1;
-        player1 = new Player("");
-        player2 = new Player("");
+        player1 = new Player(1, "");
+        player2 = new Player(2, "");
         configFile = "";
         player1File = "";
         player2File = "";
@@ -251,10 +253,12 @@ public class Game {
         else player2.placeShipBoard(shipIndex);
     }
 
-    public void saveGame() {
+    public void saveGame(int playerNumber) {
         try (Writer writer1 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(player1File), "utf-8"))) {
             player1.writeShips(writer1);
             player1.writeOpponent(writer1);
+            if (playerNumber == 1) writer1.write("\n" + "true");
+            else writer1.write("\n" + "false");
             writer1.close();
         } catch (IOException IOExcept) {
             IOExcept.printStackTrace();
@@ -262,6 +266,8 @@ public class Game {
         try (Writer writer2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(player2File), "utf-8"))) {
             player2.writeShips(writer2);
             player2.writeOpponent(writer2);
+            if (playerNumber == 2) writer2.write("\n" + "true");
+            else writer2.write("\n" + "false");
             writer2.close();
         } catch (IOException IOExcept) {
             IOExcept.printStackTrace();
@@ -270,8 +276,13 @@ public class Game {
 
     public void loadGame() {
         try {
-            player1.readFile(player1File);
-            player2.readFile(player2File);
+            BufferedReader reader1 = new BufferedReader(new FileReader(player1File));
+            BufferedReader reader2 = new BufferedReader(new FileReader(player2File));
+            if (player1.readFile(reader1)) startingPlayer = 1;
+            else startingPlayer = 2;
+            player2.readFile(reader2);
+            player1.getBombResults(player2);
+            player2.getBombResults(player1);
         } catch (IOException IOExcept) {
             IOExcept.printStackTrace();
         }
@@ -309,4 +320,11 @@ public class Game {
         return player2.getName();
     }
 
+    public int getStartingPlayer() {
+        return startingPlayer;
+    }
+
+    public void setStartingPlayer(int newStartingPlayer) {
+        startingPlayer = newStartingPlayer;
+    }
 }
