@@ -127,7 +127,7 @@ public class Game {
     /**
      * Reads the game specifications (board size and properties of the ships) from the configuration
      *
-     * @throws IOException if there is some problem openning the configuration file
+     * @throws IOException if there is some problem with the configuration file
      */
     public void readConfig() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(configFile));

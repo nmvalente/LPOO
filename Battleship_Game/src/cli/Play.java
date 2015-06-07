@@ -1,6 +1,5 @@
 package cli;
 
-import javafx.geometry.Pos;
 import logic.Game;
 import logic.Player;
 import logic.Position;
