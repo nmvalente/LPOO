@@ -21,7 +21,7 @@ public class LoadGameMenu extends JFileChooser
 		{
 			setArquivoSelec(abreArquivo.getSelectedFile());
 			System.out.println(arquivoSelec);
-		}
+		}  
 	}
 
 	public static void main (String[] args)

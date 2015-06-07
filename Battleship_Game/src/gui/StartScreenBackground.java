@@ -45,7 +45,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	private StatisticsMenu statmenu;// = new StatisticsMenu();
 	private ExitMenu exitmenu;// = new ExitMenu();
 	private LoadGameMenu loadmenu;// = new LoadGameMenu();
-	private Image image;
+	private Image image; 
 	private JFrame frame;
 	private IntroSound audio;
 	/**
@@ -64,9 +64,9 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				//frame.setVisible(false);
 				audio.stop();
 				
-				startmenu = new GameSettings(screenW, screenH, frame, audio);
+				startmenu = new GameSettings(screenW, screenH, frame, audio);				
+				startmenu.setLocationRelativeTo(frame);
 				startmenu.setVisible(true);
-				startmenu.setLocationRelativeTo(null);
 			}
 		});
 		start.setPreferredSize(new Dimension(200, 25));
@@ -182,7 +182,9 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				frame.setVisible(false);
 				audio.stop();
 				startmenu = new GameSettings(screenW, screenH,frame, audio);
+				startmenu.setLocationRelativeTo(frame);
 				startmenu.setVisible(true);
+				
 			}
 			else if(options[1].getFont().equals(change))
 			{

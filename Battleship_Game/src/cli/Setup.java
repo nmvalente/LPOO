@@ -2,6 +2,7 @@ package cli;
 
 import logic.Game;
 
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -27,7 +28,16 @@ public class Setup {
         inputNames(scan, name1Def, name2Def);
         inputFiles(scan, file1Def, file2Def);
     }
-
+	// for gui
+	public Setup(Scanner scan, String file1, String file2, Random random)
+	{
+		game = Game.Instance();
+		game.setNumberPlayers(2);
+		game.setPlayer1File(file1);
+		game.setPlayer2File(file2);
+		new Place(scan, random);
+		game.startGame();
+	}
     /**
      * Gets the number of players from the console
      *

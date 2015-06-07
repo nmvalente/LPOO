@@ -28,7 +28,10 @@ import audio.IntroSound;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JRadioButton;
@@ -106,54 +109,56 @@ public class GameSettings extends JDialog implements ActionListener{
 
 						if((againstPC.isSelected() == true) || (againstHuman.isSelected() == true))
 						{	
-							t1 = new Thread(){
-								public @Override void run() { 
-									progressBarDemo.getStart();
-									try {
-										Thread.sleep(4000);
-									} catch (InterruptedException e) {
-										e.printStackTrace();
-									}
-								}
-							};
-
-							t2 = new Thread(){
-								public @Override void run() { 
-									if (t1.getState() != State.TERMINATED)
+							if(checkNames == false)
+								JOptionPane.showMessageDialog(null, "Enter valid player names");
+							else
+							{
+								t1 = new Thread(){
+									public @Override void run() { 
+										progressBarDemo.getStart();
 										try {
-											t1.join();
-
+											Thread.sleep(4000);
 										} catch (InterruptedException e) {
 											e.printStackTrace();
 										}
-									int n = JOptionPane.showConfirmDialog(null,"Confirm", "Configurations accepted",JOptionPane.YES_NO_OPTION);
-									if(n==0)
-									{
-
-										dispose();
-										frame.dispose();
-										JFrame game;
-										if((againstPC.isSelected() == true))		
-										{
-											game = new Game(frame); // game against pc
-											game.setVisible(true);
-											//game.setLocationRelativeTo(null);
-										}
-										else
-										{
-											game = new Game(frame); // game against human
-											game.setVisible(true);
-											//game.setLocationRelativeTo(null);
-										}
-
 									}
+								};
 
-								}
-							};
-							t1.start();
-							t2.start();
+								t2 = new Thread(){
+									public @Override void run() { 
+										if (t1.getState() != State.TERMINATED)
+											try {
+												t1.join();
 
+											} catch (InterruptedException e) {
+												e.printStackTrace();
+											}
+										int n = JOptionPane.showConfirmDialog(null,"Confirm", "Configurations accepted",JOptionPane.YES_NO_OPTION);
+										if(n==0)
+										{
 
+											dispose();
+											frame.dispose();
+											JFrame gameFrame;
+											if((againstPC.isSelected() == true))		
+											{
+												gameFrame = new GamePanel(namePlayer1, namePlayer2, frame); // game against pc
+												gameFrame.setVisible(true);
+												gameFrame.setLocationRelativeTo(frame);
+											}
+											else
+											{
+												gameFrame = new GamePanel(namePlayer1, namePlayer2, frame); // game against human
+												gameFrame.setVisible(true);
+												gameFrame.setLocationRelativeTo(frame);
+											}
+										}
+									}
+								};
+								t1.start();
+								t2.start();
+
+							}
 						}
 					}
 				});
@@ -194,19 +199,20 @@ public class GameSettings extends JDialog implements ActionListener{
 		againstHuman.addActionListener(this);
 
 		nameP1 = new JTextField();
-		nameP1.setBounds(36, 220, 169, 22);
+		nameP1.setBounds(36, 220, 300, 22);
 		choicesPane.add(nameP1);
 		nameP1.setColumns(10);
 		nameP1.addActionListener(this);
+		
 
-		JLabel lblNewLabel = new JLabel("Player 1");
+		JLabel lblNewLabel = new JLabel("Player 1 - Press Enter");
 		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setBounds(38, 191, 102, 16);
+		lblNewLabel.setBounds(38, 191, 155, 16);
 		choicesPane.add(lblNewLabel);
 
-		lblPlayer = new JLabel("Player 2");
+		lblPlayer = new JLabel("Player 2 - Press Enter");
 		lblPlayer.setForeground(Color.WHITE);
-		lblPlayer.setBounds(265, 191, 102, 16);
+		lblPlayer.setBounds(265, 191, 167, 16);
 		choicesPane.add(lblPlayer);
 		lblPlayer.setVisible(false);
 
@@ -241,32 +247,41 @@ public class GameSettings extends JDialog implements ActionListener{
 
 		if(againstHuman.isSelected())
 		{
+			nameP1.setBounds(36, 220, 169, 22);
 			nameP2.setVisible(true);
 			lblPlayer.setVisible(true);
 			nrPlayers = 2;
+			if((namePlayer1.length() > 0) && (namePlayer2.length() > 0))
+				checkNames = true;
+			else checkNames = false;
 		}
 		else if(againstPC.isSelected())
 		{
+			nameP1.setBounds(36, 220, 300, 22);
 			nameP2.setVisible(false);
 			lblPlayer.setVisible(false);
-			namePlayer2 = " ";
+			namePlayer2 = "";
 			nrPlayers = 1;
+			if(namePlayer1.length() > 0)
+				checkNames = true;
+			else checkNames = false;
 		}
 
-		if((namePlayer1.length() > 0) && (namePlayer2.length() > 0))
-			checkNames = true;
-		else checkNames = false;
-
+		
 
 		if(arg0.getActionCommand().equals("Load Config"))
 		{
+			Random random = new Random();
 			Scanner scan = new Scanner(System.in);
 			String file1, file2;
 			lgm = new LoadGameMenu();
-			file1 = lgm.getArquivoSelec().getPath();
+			file1 = lgm.getArquivoSelec().getName();
 			lgm = new LoadGameMenu();
-			file2 = lgm.getArquivoSelec().getPath();
-			//new Setup(scan, namePlayer1, namePlayer1, file1, file2);
+			file2 = lgm.getArquivoSelec().getName();
+			new Setup(scan, file1, file2, random);
 		}
 	}
+
+
+
 }

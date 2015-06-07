@@ -19,20 +19,20 @@ public class ChancesListener extends JPanel{
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					defaultBackground = getBackground();
-					setBackground(Color.BLUE);
+					setBackground(Color.GRAY);
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
 					setBackground(defaultBackground);
 				}
-
+ 
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if(click2 == false)
 					{
-						defaultBackground = Color.blue;
-						setBackground(Color.BLUE);
+						defaultBackground = Color.GRAY;
+						setBackground(Color.GRAY);
 						click2 = true;
 					}
 					else 
