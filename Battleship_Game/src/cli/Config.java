@@ -7,10 +7,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Class Config used to configure a new game in the command line interface
+ */
 public class Config {
 
+    /** Game that will be configured */
     private Game game;
 
+    /**
+     * Instantiates a new config
+     *
+     * @param scan scanner used to get input from the console
+     * @param configDef path to the default configuration file
+     */
     Config(Scanner scan, String configDef) {
         game = Game.Instance();
         inputFile(scan, configDef);
@@ -20,6 +30,12 @@ public class Config {
         scan.nextLine();
     }
 
+    /**
+     * Gets the path to the configuration file from the console
+     *
+     * @param scan scanner used to get input from the console
+     * @param configDef path to the default configuration file
+     */
     private void inputFile(Scanner scan, String configDef) {
         System.out.print("Path to the configuration file: ");
         String configFile = scan.nextLine();
@@ -27,7 +43,9 @@ public class Config {
         game.setConfigFile(configFile);
     }
 
-
+    /**
+     * Reads the configuration file and configures the game accordingly
+     */
     private void readConfig() {
         try {
             game.readConfig();
@@ -44,6 +62,9 @@ public class Config {
         }
     }
 
+    /**
+     * Validates de configuration that was read and if there is some problem loads a basic configuration
+     */
     private void validateConfig() {
         int validation = game.validateConfig();
         if (validation > 0) {

@@ -6,8 +6,22 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Class Start used to start the game and call the other classes
+ */
 public class Start {
 
+    /**
+     * Instantiates a new Start
+     *
+     * @param scan scanner used to get input from the console
+     * @param random random number generator for automatic ship placement
+     * @param name1Def default name for player 1
+     * @param name2Def default name for player 2
+     * @param configDef default configuration file
+     * @param file1Def default file for player 1
+     * @param file2Def default file for player 2
+     */
     Start(Scanner scan, Random random, String name1Def, String name2Def, String configDef, String file1Def, String file2Def) {
         Game game = Game.Instance();
         Utils.clearScreen();
@@ -28,6 +42,11 @@ public class Start {
         new Play(scan);
     }
 
+    /**
+     * main method for the command line interface
+     *
+     * @param args default main method argument
+     */
     public static void main(String[] args) {
         new Utils(true, true); /* ide = true, nix = true */
         String name1 = "Player 1";

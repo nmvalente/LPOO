@@ -8,16 +8,34 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
+/**
+ * Class Place used to place the players ships on the board after the configuration of a new game and before playing
+ */
 public class Place {
 
+    /** Game in which we will be placing the players' ships */
     private Game game;
 
+    /**
+     * Instantiates a new Place
+     *
+     * @param scan scanner used to get input from the console
+     * @param random random number generator for the automatic ship placement
+     */
     public Place(Scanner scan, Random random) {
         game = Game.Instance();
         placeShips(scan, random);
         game.setStartingPlayer(random.nextInt(2) + 1);
     }
 
+    /**
+     * Chooses the type of placement (manual or automatic) for the ships of a given player
+     *
+     * @param scan scanner used to get input from the console
+     * @param random random number generator for the automatic ship placement
+     * @param playerName name of the player whose ship placement will be chosen
+     * @param playerNumber number of the player whose ship placement will be chosen
+     */
     private void choosePlacing(Scanner scan, Random random, String playerName, int playerNumber) {
         System.out.print(playerName + ": place ships automatically (y/n)? ");
         String answer = scan.nextLine();
@@ -30,6 +48,13 @@ public class Place {
         else placePlayerShips(scan, playerName, playerNumber);
     }
 
+    /**
+     * Manually places a players ships on the board
+     *
+     * @param scan scanner used to get input from the console
+     * @param playerName name of the player whose ships will be manually placed
+     * @param playerNumber number of the player whose ships will be manually placed
+     */
     private void placePlayerShips(Scanner scan, String playerName, int playerNumber) {
         char maxLine = (char)(game.getDimV() + 65);
         char maxColumn = (char)(game.getDimH() + 97);
@@ -61,6 +86,13 @@ public class Place {
         repositionShips(scan, playerName, playerNumber);
     }
 
+    /**
+     * Allows the player to change the position of some ships
+     *
+     * @param scan scanner used to get input from the console
+     * @param playerName name of the player that will be asked about repositioning their ships
+     * @param playerNumber number of the player that will be asked about repositioning their ships
+     */
     private void repositionShips(Scanner scan, String playerName, int playerNumber) {
         String reposition;
         do {
@@ -70,6 +102,13 @@ public class Place {
         } while (Objects.equals(reposition, "y"));
     }
 
+    /**
+     * Reads a ship position and orientation from a string extracting the resulting elements to a vector
+     *
+     * @param position string with the position in letters and orientation (H or V)
+     *
+     * @return vector with the result of the reading: true or false to indicate if reading was successful, line (int), column (int) and orientation (true or false)
+     */
     private Vector<Object> readShipPosition(String position) {
         int dimV = game.getDimV();
         int dimH = game.getDimH();
@@ -88,6 +127,12 @@ public class Place {
         return result;
     }
 
+    /**
+     * Tries to change a given player's ship position
+     *
+     * @param scan scanner used to get input from the console
+     * @param playerNumber number of the player whose whip will be repositioned
+     */
     private void changeShipPosition(Scanner scan, int playerNumber) {
         char maxLine = (char)(game.getDimV() + 65);
         char maxColumn = (char)(game.getDimH() + 97);
@@ -124,6 +169,12 @@ public class Place {
         System.out.println(game.printPlayer(playerNumber));
     }
 
+    /**
+     * Chooses type of placement for each players ships
+     *
+     * @param scan scanner used to get input from the console
+     * @param random random number generator for when automatic placement is chosen
+     */
     private void placeShips(Scanner scan, Random random) {
         Utils.clearScreen();
         choosePlacing(scan, random, game.getPlayer1().getName(), 1);

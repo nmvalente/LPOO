@@ -4,10 +4,23 @@ import logic.Game;
 
 import java.util.Scanner;
 
+/**
+ * Class Setup used to do initial game setup: obtain number of players, player names and save files
+ */
 public class Setup {
 
+    /** Game that we will setup */
     private Game game;
 
+    /**
+     * Instantiates a new setup
+     *
+     * @param scan scanner used to get input from the console
+     * @param name1Def default name for player 1
+     * @param name2Def default name for player 2
+     * @param file1Def default file for player 1
+     * @param file2Def default file for player 2
+     */
     Setup(Scanner scan, String name1Def, String name2Def, String file1Def, String file2Def) {
         game = Game.Instance();
         inputNPlayers(scan);
@@ -15,6 +28,11 @@ public class Setup {
         inputFiles(scan, file1Def, file2Def);
     }
 
+    /**
+     * Gets the number of players from the console
+     *
+     * @param scan scanner used to get input from the console
+     */
     private void inputNPlayers(Scanner scan) {
         int numberPlayers = 1;
         System.out.print("Number of players (1/2)? ");
@@ -24,6 +42,13 @@ public class Setup {
         game.setNumberPlayers(numberPlayers);
     }
 
+    /**
+     * Gets the player names from the console
+     *
+     * @param scan scanner used to get input from the console
+     * @param name1Def default name for player 1 in case an empty name is chosen
+     * @param name2Def default name for player 2 in case an empty name is chosen
+     */
     private void inputNames(Scanner scan, String name1Def, String name2Def) {
         String player1Name;
         String player2Name;
@@ -44,6 +69,13 @@ public class Setup {
         game.setPlayer2Name(player2Name);
     }
 
+    /**
+     * Gets the player files from the console
+     *
+     * @param scan scanner used to get input from the console
+     * @param file1Def default path for the file of player 1 in case an empty file is chosen
+     * @param file2Def default path for the file of player 2 in case an empty file is chosen
+     */
     private void inputFiles(Scanner scan, String file1Def, String file2Def) {
         String player1File;
         String player2File;
@@ -58,6 +90,15 @@ public class Setup {
         game.setPlayer2File(player2File);
     }
 
+    /**
+     * Gets a given player file from the console
+     *
+     * @param scan scanner used to get input from the console
+     * @param number number of the player whose file we want to get
+     * @param fileDef default file path
+     *
+     * @return string with the path to the player file
+     */
     private String setPlayerFile(Scanner scan, String number, String fileDef) {
 //        String finalFile = "y";
         String playerFile;

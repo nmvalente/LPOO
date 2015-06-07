@@ -163,7 +163,7 @@ public class Player {
                 int line = random.nextInt(dimVb);
                 int column = random.nextInt(dimHb);
                 ship.setPosition(Position.Instance(line, column));
-                ship.setOrientation(random.nextInt(2) != 0); /* random orientation */
+                ship.setOrientation(random.nextBoolean()); /* random orientation */
             }
             while (shipOverlaps(i) || ship.exceedsDim(dimVb, dimHb));
         /* checks if the position is valid, otherwise chooses another one */
