@@ -1,16 +1,10 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
-import javax.swing.JComboBox;
-import java.awt.GridBagConstraints;
-import javax.swing.JCheckBox;
-import javax.swing.JToggleButton;
 
 public class StartMenu extends JFrame {
 

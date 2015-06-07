@@ -3,43 +3,25 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import cli.Setup;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.KeyStroke;
-import javax.swing.border.EmptyBorder;
-
 import audio.IntroSound;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.util.Random;
 import java.util.Scanner;
-
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.border.EtchedBorder;
+import cli.Setup;
 
 public class GameSettings extends JDialog implements ActionListener{
 	private static int width;
@@ -55,7 +37,7 @@ public class GameSettings extends JDialog implements ActionListener{
 	private String namePlayer1 = "", namePlayer2 = ""; 
 	boolean checkNames = false;
 	private JLabel lblPlayer;
-	private static int nrPlayers = 0;
+	private int nrPlayers = 0;
 	private LoadGameMenu lgm; 
 	/**
 	 * Launch the application.
@@ -250,7 +232,7 @@ public class GameSettings extends JDialog implements ActionListener{
 			nameP1.setBounds(36, 220, 169, 22);
 			nameP2.setVisible(true);
 			lblPlayer.setVisible(true);
-			nrPlayers = 2;
+			setNrPlayers(2);
 			if((namePlayer1.length() > 0) && (namePlayer2.length() > 0))
 				checkNames = true;
 			else checkNames = false;
@@ -261,7 +243,7 @@ public class GameSettings extends JDialog implements ActionListener{
 			nameP2.setVisible(false);
 			lblPlayer.setVisible(false);
 			namePlayer2 = "";
-			nrPlayers = 1;
+			setNrPlayers(1);
 			if(namePlayer1.length() > 0)
 				checkNames = true;
 			else checkNames = false;
@@ -280,6 +262,16 @@ public class GameSettings extends JDialog implements ActionListener{
 			file2 = lgm.getArquivoSelec().getName();
 			new Setup(scan, file1, file2, random);
 		}
+	}
+
+
+	public int getNrPlayers() {
+		return nrPlayers;
+	}
+
+
+	public void setNrPlayers(int nrPlayers) {
+		this.nrPlayers = nrPlayers;
 	}
 
 
