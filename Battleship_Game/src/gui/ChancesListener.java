@@ -11,11 +11,9 @@ import javax.swing.JPanel;
  * The class that is interested in processing a chances
  * event implements this interface, and the object created
  * with that class is registered with a component using the
- * component's <code>addChancesListener<code> method. When
+ * component's addChancesListener method. When
  * the chances event occurs, that object's appropriate
  * method is invoked.
- *
- * @see ChancesEvent
  */
 public class ChancesListener extends JPanel{
 	

@@ -6,15 +6,21 @@ import logic.Position;
 
 import java.util.*;
 
+/**
+ * Class Play used to play the game after it has been configured or loaded
+ */
 public class Play {
 
+    /** Game that will be played */
     private Game game;
 
-    private Vector<Position> computerBombs;
-
+    /**
+     * Instantiates a new play
+     *
+     * @param scan scanner used to get input from the console
+     */
     Play(Scanner scan) {
         game = Game.Instance();
-        computerBombs = new Vector<>();
         Player firstPlayer;
         Player secondPlayer;
         boolean exit = false;
@@ -26,17 +32,6 @@ public class Play {
             firstPlayer = game.getPlayer2();
             secondPlayer = game.getPlayer1();
         }
-        if (game.getNumberPlayers() == 1) {
-            int dimV = game.getDimV();
-            int dimH = game.getDimH();
-            for (int i = 0; i < dimV; i++) {
-                for (int j = 0; j < dimH; j++) {
-                    Position position = Position.Instance(i, j);
-                    computerBombs.add(position);
-                }
-            }
-            Collections.shuffle(computerBombs);
-        }
         while (game.getState() == 0 && !exit) {
             if (game.getNumberPlayers() == 2) {
                 if (!playerTurn(firstPlayer, secondPlayer, scan)) exit = true;
@@ -47,10 +42,10 @@ public class Play {
                 if (game.getStartingPlayer() == 1) {
                     if (!playerTurn(firstPlayer, secondPlayer, scan)) exit = true;
                     else if (game.getState() != 0) break;
-                    else computerTurn(secondPlayer, firstPlayer);
+                    else game.computerTurn(secondPlayer, firstPlayer);
                 }
                 else {
-                    computerTurn(firstPlayer, secondPlayer);
+                    game.computerTurn(firstPlayer, secondPlayer);
                     if (game.getState() != 0) break;
                     else if (!playerTurn(secondPlayer, firstPlayer, scan)) exit = true;
                 }
@@ -71,6 +66,15 @@ public class Play {
         }
     }
 
+    /**
+     * Plays a given players turn
+     *
+     * @param playerAttack player whose turn it is
+     * @param playerDefend other player
+     * @param scan scanner used to get input from the console
+     *
+     * @return boolean false if the player chooses to end the game, false otherwise
+     */
     private boolean playerTurn(Player playerAttack, Player playerDefend, Scanner scan) {
         int dimV = game.getDimV();
         int dimH = game.getDimH();
@@ -110,22 +114,13 @@ public class Play {
         return true;
     }
 
-    private void computerTurn(Player playerAttack, Player playerDefend) {
-        Position position = computerBombs.remove(0);
-        boolean attackResult = game.attackPosition(playerAttack, playerDefend, position);
-        if (game.getState() == 0 && attackResult) {
-            Vector<Position> neighbors = position.getNeighbors(game.getDimV(), game.getDimH());
-            for (Position neighbor : neighbors) {
-                int neighborIndex = computerBombs.indexOf(neighbor);
-                if (neighborIndex >= 0) {
-                    computerBombs.remove(neighborIndex);
-                    computerBombs.add(0, neighbor);
-                }
-            }
-            computerTurn(playerAttack, playerDefend);
-        }
-    }
-
+    /**
+     * Reads the position of a bomb from a string
+     *
+     * @param position string containing the bomb position in letters
+     *
+     * @return vector with true or false indicating if the reading was successful, the line (number) and the column of the position
+     */
     private Vector<Object> readBombPosition(String position) {
         int dimV = game.getDimV();
         int dimH = game.getDimH();
@@ -142,6 +137,15 @@ public class Play {
         return result;
     }
 
+    /**
+     * After an attack, prints the result in the console
+     *
+     * @param playerAttack player whose attack it was
+     * @param playerDefend other player
+     * @param position position that was attacked
+     * @param message message indicating success or failure of the attack
+     * @param scan scanner used to get input from the console
+     */
     void printAttackResult(Player playerAttack, Player playerDefend, Position position, String message, Scanner scan) {
         Utils.clearScreen();
         System.out.println(game.printPlayer(playerAttack, playerDefend));

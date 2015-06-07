@@ -14,6 +14,7 @@ import audio.IntroSound;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 import javax.swing.JRadioButton;
@@ -22,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.border.EtchedBorder;
 import cli.Setup;
+import logic.Game;
 
 /**
  * The Class GameSettings.
@@ -71,7 +73,9 @@ public class GameSettings extends JDialog implements ActionListener{
 	private int nrPlayers = 0;
 	
 	/** The lgm. */
-	private LoadGameMenu lgm; 
+	private LoadGameMenu lgm;
+
+	private Game game;
 	
 	/**
 	 * Launch the application.
@@ -273,6 +277,7 @@ public class GameSettings extends JDialog implements ActionListener{
 
 		namePlayer1 = nameP1.getText();
 		namePlayer2 = nameP2.getText();
+        game = Game.Instance();
 
 		if(againstHuman.isSelected())
 		{
@@ -283,6 +288,9 @@ public class GameSettings extends JDialog implements ActionListener{
 			if((namePlayer1.length() > 0) && (namePlayer2.length() > 0))
 				checkNames = true;
 			else checkNames = false;
+            game.setNumberPlayers(2);
+            game.setPlayer1Name(namePlayer1);
+            game.setPlayer2Name(namePlayer2);
 		}
 		else if(againstPC.isSelected())
 		{
@@ -294,6 +302,8 @@ public class GameSettings extends JDialog implements ActionListener{
 			if(namePlayer1.length() > 0)
 				checkNames = true;
 			else checkNames = false;
+            game.setPlayer1Name(namePlayer1);
+            game.setPlayer2Name(namePlayer2);
 		}
 
 		
@@ -302,12 +312,16 @@ public class GameSettings extends JDialog implements ActionListener{
 		{
 			Random random = new Random();
 			Scanner scan = new Scanner(System.in);
-			String file1, file2;
+			String configFile;
 			lgm = new LoadGameMenu();
-			file1 = lgm.getArquivoSelec().getName();
-			lgm = new LoadGameMenu();
-			file2 = lgm.getArquivoSelec().getName();
-			new Setup(scan, file1, file2, random);
+			configFile = lgm.getArquivoSelec().getName();
+            game.setConfigFile(configFile);
+            try {
+                game.readConfig();
+            }
+            catch (IOException IOExcept) {
+                game.loadConfig();
+            }
 		}
 	}
 

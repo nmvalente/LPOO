@@ -1,6 +1,9 @@
 package logic;
 
+import cli.Play;
+
 import java.io.*;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 
@@ -36,6 +39,9 @@ public class Game {
     /** randomly determined player that gets the first turn (1 or 2) */
     private int startingPlayer;
 
+    /** vector will all board positions randomized for the computer to play */
+    private Vector<Position> computerBombs;
+
     /**
      * Instantiates a new game
      */
@@ -47,6 +53,7 @@ public class Game {
         player1File = "";
         player2File = "";
         state = 0;
+        computerBombs = new Vector<>();
     }
 
     /**
@@ -155,6 +162,7 @@ public class Game {
      * Loads the base game specifications when reading the configuration file fails
      */
     public void loadConfig() {
+        resetConfig();
         Board boardPlayer1 = new Board(10, 10);
         Board boardPlayer2 = new Board(10, 10);
         player1.setBoard(boardPlayer1);
@@ -213,11 +221,21 @@ public class Game {
     }
 
     /**
-     * Initiates the board for the opponents for each player, where bomb results will be registered
+     * Initiates the board for the opponents for each player, where bomb results will be registered, and
+     * if there is a single player, adds bomb positions to the attack vector for the AI
      */
     public void startGame() {
-        int dimV = (player1.getBoard()).getDimV();
-        int dimH = (player1.getBoard()).getDimH();
+        int dimV = getDimV();
+        int dimH = getDimH();
+        if (numberPlayers == 1) {
+            for (int i = 0; i < dimV; i++) {
+                for (int j = 0; j < dimH; j++) {
+                    Position position = Position.Instance(i, j);
+                    computerBombs.add(position);
+                }
+            }
+            Collections.shuffle(computerBombs);
+        }
         Board opponent1 = new Board(dimV, dimH);
         Board opponent2 = new Board(dimV, dimH);
         player1.setOpponent(opponent1);
@@ -534,4 +552,27 @@ public class Game {
         player1.clearShips();
         player2.clearShips();
     }
+
+    /**
+     * Plays a computer turn, attacking the next random cell, if the attack is successful, attacks the neighbors next
+     *
+     * @param playerAttack computer player whose turn it is
+     * @param playerDefend other player
+     */
+    public void computerTurn(Player playerAttack, Player playerDefend) {
+        Position position = computerBombs.remove(0);
+        boolean attackResult = attackPosition(playerAttack, playerDefend, position);
+        if (getState() == 0 && attackResult) {
+            Vector<Position> neighbors = position.getNeighbors(getDimV(), getDimH());
+            for (Position neighbor : neighbors) {
+                int neighborIndex = computerBombs.indexOf(neighbor);
+                if (neighborIndex >= 0) {
+                    computerBombs.remove(neighborIndex);
+                    computerBombs.add(0, neighbor);
+                }
+            }
+            computerTurn(playerAttack, playerDefend);
+        }
+    }
+
 }

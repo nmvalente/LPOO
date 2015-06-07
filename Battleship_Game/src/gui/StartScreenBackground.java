@@ -158,7 +158,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 
 		setImage(path);
 
-		//Fundamental que a propriedade seja colocada a false ou a imagem não vai aparecer
+		//Fundamental que a propriedade seja colocada a false ou a imagem nao vai aparecer
 		setOpaque(false);
 		setSize(screenW, screenH);
 		

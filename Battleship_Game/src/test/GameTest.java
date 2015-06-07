@@ -81,8 +81,6 @@ public class GameTest {
     @Test
     public void test3Config() {
         Game game = Game.Instance();
-        game.resetConfig();
-        assertEquals(0, game.getNumberShips());
         game.loadConfig();
         assertEquals(0, game.validateConfig());
         assertEquals(10, game.getDimV());
