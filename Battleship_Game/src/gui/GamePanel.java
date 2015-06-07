@@ -15,21 +15,30 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
  
+/**
+ * The Class GamePanel.
+ */
 public class GamePanel extends JFrame implements ActionListener {
 	/*private static final int NUM_ROWS = 10;
 	private static final int NUM_COLS = 10;
 	private static final int PANEL_WIDTH = 600;
 	private static final int PANEL_HEIGHT = 600;*/
+	/** The My opponents panel. */
 	private JPanel MyOpponentsPanel;
+	
+	/** The start frame. */
 	private JFrame startFrame;
+	
+	/** The name player2. */
 	private String namePlayer1, namePlayer2;
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Launch the application.
+	 *
+	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -47,8 +56,10 @@ public class GamePanel extends JFrame implements ActionListener {
 
 	/**
 	 * Create the frame.
-	 * @param namePlayer2 
-	 * @param namePlayer1 
+	 *
+	 * @param namePlayer1 the name of player1
+	 * @param namePlayer2 the name of player2
+	 * @param startFrame the start frame
 	 */
 	public GamePanel(String namePlayer1, String namePlayer2, JFrame startFrame) {
 		this.startFrame = startFrame;
@@ -64,6 +75,9 @@ public class GamePanel extends JFrame implements ActionListener {
 		
 	}
 
+	/**
+	 * Inits the paint of the components
+	 */
 	public void initPaint()
 	{
 		JPanel panel = new JPanel();
@@ -156,11 +170,19 @@ public class GamePanel extends JFrame implements ActionListener {
 		play.addActionListener(this);
 	}
 	
+	/**
+	 * Paint component.
+	 *
+	 * @param g the g
+	 */
 	public void paintComponent(Graphics g)
 	{
 	   super.paintComponents(g);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		String item = evt.getActionCommand();
@@ -175,7 +197,6 @@ public class GamePanel extends JFrame implements ActionListener {
 		else if(item.equals("Quit"))
 		{
 			int confirmDialog = JOptionPane.showConfirmDialog(null, "You selected quit! \nAre you sure you want to quit?", "Selected Quit", JOptionPane.YES_NO_OPTION);
-
 			if(confirmDialog == JOptionPane.YES_OPTION) {               
 				dispose();
 				startFrame.setVisible(true);         

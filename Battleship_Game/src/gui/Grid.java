@@ -11,14 +11,23 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
+/**
+ * The Class Grid.
+ */
 public class Grid extends JPanel {
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The grid. */
 	private JPanel grid[][]; 
+	
 	/**
 	 * Create the panel.
+	 *
+	 * @param row the number of rows
+	 * @param col the number of columns
+	 * @param obj the obj the Grid uses like Listener
 	 */
 	public Grid(int row, int col, @SuppressWarnings("rawtypes") Class obj) {
 		grid = new JPanel [row][col];
@@ -53,7 +62,6 @@ public class Grid extends JPanel {
 				try {
 					panel = obj.newInstance();
 				} catch (InstantiationException | IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				((JPanel) panel).setBorder(border);
@@ -106,11 +114,24 @@ public class Grid extends JPanel {
 
 	}
 
+	/**
+	 * Gets the grid.
+	 *
+	 * @return the grid
+	 */
 	public JPanel[][] getGrid() {
 		return grid;
 	}
 
 	
+	/**
+	 * Sets the grid.
+	 *
+	 * @param tabuleiro the new tabuleiro
+	 * @param row the number of rows
+	 * @param col the numher of columns
+	 * @param obj the obj the Grid uses like Listener
+	 */
 	public void setGrid(int tabuleiro [][], int row, int col, @SuppressWarnings("rawtypes") Class obj){
 		grid = new JPanel [row][col];
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -202,6 +223,11 @@ public class Grid extends JPanel {
 	}
 
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Testing");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

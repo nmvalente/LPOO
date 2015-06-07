@@ -4,10 +4,17 @@ import javax.swing.*;
 
 import java.io.*;
 
+/**
+ * The Class SaveGameMenu to Save a game in a file
+ */
 public class SaveGameMenu extends JFileChooser
-{
+{	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Instantiates a new save game menu.
+	 */
 	public SaveGameMenu()
 	{
 		int retorno = 0;
@@ -22,6 +29,11 @@ public class SaveGameMenu extends JFileChooser
 			arquivoSelec = guardaArquivo.getSelectedFile();
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main (String[] args)
 	{
 		try {

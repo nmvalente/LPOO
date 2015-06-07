@@ -9,23 +9,40 @@ import java.text.DecimalFormat;
  */
 public class HitMissPanel extends JPanel
 {
-    /**
-	 * 
-	 */
+    
+    /** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The Constant FONT_SIZE. */
 	private static final int FONT_SIZE = 20;
 
+    /** The total shots label. */
     private JLabel totalShotsLabel;
+    
+    /** The hits label. */
     private JLabel hitsLabel;
+    
+    /** The misses label. */
     private JLabel missesLabel;
+    
+    /** The hit percentage label. */
     private JLabel hitPercentageLabel;
 
+    /** The hits. */
     private int hits;
+    
+    /** The misses. */
     private int misses;
 
+    /** The df. */
     private DecimalFormat df = new DecimalFormat("0.00%");
 
+    /**
+     * Instantiates a new hit miss panel.
+     *
+     * @param width the width of this panel
+     * @param height the height of this panel
+     */
     public HitMissPanel(int width, int height)
     {
         setPreferredSize(new Dimension(width, height));
@@ -67,8 +84,8 @@ public class HitMissPanel extends JPanel
      * Sets the number of hits and misses. This method
      * also updates the hit and miss statistics labels.
      *
-     * @param    hits    the total number of hits
-     * @param    misses  the total number of misses
+     * @param hits the hits of the player
+     * @param misses the misses of the player
      */
     public void setStats(int hits, int misses)
     {

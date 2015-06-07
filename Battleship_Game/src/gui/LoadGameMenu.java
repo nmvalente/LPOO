@@ -4,11 +4,24 @@ import javax.swing.*;
 
 import java.io.*;
  
+/**
+ * The Class LoadGameMenu.
+ */
 public class LoadGameMenu extends JFileChooser
 {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The arquivo selec. */
 	private static File arquivoSelec = null;
+	
+	/** The abre arquivo. */
 	private static JFileChooser abreArquivo = new JFileChooser();
+	
+	/**
+	 * Instantiates a new load game menu
+	 */
 	public LoadGameMenu()
 	{
 		int retorno = 0;
@@ -24,6 +37,11 @@ public class LoadGameMenu extends JFileChooser
 		}  
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main (String[] args)
 	{
 		try {
@@ -34,10 +52,20 @@ public class LoadGameMenu extends JFileChooser
 		}
 	}
 
+	/**
+	 * Gets the arquivo selec.
+	 *
+	 * @return the arquivo selec
+	 */
 	public File getArquivoSelec() {
 		return arquivoSelec;
 	}
 
+	/**
+	 * Sets the arquivo selec.
+	 *
+	 * @param arquivoSelec the new arquivo selec
+	 */
 	public static void setArquivoSelec(File arquivoSelec) {
 		LoadGameMenu.arquivoSelec = arquivoSelec;
 	}

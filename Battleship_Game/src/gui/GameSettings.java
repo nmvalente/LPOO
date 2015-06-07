@@ -23,24 +23,60 @@ import javax.swing.JLabel;
 import javax.swing.border.EtchedBorder;
 import cli.Setup;
 
+/**
+ * The Class GameSettings.
+ */
 public class GameSettings extends JDialog implements ActionListener{
+	
+	/** The width. */
 	private static int width;
+	
+	/** The height. */
 	private static int height;
+	
+	/** The choices pane. */
 	private JPanel choicesPane;
+	
+	/** The against pc. */
 	private static JRadioButton againstPC;
+	
+	/** The against human. */
 	private static JRadioButton againstHuman;
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The button group. */
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	
+	/** The t2. */
 	private Thread t1,t2;
+	
+	/** The name p1. */
 	private JTextField nameP1;
+	
+	/** The name p2. */
 	private JTextField nameP2;
+	
+	/** The name player1 and player2. */
 	private String namePlayer1 = "", namePlayer2 = ""; 
+	
+	/** The check names. */
 	boolean checkNames = false;
+	
+	/** The lbl player. */
 	private JLabel lblPlayer;
+	
+	/** The nr players. */
 	private int nrPlayers = 0;
+	
+	/** The lgm. */
 	private LoadGameMenu lgm; 
+	
 	/**
 	 * Launch the application.
+	 *
+	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
 		try {
@@ -54,6 +90,14 @@ public class GameSettings extends JDialog implements ActionListener{
 	}
 
 
+	/**
+	 * Instantiates a new game settings.
+	 *
+	 * @param w the width of the GameSettings JDialog
+	 * @param h the height of the GameSettings JDialog
+	 * @param frame the start frame
+	 * @param audio the audio playing on the start frame
+	 */
 	public GameSettings(int w, int h, JFrame frame, IntroSound audio) {
 		width = w;
 		height = h;
@@ -221,6 +265,9 @@ public class GameSettings extends JDialog implements ActionListener{
 
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
@@ -265,11 +312,21 @@ public class GameSettings extends JDialog implements ActionListener{
 	}
 
 
+	/**
+	 * Gets the number players.
+	 *
+	 * @return the number of players
+	 */
 	public int getNrPlayers() {
 		return nrPlayers;
 	}
 
 
+	/**
+	 * Sets the number players.
+	 *
+	 * @param nrPlayers the new number players
+	 */
 	public void setNrPlayers(int nrPlayers) {
 		this.nrPlayers = nrPlayers;
 	}

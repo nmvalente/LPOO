@@ -25,34 +25,73 @@ import java.awt.event.MouseAdapter;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * The Class StartScreenBackground is used to create a new background image and to handle with the events on the first game frame
+ */
 public class StartScreenBackground extends JPanel implements KeyListener{
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	
+	/** The load. */
 	private static JLabel help = new JLabel("Help"), start = new JLabel("Start Game") , exit = new JLabel("Quit"), load = new JLabel("Load Game");
+	
+	/** The default font. */
 	private static Font change = new Font("Tahoma", Font.BOLD | Font.ITALIC, 24), defaultFont = new Font("Tahoma", Font.PLAIN | Font.BOLD, 20);
+	
+	/** The options. */
 	private static JLabel[] options = {start, help, load, exit};
+	
+	/** The option nr. */
 	private static int optionNr = 0;
+	
+	/** The last option nr. */
 	private int lastOptionNr;
+	
+	/** The screen h. */
 	private static int screenH ;
+	
+	/** The screen w. */
 	private static int screenW ;
+	
+	/** The Constant musicFilename. */
 	private static final String musicFilename = "musics/KissesinParadise.wav";
+	
+	/** The helpmenu. */
 	private HelpMenu helpmenu;// = new HelpMenu();
+	
+	/** The startmenu. */
 	private GameSettings startmenu;
+	
+	/** The statmenu. */
 	private StatisticsMenu statmenu;// = new StatisticsMenu();
+	
+	/** The exitmenu. */
 	private ExitMenu exitmenu;// = new ExitMenu();
+	
+	/** The loadmenu. */
 	private LoadGameMenu loadmenu;// = new LoadGameMenu();
+	
+	/** The image. */
 	private Image image; 
+	
+	/** The frame. */
 	private JFrame frame;
+	
+	/** The audio. */
 	private IntroSound audio;
+	
 	/**
 	 * Create the panel.
+	 *
+	 * @param width the width
+	 * @param height the height
+	 * @param path the path
+	 * @param startScreen the start screen
+	 * @throws Exception the exception
 	 */
 	public StartScreenBackground(int width, int height, String path, JFrame startScreen) throws Exception {
-		screenH = height;
+		screenH = height; 
 		screenW = width;
 		frame = startScreen;
 		start.addMouseListener(new MouseAdapter() {
@@ -140,21 +179,35 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	
 	}
 
+	/**
+	 * Removes the font.
+	 */
 	public void removeFont(){
 		for(int i = 0 ; i < options.length ; i++)
 			options[i].setFont(defaultFont);
 	}
 
+	/**
+	 * Sets the image.
+	 *
+	 * @param path the new image
+	 */
 	public void setImage(String path) {
 		image = new ImageIcon(path).getImage();
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, screenW, screenH, null);
 		super.paintComponent(g);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
@@ -197,7 +250,15 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				exitmenu = new ExitMenu();
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 */
 	public void keyReleased(KeyEvent arg0) {}
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 */
 	public void keyTyped(KeyEvent arg0) {}
 	
 }

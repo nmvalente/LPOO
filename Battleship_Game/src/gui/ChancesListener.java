@@ -5,13 +5,32 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving chances events.
+ * The class that is interested in processing a chances
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addChancesListener<code> method. When
+ * the chances event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see ChancesEvent
+ */
 public class ChancesListener extends JPanel{
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The default background. */
 	private Color defaultBackground = Color.GRAY; 
+	
+	/** The click2. */
 	private boolean click2 = false;
+	
+	/**
+	 * Instantiates a new chances listener.
+	 */
 	public ChancesListener()
 	{
 		{
@@ -45,28 +64,5 @@ public class ChancesListener extends JPanel{
 			});
 		}
 	}
-
-	/*
-
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		System.out.println("1");
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		setBackground(Color.BLUE);
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		setBackground(defaultBackground);
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}*/
 }
 

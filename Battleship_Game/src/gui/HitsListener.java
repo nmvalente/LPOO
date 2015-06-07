@@ -5,13 +5,32 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
+/**
+ * The listener interface for receiving hits events.
+ * The class that is interested in processing a hits
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addHitsListener<code> method. When
+ * the hits event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see HitsEvent
+ */
 public class HitsListener extends JPanel{
-	/**
-	 * 
-	 */
+	
+	private int numberShots = 0;
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The default background. */
 	private Color defaultBackground = Color.GRAY; 
+	
+	/** The shot. */
 	private boolean shot = false;
+	
+	/**
+	 * Instantiates a new hits listener.
+	 */
 	public HitsListener()
 	{
 		{
@@ -40,10 +59,12 @@ public class HitsListener extends JPanel{
 						defaultBackground = Color.GRAY;
 						setBackground(Color.GRAY);
 						shot = true;
+						numberShots++;
 					}
 				}
 			});
 		}
 	}
+	public int getShot(){return numberShots;}
 }
 

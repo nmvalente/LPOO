@@ -8,19 +8,39 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * The Class StartScreen create a frame with the first screen game
+ */
 public class StartScreen extends JFrame {
+	
+	/** The background. */
 	private static JPanel background = null;
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The Constant filename. */
 	private static final String filename = "images/BattleshipStartScreen.gif";
+	
+	/** The height. */
 	private static int width = 1280, height = 900;
 
+	/**
+	 * Instantiates a new start screen.
+	 *
+	 * @throws Exception the exception
+	 */
 	public StartScreen() throws Exception {
 		initUI();
 	}
 
+	/**
+	 * Inits the ui.
+	 *
+	 * @throws Exception the exception
+	 */
 	private void initUI() throws Exception {
-		//		setCaracteristics();
-		//		setMaximizedWindow();
+	
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -41,11 +61,21 @@ public class StartScreen extends JFrame {
 		setSize(width,height);
 	}
 
+	/**
+	 * Inits the components.
+	 *
+	 * @throws Exception the exception
+	 */
 	private void initComponents() throws Exception {
 		background = new StartScreenBackground(width, height, filename, this);
 		add(background, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override

@@ -10,14 +10,22 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
+/**
+ * The Class OpponentsGrid.
+ */
 public class OpponentsGrid extends JPanel {
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The grid. */
 	private static JPanel grid[][];
+	
 	/**
 	 * Create the panel.
+	 *
+	 * @param row the number of rows of the Opponents Grid
+	 * @param col the number of columns of the Opponents Grid
 	 */
 	public OpponentsGrid(int row, int col) {
 		grid = new JPanel [row][col];
@@ -55,10 +63,20 @@ public class OpponentsGrid extends JPanel {
 			}
 	}
 	 
+	/**
+	 * Gets the grid.
+	 *
+	 * @return the grid
+	 */
 	public JPanel[][] getGrid() {
 		return grid;
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
         JFrame frame = new JFrame("Testing");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
