@@ -3,7 +3,7 @@ package gui;
 import javax.swing.*;
 
 import java.io.*;
-
+ 
 public class LoadGameMenu extends JFileChooser
 {
 	private static final long serialVersionUID = 1L;
@@ -34,7 +34,7 @@ public class LoadGameMenu extends JFileChooser
 		}
 	}
 
-	public static File getArquivoSelec() {
+	public File getArquivoSelec() {
 		return arquivoSelec;
 	}
 
