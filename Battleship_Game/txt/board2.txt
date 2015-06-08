@@ -1,11 +1,11 @@
 10 - 10 - 7
-Aircraft carrier - A - 255/0/255 - 5 - Ea - V - true - true - true - true - true
-Battleship - B - 0/255/255 - 4 - Hd - H - true - true - true - true
-Cruiser - C - 0/255/0 - 3 - Ih - H - true - true - true
-Destroyer - D - 255/255/255 - 2 - Ff - H - true - true
-Destroyer - D - 255/255/255 - 2 - Ag - V - true - true
-Submarine - S - 255/255/0 - 1 - If - V - true
-Submarine - S - 255/255/0 - 1 - Bb - V - true
+Aircraft carrier - A - 255/0/255 - 5 - Bf - H - true - true - true - true - true
+Battleship - B - 0/255/255 - 4 - Fj - V - true - true - true - true
+Cruiser - C - 0/255/0 - 3 - Hi - V - true - true - true
+Destroyer - D - 255/255/255 - 2 - De - V - true - true
+Destroyer - D - 255/255/255 - 2 - Di - H - true - true
+Submarine - S - 255/255/0 - 1 - He - V - true
+Submarine - S - 255/255/0 - 1 - Af - H - true
 10 - 10
 
 
