@@ -67,7 +67,9 @@ public class GamePanel extends JFrame implements ActionListener {
 	 * @param startFrame the start frame
 	 */
 	public GamePanel(String namePlayer1, String namePlayer2, JFrame startFrame) {
-        game = Game.Instance();
+        
+		
+		game = Game.Instance();
 		this.startFrame = startFrame;
 		this.namePlayer1 = namePlayer1;
 		this.namePlayer2 = namePlayer2;

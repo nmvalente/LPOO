@@ -29,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.border.EtchedBorder;
 
+import com.sun.glass.events.WindowEvent;
+
 import cli.Setup;
 import logic.Game;
 
@@ -111,11 +113,13 @@ public class GameSettings extends JDialog implements ActionListener, FocusListen
 	 * @param audio the audio playing on the start frame
 	 */
 	public GameSettings(int w, int h, JFrame frame, IntroSound audio, Random newRandom) {
-        random = newRandom;
+		
+		
+		random = newRandom;
 		width = w;
 		height = h;
-		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setUndecorated(false);
+		//setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setUndecorated(true);
 		setModal(true);
 		setLocationRelativeTo(null);  
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

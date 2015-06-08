@@ -18,7 +18,10 @@ import javax.swing.JPanel;
  * method is invoked.
  */
 public class ChancesListener extends JPanel{
-	
+	int posX;
+	int posY;
+	public int getPosX(){return posX;}
+	public int getPosY(){return posY;}
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	
@@ -50,7 +53,11 @@ public class ChancesListener extends JPanel{
 				public void mouseClicked(MouseEvent e) {
 					if(click2 == false)
 					{
-						System.out.println(getParent().getCursor());
+						posX=getY()/60-1;
+						posY=getX()/60-1;
+						
+						System.out.println(posX + " " + posY);
+						
 						defaultBackground = Color.GRAY;
 						setBackground(Color.GRAY);
 						click2 = true;
