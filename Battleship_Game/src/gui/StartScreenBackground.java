@@ -80,6 +80,8 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	
 	/** The audio. */
 	private IntroSound audio;
+
+	private Random random;
 	
 	/**
 	 * Create the panel.
@@ -90,7 +92,8 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	 * @param startScreen the start screen
 	 * @throws Exception the exception
 	 */
-	public StartScreenBackground(int width, int height, String path, JFrame startScreen) throws Exception {
+	public StartScreenBackground(int width, int height, String path, JFrame startScreen, Random newRandom) throws Exception {
+        random = newRandom;
 		screenH = height; 
 		screenW = width;
 		frame = startScreen;
@@ -103,7 +106,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				//frame.setVisible(false);
 				audio.stop();
 				
-				startmenu = new GameSettings(screenW, screenH, frame, audio);				
+				startmenu = new GameSettings(screenW, screenH, frame, audio, random);
 				startmenu.setLocationRelativeTo(frame);
 				startmenu.setVisible(true);
 			}
@@ -234,7 +237,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 			{
 				frame.setVisible(false);
 				audio.stop();
-				startmenu = new GameSettings(screenW, screenH,frame, audio);
+				startmenu = new GameSettings(screenW, screenH,frame, audio, random);
 				startmenu.setLocationRelativeTo(frame);
 				startmenu.setVisible(true);
 				

@@ -1,5 +1,9 @@
 package gui;
 
+import logic.Board;
+import logic.Game;
+import logic.Position;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,7 +24,10 @@ public class Grid extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	/** The grid. */
-	private JPanel grid[][]; 
+	private JPanel grid[][];
+
+	private Game game;
+
 	
 	/**
 	 * Create the panel.
@@ -30,6 +37,7 @@ public class Grid extends JPanel {
 	 * @param obj the obj the Grid uses like Listener
 	 */
 	public Grid(int row, int col, @SuppressWarnings("rawtypes") Class obj) {
+        game = Game.Instance();
 		grid = new JPanel [row][col];
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.rowWeights = new double[]{};
@@ -126,13 +134,12 @@ public class Grid extends JPanel {
 	
 	/**
 	 * Sets the grid.
-	 *
-	 * @param tabuleiro the new tabuleiro
+	 *  @param tabuleiro the new tabuleiro
 	 * @param row the number of rows
-	 * @param col the numher of columns
-	 * @param obj the obj the Grid uses like Listener
-	 */
-	public void setGrid(int tabuleiro [][], int row, int col, @SuppressWarnings("rawtypes") Class obj){
+     * @param col the numher of columns
+     * @param obj the obj the Grid uses like Listener
+     */
+	public void setGrid(Board tabuleiro , int row, int col, @SuppressWarnings("rawtypes") Class obj){
 		grid = new JPanel [row][col];
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.rowWeights = new double[]{};
@@ -173,7 +180,8 @@ public class Grid extends JPanel {
 				((JPanel) panel).setPreferredSize(new Dimension(60,60));
 				((JPanel) panel).setBackground(Color.black);
 				add(((JPanel) panel), gbc_panel);
-				if(tabuleiro[i][j] == 'S')
+                Position position = Position.Instance(i, j);
+				if(tabuleiro.getPosition(position) > -1)
 				{
 					((JPanel) panel).setBackground(Color.GRAY);
 					grid[i][j] = ((JPanel) panel);

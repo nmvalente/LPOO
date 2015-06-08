@@ -60,7 +60,7 @@ public class GameSettings extends JDialog implements ActionListener{
 	/** The name p2. */
 	private JTextField nameP2;
 	
-	/** The name player1 and player2. */
+	/** The names of player1 and player2. */
 	private String namePlayer1 = "", namePlayer2 = ""; 
 	
 	/** The check names. */
@@ -68,14 +68,14 @@ public class GameSettings extends JDialog implements ActionListener{
 	
 	/** The lbl player. */
 	private JLabel lblPlayer;
-	
-	/** The nr players. */
-	private int nrPlayers = 0;
-	
+
 	/** The lgm. */
 	private LoadGameMenu lgm;
 
+    /** The game. */
 	private Game game;
+
+    private Random random;
 	
 	/**
 	 * Launch the application.
@@ -83,9 +83,10 @@ public class GameSettings extends JDialog implements ActionListener{
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
+        Random random = new Random();
 		try {
 			JFrame frame = new JFrame();
-			GameSettings dialog = new GameSettings(width, height, frame, null);
+			GameSettings dialog = new GameSettings(width, height, frame, null, random);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -102,7 +103,8 @@ public class GameSettings extends JDialog implements ActionListener{
 	 * @param frame the start frame
 	 * @param audio the audio playing on the start frame
 	 */
-	public GameSettings(int w, int h, JFrame frame, IntroSound audio) {
+	public GameSettings(int w, int h, JFrame frame, IntroSound audio, Random newRandom) {
+        random = newRandom;
 		width = w;
 		height = h;
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -137,9 +139,9 @@ public class GameSettings extends JDialog implements ActionListener{
 					@Override
 					public void mouseClicked(MouseEvent e) {
 
-						if((againstPC.isSelected() == true) || (againstHuman.isSelected() == true))
+						if((againstPC.isSelected()) || (againstHuman.isSelected()))
 						{	
-							if(checkNames == false)
+							if(!checkNames)
 								JOptionPane.showMessageDialog(null, "Enter valid player names");
 							else
 							{
@@ -170,7 +172,7 @@ public class GameSettings extends JDialog implements ActionListener{
 											dispose();
 											frame.dispose();
 											JFrame gameFrame;
-											if((againstPC.isSelected() == true))		
+											if((againstPC.isSelected()))
 											{
 												gameFrame = new GamePanel(namePlayer1, namePlayer2, frame); // game against pc
 												gameFrame.setVisible(true);
@@ -284,10 +286,7 @@ public class GameSettings extends JDialog implements ActionListener{
 			nameP1.setBounds(36, 220, 169, 22);
 			nameP2.setVisible(true);
 			lblPlayer.setVisible(true);
-			setNrPlayers(2);
-			if((namePlayer1.length() > 0) && (namePlayer2.length() > 0))
-				checkNames = true;
-			else checkNames = false;
+            checkNames = (namePlayer1.length() > 0) && (namePlayer2.length() > 0);
             game.setNumberPlayers(2);
             game.setPlayer1Name(namePlayer1);
             game.setPlayer2Name(namePlayer2);
@@ -298,10 +297,7 @@ public class GameSettings extends JDialog implements ActionListener{
 			nameP2.setVisible(false);
 			lblPlayer.setVisible(false);
 			namePlayer2 = "";
-			setNrPlayers(1);
-			if(namePlayer1.length() > 0)
-				checkNames = true;
-			else checkNames = false;
+            checkNames = namePlayer1.length() > 0;
             game.setPlayer1Name(namePlayer1);
             game.setPlayer2Name(namePlayer2);
 		}
@@ -310,8 +306,6 @@ public class GameSettings extends JDialog implements ActionListener{
 
 		if(arg0.getActionCommand().equals("Load Config"))
 		{
-			Random random = new Random();
-			Scanner scan = new Scanner(System.in);
 			String configFile;
 			lgm = new LoadGameMenu();
 			configFile = lgm.getArquivoSelec().getName();
@@ -322,29 +316,11 @@ public class GameSettings extends JDialog implements ActionListener{
             catch (IOException IOExcept) {
                 game.loadConfig();
             }
+            game.autoPlaceShips(random, 1);
+            game.autoPlaceShips(random, 2);
+
 		}
 	}
-
-
-	/**
-	 * Gets the number players.
-	 *
-	 * @return the number of players
-	 */
-	public int getNrPlayers() {
-		return nrPlayers;
-	}
-
-
-	/**
-	 * Sets the number players.
-	 *
-	 * @param nrPlayers the new number players
-	 */
-	public void setNrPlayers(int nrPlayers) {
-		this.nrPlayers = nrPlayers;
-	}
-
 
 
 }

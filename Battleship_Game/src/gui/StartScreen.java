@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -30,8 +31,8 @@ public class StartScreen extends JFrame {
 	 *
 	 * @throws Exception the exception
 	 */
-	public StartScreen() throws Exception {
-		initUI();
+	public StartScreen(Random random) throws Exception {
+		initUI(random);
 	}
 
 	/**
@@ -39,7 +40,7 @@ public class StartScreen extends JFrame {
 	 *
 	 * @throws Exception the exception
 	 */
-	private void initUI() throws Exception {
+	private void initUI(Random random) throws Exception {
 	
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,7 +58,7 @@ public class StartScreen extends JFrame {
 		setResizable(false);
 		pack();
 		setVisible(true);
-		initComponents();
+		initComponents(random);
 		setSize(width,height);
 	}
 
@@ -66,8 +67,8 @@ public class StartScreen extends JFrame {
 	 *
 	 * @throws Exception the exception
 	 */
-	private void initComponents() throws Exception {
-		background = new StartScreenBackground(width, height, filename, this);
+	private void initComponents(Random random) throws Exception {
+		background = new StartScreenBackground(width, height, filename, this, random);
 		add(background, BorderLayout.CENTER);
 	}
 	
@@ -81,7 +82,8 @@ public class StartScreen extends JFrame {
 			@Override
 			public void run() {
 				StartScreen start = null;
-				try {start = new StartScreen();} 
+				Random random = new Random();
+				try {start = new StartScreen(random);}
 				catch (Exception e){e.printStackTrace();}
 				start.setVisible(true);
 			}

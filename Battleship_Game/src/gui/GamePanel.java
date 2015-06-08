@@ -1,5 +1,7 @@
 package gui;
 
+import logic.Game;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -35,6 +37,8 @@ public class GamePanel extends JFrame implements ActionListener {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+    private Game game;
+
 	/**
 	 * Launch the application.
 	 *
@@ -62,6 +66,7 @@ public class GamePanel extends JFrame implements ActionListener {
 	 * @param startFrame the start frame
 	 */
 	public GamePanel(String namePlayer1, String namePlayer2, JFrame startFrame) {
+        game = Game.Instance();
 		this.startFrame = startFrame;
 		this.namePlayer1 = namePlayer1;
 		this.namePlayer2 = namePlayer2;
@@ -106,6 +111,8 @@ public class GamePanel extends JFrame implements ActionListener {
 		myGridPanel.setPreferredSize(new Dimension(600, 20));
 		myGridPanel.setSize(new Dimension(600, 653));
 		getContentPane().add(myGridPanel);
+        ((Grid)myGridPanel).setGrid(game.getPlayer1().getBoard(), game.getDimV(), game.getDimH(), ChancesListener.class);
+        myGridPanel.revalidate();
 
 		JPanel panel_2 = new HitMissPanel(600,50);
 		panel_2.setBounds(0, 703, 1282, 50);

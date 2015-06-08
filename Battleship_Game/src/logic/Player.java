@@ -103,7 +103,7 @@ public class Player {
      *
      * @return Board player's board
      */
-    Board getBoard() {
+    public Board getBoard() {
         return board;
     }
 
