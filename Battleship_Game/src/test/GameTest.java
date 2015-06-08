@@ -6,6 +6,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Vector;
@@ -15,12 +16,21 @@ import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GameTest {
 
+    Random random = new Random(0);
+
     /**
      * Tests the initial setup of the game: number of players, player names, player files
      */
     @Test
     public void test1Setup() {
         Game game = Game.Instance();
+        game.setNumberPlayers(1);
+        assertEquals(1, game.getNumberPlayers());
+        game.setPlayer1Name("Tony");
+        assertEquals("Tony", game.getPlayer1().getName());
+        game.loadConfig();
+        game.startGame(random);
+        assertEquals(100, game.getComputerBombs().size());
         game.setNumberPlayers(2);
         assertEquals(2, game.getNumberPlayers());
         game.setPlayer1Name("Tony");
@@ -35,6 +45,8 @@ public class GameTest {
         assertEquals("/Users/Angie/Documents/MIEIC/2A2S/LPOO/praticas/Battleship/txt/board2_test.txt", game.getPlayer2File());
         assertEquals(1, game.getPlayer1().getNumber());
         assertEquals(2, game.getPlayer2().getNumber());
+        game.resetConfig();
+        assertEquals(0, game.getNumberShips());
     }
 
     /**
@@ -100,6 +112,7 @@ public class GameTest {
         assertEquals("D - Destroyer. Size = 2.", game.printShip(2, 4));
         assertEquals("S - Submarine. Size = 1.", game.printShip(2, 5));
         assertEquals("S - Submarine. Size = 1.", game.printShip(2, 6));
+        assertEquals(Color.MAGENTA, game.getPlayer1().getShips().get(0).getColor());
     }
 
     /**
@@ -108,7 +121,6 @@ public class GameTest {
     @Test
     public void test4Place() {
         Game game = Game.Instance();
-        Random random = new Random(0);
         game.autoPlaceShips(random, 1);
         assertEquals("   a b c d e f g h i j \n" +
                      " A . . . . . . . . A . \n" +
@@ -221,7 +233,7 @@ public class GameTest {
                      " I . . D . . . . . . . \n" +
                      " J . . . . . . . . . . \n", game.printPlayer(2));
         game.changeShipPosition(2, Position.Instance(0, 9), Position.Instance(0, 0), true);
-        game.startGame();
+        game.startGame(random);
         assertEquals("Tony:                        Player 2:\n" +
                      "   a b c d e f g h i j          a b c d e f g h i j \n" +
                      " A A A A A A . . . . .        A . . . . . . . . . . \n" +
@@ -261,7 +273,7 @@ public class GameTest {
         game.saveGame(1);
         game.resetConfig();
         assertEquals(0, game.getNumberShips());
-        game.loadGame();
+        game.loadGame(random);
         assertEquals("Tony:                        Player 2:\n" +
                      "   a b c d e f g h i j          a b c d e f g h i j \n" +
                      " A A A A A A . . . . .        A . . . . . . . . . . \n" +
@@ -290,7 +302,7 @@ public class GameTest {
         game.saveGame(2);
         game.resetConfig();
         assertEquals(0, game.getNumberShips());
-        game.loadGame();
+        game.loadGame(random);
         assertEquals("Tony:                        Player 2:\n" +
                      "   a b c d e f g h i j          a b c d e f g h i j \n" +
                      " A A A A A A . . . . .        A . . . . . . . . . . \n" +
@@ -356,7 +368,7 @@ public class GameTest {
                      " J . . . . . . . . . .        J . . . . . . . . . . \n", game.printPlayer(2));
         game.saveGame(1);
         game.resetConfig();
-        game.loadGame();
+        game.loadGame(random);
         assertEquals("Tony:                        Player 2:\n" +
                      "   a b c d e f g h i j          a b c d e f g h i j \n" +
                      " A * A A A A . . . . -        A * . . . . . . . . . \n" +
@@ -389,6 +401,63 @@ public class GameTest {
         Position position = Position.Instance(1, 0);
         assert position != null;
         assertEquals(neighbors, position.getNeighbors(10, 10));
+        game.saveGame(1);
+        game.resetConfig();
+        game.setNumberPlayers(1);
+        game.loadGame(random);
+        assertEquals("Tony:                        Player 2:\n" +
+                "   a b c d e f g h i j          a b c d e f g h i j \n" +
+                " A * A A A A . . . . -        A * . . . . . . . . . \n" +
+                " B * B B B B . . . . .        B - . . . . . . . . . \n" +
+                " C . . . . . . . . . .        C . . . . . . . . . . \n" +
+                " D . . D D . . . . . .        D . . . . . . . . . . \n" +
+                " E . . . . D . . C . .        E . . . . . . . . . . \n" +
+                " F . . . . D . . C . .        F . . . . . . . . . . \n" +
+                " G . . . . . . . C . .        G . . . . . . . . . . \n" +
+                " H . . . . . . . . . .        H . . . . . . . . . . \n" +
+                " I . . . . S . . . . .        I . . . . . . . . . . \n" +
+                " J . . . . . . . . . .        J . . . . . . . . . . \n", game.printPlayer(1));
+        assertEquals("Player 2:                    Tony:\n" +
+                "   a b c d e f g h i j          a b c d e f g h i j \n" +
+                " A * A A A A . . . . .        A * . . . . . . . . - \n" +
+                " B - . . . S . . . . .        B * . . . . . . . . . \n" +
+                " C . . B . . . . . . .        C . . . . . . . . . . \n" +
+                " D . . B . . . . . . .        D . . . . . . . . . . \n" +
+                " E . . B . . . . . . .        E . . . . . . . . . . \n" +
+                " F . . B D D C . . . .        F . . . . . . . . . . \n" +
+                " G . . . . . C . . . .        G . . . . . . . . . . \n" +
+                " H . . D . . C S . . .        H . . . . . . . . . . \n" +
+                " I . . D . . . . . . .        I . . . . . . . . . . \n" +
+                " J . . . . . . . . . .        J . . . . . . . . . . \n", game.printPlayer(2));
+        game.computerTurn(game.getPlayer2(), game.getPlayer1());
+        game.computerTurn(game.getPlayer2(), game.getPlayer1());
+        game.computerTurn(game.getPlayer2(), game.getPlayer1());
+        game.computerTurn(game.getPlayer2(), game.getPlayer1());
+        game.computerTurn(game.getPlayer2(), game.getPlayer1());
+        assertEquals("Tony:                        Player 2:\n" +
+                "   a b c d e f g h i j          a b c d e f g h i j \n" +
+                " A * * A A A . . . . -        A * . . . . . . . . . \n" +
+                " B * * * B B . . . . .        B - . . . . . . . . . \n" +
+                " C . . . . . . . . . .        C . . . . . . . . . . \n" +
+                " D . . D D . . . . . .        D . . . . . . . . . . \n" +
+                " E . - . . D . . C . .        E . . . . . . . . . . \n" +
+                " F . . . . D . . C . .        F . . . . . . . . . . \n" +
+                " G . - . . . . . C . .        G . . . . . . . . . . \n" +
+                " H . . . . . . . . . .        H . . . . . . . . . . \n" +
+                " I . . . . S . . . . .        I . . . . . . . . . . \n" +
+                " J . . . . . . . . . -        J . . . . . . . . . . \n", game.printPlayer(1));
+        assertEquals("Player 2:                    Tony:\n" +
+                "   a b c d e f g h i j          a b c d e f g h i j \n" +
+                " A * A A A A . . . . .        A * * . . . . . . . - \n" +
+                " B - . . . S . . . . .        B * * * . . . . . . . \n" +
+                " C . . B . . . . . . .        C . . . . . . . . . . \n" +
+                " D . . B . . . . . . .        D . . . . . . . . . . \n" +
+                " E . . B . . . . . . .        E . - . . . . . . . . \n" +
+                " F . . B D D C . . . .        F . . . . . . . . . . \n" +
+                " G . . . . . C . . . .        G . - . . . . . . . . \n" +
+                " H . . D . . C S . . .        H . . . . . . . . . . \n" +
+                " I . . D . . . . . . .        I . . . . . . . . . . \n" +
+                " J . . . . . . . . . .        J . . . . . . . . . - \n", game.printPlayer(2));
     }
 
 }

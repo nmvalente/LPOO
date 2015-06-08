@@ -1,11 +1,7 @@
 package logic;
 
-import cli.Play;
-
 import java.awt.*;
 import java.io.*;
-import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 
@@ -228,17 +224,17 @@ public class Game {
      * Initiates the board for the opponents for each player, where bomb results will be registered, and
      * if there is a single player, adds bomb positions to the attack vector for the AI
      */
-    public void startGame() {
+    public void startGame(Random random) {
         int dimV = getDimV();
         int dimH = getDimH();
         Board opponent1 = new Board(dimV, dimH);
         Board opponent2 = new Board(dimV, dimH);
         player1.setOpponent(opponent1);
         player2.setOpponent(opponent2);
-        startComputerBombs();
+        startComputerBombs(random);
     }
 
-    public void startComputerBombs() {
+    public void startComputerBombs(Random random) {
         int dimV = getDimV();
         int dimH = getDimH();
         if (numberPlayers == 1) {
@@ -248,7 +244,7 @@ public class Game {
                     computerBombs.add(position);
                 }
             }
-            Collections.shuffle(computerBombs);
+            shuffle(computerBombs, random);
         }
     }
 
@@ -422,7 +418,8 @@ public class Game {
     /**
      * Loads a game from the player's files
      */
-    public void loadGame() {
+    public void loadGame(Random random) {
+        Vector<Position> previousBombs;
         try {
             BufferedReader reader1 = new BufferedReader(new FileReader(player1File));
             player1.readShips(reader1);
@@ -431,10 +428,17 @@ public class Game {
             BufferedReader reader2 = new BufferedReader(new FileReader(player2File));
             player2.readShips(reader2);
             player2.readOpponent(reader2);
-            player1.getBombResults(player2);
+            previousBombs = player1.getBombResults(player2);
             player2.getBombResults(player1);
+            if (numberPlayers == 1) {
+                startComputerBombs(random);
+                removeComputerBombs(previousBombs);
+            }
         } catch (IOException ignored) {}
-        startComputerBombs();
+    }
+
+    private void removeComputerBombs(Vector<Position> previousBombs) {
+        previousBombs.forEach(computerBombs::remove);
     }
 
     /**
@@ -560,6 +564,8 @@ public class Game {
     public void resetConfig() {
         player1.setBoard(null);
         player2.setBoard(null);
+        player1.setOpponent(null);
+        player2.setOpponent(null);
         player1.clearShips();
         player2.clearShips();
     }
@@ -584,6 +590,23 @@ public class Game {
             }
             computerTurn(playerAttack, playerDefend);
         }
+    }
+
+    public Vector<Position> getComputerBombs() {
+        return computerBombs;
+    }
+
+    private void shuffle(Vector<Position> computerBombs, Random random) {
+        int count = computerBombs.size();
+        for (int i = count; i > 1; i--) {
+            swap(computerBombs, i - 1, random.nextInt(i));
+        }
+    }
+
+    private void swap(Vector<Position> computerBombs, int i, int j) {
+        Position temp = computerBombs.get(i);
+        computerBombs.set(i, computerBombs.get(j));
+        computerBombs.set(j, temp);
     }
 
 }

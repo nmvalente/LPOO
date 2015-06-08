@@ -457,8 +457,11 @@ public class Player {
      * Writes the attack results in the player's board, using the opponents idea of their board
      *
      * @param otherPlayer opponent from which we obtain the attacks
+     *
+     * @return vector with the positions that where previously attacked
      */
-    void getBombResults(Player otherPlayer) {
+    Vector<Position> getBombResults(Player otherPlayer) {
+        Vector<Position> result = new Vector<>();
         Board opponentBoard = otherPlayer.getOpponent();
         int dimV = opponentBoard.getDimV();
         int dimH = opponentBoard.getDimH();
@@ -466,9 +469,13 @@ public class Player {
             for (int j = 0; j < dimH; j++) {
                 Position position = Position.Instance(i, j);
                 int value = opponentBoard.getPosition(position);
-                if (value!= -1) board.setPosition(position, value);
+                if (value!= -1) {
+                    board.setPosition(position, value);
+                    result.add(position);
+                }
             }
         }
+        return result;
     }
 
     /**
