@@ -262,7 +262,6 @@ public class GameTest {
         game.resetConfig();
         assertEquals(0, game.getNumberShips());
         game.loadGame();
-        game.startGame();
         assertEquals("Tony:                        Player 2:\n" +
                      "   a b c d e f g h i j          a b c d e f g h i j \n" +
                      " A A A A A A . . . . .        A . . . . . . . . . . \n" +

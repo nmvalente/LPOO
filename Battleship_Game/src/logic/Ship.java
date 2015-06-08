@@ -1,5 +1,6 @@
 package logic;
 
+import java.awt.*;
 import java.util.Vector;
 
 /**
@@ -15,6 +16,9 @@ public class Ship {
 
     /** symbol that identifies the ship, usually the first letter of the type, e.g. 'A' for the "Aircraft carrier" */
     private char symbol;
+
+    /** color of the ship for the graphical user interface */
+    private Color color;
 
     /** vector with the state of each cell in the ship: false = dead, true = alive */
     private Vector<Boolean> state;
@@ -35,10 +39,11 @@ public class Ship {
      * @param dims number of cells of the ship
      * @param symbols symbol that represents the ship
      */
-    Ship(String types, int dims, char symbols) {
+    Ship(String types, int dims, char symbols, Color colors) {
         type = types;
         dim = dims;
         symbol = symbols;
+        color = colors;
         state = new Vector<>();
         for (int i = 0; i < dim; i++) state.add(true);
         life = dims;
@@ -71,6 +76,15 @@ public class Ship {
      */
     char getSymbol() {
         return symbol;
+    }
+
+    /**
+     * Returns the ship's symbol
+     *
+     * @return char with the ship's symbol
+     */
+    public Color getColor() {
+        return color;
     }
 
     /**
@@ -137,7 +151,8 @@ public class Ship {
     public String toString() {
         String out = "";
         String orient = orientation ? "H" : "V";
-        out += type + " - " + symbol + " - " + dim + " - " + position + " - " + orient;
+        out += type + " - " + symbol + " - " + color.getRed() + "/" + color.getGreen() + "/" + color.getBlue()
+                + " - " + dim + " - " + position + " - " + orient;
         for (Boolean cellState : state) out += " - " + cellState;
         return out;
     }

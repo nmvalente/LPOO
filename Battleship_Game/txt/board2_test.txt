@@ -1,23 +1,12 @@
-10 - 10 - 18
-Aircraft carrier - A - 5 - [{ - H - true - true - true - true - true
-Battleship - B - 4 - [{ - H - true - true - true - true
-Cruiser - C - 3 - [{ - H - true - true - true
-Destroyer - D - 2 - [{ - H - true - true
-Destroyer - D - 2 - [{ - H - true - true
-Submarine - S - 1 - [{ - H - true
-Submarine - S - 1 - [{ - H - true
-Aircraft carrier - A - 5 - [{ - H - true - true - true - true - true
-Battleship - B - 4 - [{ - H - true - true - true - true
-Cruiser - C - 3 - [{ - H - true - true - true
-Cruiser - C - 3 - [{ - H - true - true - true
-Destroyer - D - 2 - [{ - H - true - true
-Destroyer - D - 2 - [{ - H - true - true
-Destroyer - D - 2 - [{ - H - true - true
-Submarine - S - 1 - [{ - H - true
-Submarine - S - 1 - [{ - H - true
-Submarine - S - 1 - [{ - H - true
-Submarine - S - 1 - [{ - H - true
+10 - 10 - 7
+Aircraft carrier - A - 255/0/255 - 5 - Aa - H - false - true - true - true - true
+Battleship - B - 0/255/255 - 4 - Cc - V - true - true - true - true
+Cruiser - C - 0/255/0 - 3 - Ff - V - true - true - true
+Destroyer - D - 255/255/255 - 2 - Hc - V - true - true
+Destroyer - D - 255/255/255 - 2 - Fd - H - true - true
+Submarine - S - 255/255/0 - 1 - Be - H - true
+Submarine - S - 255/255/0 - 1 - Hg - H - true
 10 - 10
 Aj
-
+Aa - Ba
 false

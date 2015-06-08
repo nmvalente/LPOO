@@ -1,5 +1,6 @@
 package logic;
 
+import java.awt.*;
 import java.io.*;
 import java.util.Objects;
 import java.util.Random;
@@ -85,7 +86,7 @@ public class Player {
      *
      * @return vector with the player's ships
      */
-    Vector<Ship> getShips() {
+    public Vector<Ship> getShips() {
         return ships;
     }
 
@@ -435,15 +436,17 @@ public class Player {
         for (int i = 0; i < numberShips; i++) {
             fileLine = reader.readLine();
             String[] shipSpecs = fileLine.split(" - ");
-            Ship ship = new Ship(shipSpecs[0], Integer.parseInt(shipSpecs[2]), shipSpecs[1].charAt(0));
-            int line = shipSpecs[3].charAt(0) - 65;
-            int column = shipSpecs[3].charAt(1) - 97;
+            String[] shipColor = shipSpecs[2].split("/");
+            Color color = new Color(Integer.parseInt(shipColor[0]),Integer.parseInt(shipColor[1]), Integer.parseInt(shipColor[2]));
+            Ship ship = new Ship(shipSpecs[0], Integer.parseInt(shipSpecs[3]), shipSpecs[1].charAt(0), color);
+            int line = shipSpecs[4].charAt(0) - 65;
+            int column = shipSpecs[4].charAt(1) - 97;
             Position position = Position.Instance(line, column);
             ship.setPosition(position);
-            boolean orientation = Objects.equals(shipSpecs[4], "H");
+            boolean orientation = Objects.equals(shipSpecs[5], "H");
             ship.setOrientation(orientation);
             for (int j = 0; j < ship.getDim(); j++) {
-                if (Objects.equals(shipSpecs[5 + j], "false")) ship.killCell(j);
+                if (Objects.equals(shipSpecs[6 + j], "false")) ship.killCell(j);
             }
             addShip(ship);
         }

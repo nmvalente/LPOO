@@ -106,12 +106,12 @@ public class GamePanel extends JFrame implements ActionListener {
 		label.setBounds(934, 0, 123, 50);
 		panel.add(label);
 
-		JPanel myGridPanel = new Grid(10,10, ChancesListener.class);
+		JPanel myGridPanel = new Grid(10,10);
 		myGridPanel.setLocation(0, 50);
 		myGridPanel.setPreferredSize(new Dimension(600, 20));
 		myGridPanel.setSize(new Dimension(600, 653));
 		getContentPane().add(myGridPanel);
-        ((Grid)myGridPanel).setGrid(game.getPlayer1().getBoard(), game.getDimV(), game.getDimH(), ChancesListener.class);
+        ((Grid)myGridPanel).setGrid(game.getPlayer1(), game.getDimV(), game.getDimH(), ChancesListener.class);
         myGridPanel.revalidate();
 
 		JPanel panel_2 = new HitMissPanel(600,50);

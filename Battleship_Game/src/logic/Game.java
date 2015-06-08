@@ -2,7 +2,9 @@ package logic;
 
 import cli.Play;
 
+import java.awt.*;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
@@ -148,10 +150,12 @@ public class Game {
         player2.setBoard(boardPlayer2);
         while ((line = reader.readLine()) != null) {
             String[] shipSpecs = line.split(" - ");
+            String[] shipColor = shipSpecs[4].split("/");
+            Color color = new Color(Integer.parseInt(shipColor[0]),Integer.parseInt(shipColor[1]), Integer.parseInt(shipColor[2]));
             for (int i = 0; i < Integer.parseInt(shipSpecs[0]); i++) {
-                Ship shipPlayer1 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0));
+                Ship shipPlayer1 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), color);
                 player1.addShip(shipPlayer1);
-                Ship shipPlayer2 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0));
+                Ship shipPlayer2 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), color);
                 player2.addShip(shipPlayer2);
             }
         }
@@ -167,28 +171,28 @@ public class Game {
         Board boardPlayer2 = new Board(10, 10);
         player1.setBoard(boardPlayer1);
         player2.setBoard(boardPlayer2);
-        Ship ship = new Ship("Aircraft carrier", 5, 'A');
+        Ship ship = new Ship("Aircraft carrier", 5, 'A', Color.MAGENTA);
         player1.addShip(ship);
-        ship = new Ship("Aircraft carrier", 5, 'A');
+        ship = new Ship("Aircraft carrier", 5, 'A', Color.MAGENTA);
         player2.addShip(ship);
-        ship = new Ship("Battleship", 4, 'B');
+        ship = new Ship("Battleship", 4, 'B', Color.CYAN);
         player1.addShip(ship);
-        ship = new Ship("Battleship", 4, 'B');
+        ship = new Ship("Battleship", 4, 'B', Color.CYAN);
         player2.addShip(ship);
-        ship = new Ship("Cruiser", 3, 'C');
+        ship = new Ship("Cruiser", 3, 'C', Color.GREEN);
         player1.addShip(ship);
-        ship = new Ship("Cruiser", 3, 'C');
+        ship = new Ship("Cruiser", 3, 'C', Color.GREEN);
         player2.addShip(ship);
         for (int i = 0; i < 2; i++) {
-            ship = new Ship("Destroyer", 2, 'D');
+            ship = new Ship("Destroyer", 2, 'D', Color.WHITE);
             player1.addShip(ship);
-            ship = new Ship("Destroyer", 2, 'D');
+            ship = new Ship("Destroyer", 2, 'D', Color.WHITE);
             player2.addShip(ship);
         }
         for (int i = 0; i < 2; i++) {
-            ship = new Ship("Submarine", 1, 'S');
+            ship = new Ship("Submarine", 1, 'S', Color.YELLOW);
             player1.addShip(ship);
-            ship = new Ship("Submarine", 1, 'S');
+            ship = new Ship("Submarine", 1, 'S', Color.YELLOW);
             player2.addShip(ship);
         }
     }
@@ -227,6 +231,16 @@ public class Game {
     public void startGame() {
         int dimV = getDimV();
         int dimH = getDimH();
+        Board opponent1 = new Board(dimV, dimH);
+        Board opponent2 = new Board(dimV, dimH);
+        player1.setOpponent(opponent1);
+        player2.setOpponent(opponent2);
+        startComputerBombs();
+    }
+
+    public void startComputerBombs() {
+        int dimV = getDimV();
+        int dimH = getDimH();
         if (numberPlayers == 1) {
             for (int i = 0; i < dimV; i++) {
                 for (int j = 0; j < dimH; j++) {
@@ -236,10 +250,6 @@ public class Game {
             }
             Collections.shuffle(computerBombs);
         }
-        Board opponent1 = new Board(dimV, dimH);
-        Board opponent2 = new Board(dimV, dimH);
-        player1.setOpponent(opponent1);
-        player2.setOpponent(opponent2);
     }
 
     /**
@@ -424,6 +434,7 @@ public class Game {
             player1.getBombResults(player2);
             player2.getBombResults(player1);
         } catch (IOException ignored) {}
+        startComputerBombs();
     }
 
     /**
