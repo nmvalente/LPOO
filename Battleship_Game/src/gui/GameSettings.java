@@ -244,12 +244,12 @@ public class GameSettings extends JDialog implements ActionListener, FocusListen
 		nameP1.addFocusListener(this);
 		
 
-		JLabel lblNewLabel = new JLabel("Player 1 - Press Enter");
+		JLabel lblNewLabel = new JLabel("Player 1");
 		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setBounds(38, 191, 155, 16);
 		choicesPane.add(lblNewLabel);
 
-		lblPlayer = new JLabel("Player 2 - Press Enter");
+		lblPlayer = new JLabel("Player 2");
 		lblPlayer.setForeground(Color.WHITE);
 		lblPlayer.setBounds(265, 191, 167, 16);
 		choicesPane.add(lblPlayer);
