@@ -1,44 +1,53 @@
 package gui;
 
 import logic.Game;
+import logic.Player;
 
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import java.awt.Dimension;
+
 import javax.swing.JButton;
+
 import java.awt.Component;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
- 
+
 /**
  * The Class GamePanel.
  */
 public class GamePanel extends JFrame implements ActionListener {
-	/*private static final int NUM_ROWS = 10;
-	private static final int NUM_COLS = 10;
-	private static final int PANEL_WIDTH = 600;
-	private static final int PANEL_HEIGHT = 600;*/
+
 	/** The My opponents panel. */
 	private JPanel MyOpponentsPanel;
+	private JPanel myGridPanel;
 	private JButton play;
-	private JLabel turn;
+	private JButton end;
 	/** The start frame. */
 	private JFrame startFrame;
-	
+
 	/** The name player2. */
 	private String namePlayer1, namePlayer2;
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-    private Game game;
+	private Game game;
+	private Player player;
+
+	public JPanel getMyOpponentsPanel(){return MyOpponentsPanel;}
+	public JPanel getMyPanel(){return myGridPanel;}
 
 	/**
 	 * Launch the application.
@@ -49,8 +58,9 @@ public class GamePanel extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					Game game = Game.Instance();
 					JFrame frameStart = new JFrame();
-					GamePanel frame = new GamePanel("Me","You",frameStart);
+					GamePanel frame = new GamePanel("Me","You",game.getPlayer1(), frameStart);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,21 +76,19 @@ public class GamePanel extends JFrame implements ActionListener {
 	 * @param namePlayer2 the name of player2
 	 * @param startFrame the start frame
 	 */
-	public GamePanel(String namePlayer1, String namePlayer2, JFrame startFrame) {
-        
-		
+	public GamePanel(String namePlayer1, String namePlayer2, Player player, JFrame startFrame) {
+		this.player = player;
 		game = Game.Instance();
 		this.startFrame = startFrame;
 		this.namePlayer1 = namePlayer1;
 		this.namePlayer2 = namePlayer2;
 		setBackground(Color.BLACK);
 		setName("Battleship");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(0, 0, 1243, 622);
 		setMinimumSize(new Dimension(1300, 800));
 		getContentPane().setLayout(null);
 		initPaint();
-		
 	}
 
 	/**
@@ -100,7 +108,7 @@ public class GamePanel extends JFrame implements ActionListener {
 		myGrid.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		myGrid.setBounds(272, 0, 123, 50);
 		panel.add(myGrid);
-		
+
 		if(namePlayer2 == "")
 			namePlayer2 = "Computer Grid";
 		JLabel label = new JLabel(namePlayer2);
@@ -109,13 +117,13 @@ public class GamePanel extends JFrame implements ActionListener {
 		label.setBounds(934, 0, 123, 50);
 		panel.add(label);
 
-		JPanel myGridPanel = new Grid(10,10);
+		myGridPanel = new Grid(10,10);
 		myGridPanel.setLocation(0, 50);
 		myGridPanel.setPreferredSize(new Dimension(600, 20));
 		myGridPanel.setSize(new Dimension(600, 653));
 		getContentPane().add(myGridPanel);
-        ((Grid)myGridPanel).setGrid(game.getPlayer1(), game.getDimV(), game.getDimH(), ChancesListener.class);
-        myGridPanel.revalidate();
+		((Grid)myGridPanel).setGrid(player, game.getDimV(), game.getDimH(), ChancesListener.class);
+		myGridPanel.revalidate();
 
 		JPanel panel_2 = new HitMissPanel(600,50);
 		panel_2.setBounds(0, 703, 1282, 50);
@@ -125,13 +133,6 @@ public class GamePanel extends JFrame implements ActionListener {
 		MyOpponentsPanel.setBounds(682, 50, 600, 653);
 		MyOpponentsPanel.setPreferredSize(new Dimension(600, 20));
 		getContentPane().add(MyOpponentsPanel);
-
-		turn = new JLabel("My turn");
-		turn.setFont(new Font("Tahoma", Font.ITALIC, 16));
-		turn.setHorizontalAlignment(SwingConstants.CENTER);
-		turn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		turn.setBounds(602, 292, 79, 50);
-		getContentPane().add(turn);
 
 		JButton save = new JButton("Save");
 		save.setFocusable(false);
@@ -162,8 +163,8 @@ public class GamePanel extends JFrame implements ActionListener {
 		quit.setBounds(602, 548, 79, 50);
 		getContentPane().add(quit);
 		quit.addActionListener(this);
-		
-		play = new JButton("Play");
+
+		play = new JButton("Start");
 		play.setFocusable(false);
 		play.setDisabledIcon(null);
 		play.setDisabledSelectedIcon(null);
@@ -175,11 +176,22 @@ public class GamePanel extends JFrame implements ActionListener {
 		play.setContentAreaFilled(false);
 		play.setBorderPainted(false);
 		play.setAlignmentX(0.5f);
-		play.setBounds(602, 409, 79, 50);
-		getContentPane().add(play);
+		play.setBounds(602, 301, 79, 50);
 		play.addActionListener(this);
+		getContentPane().add(play);
+
+		end = new JButton("End");
+		end.setSelected(true);
+		end.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		end.setContentAreaFilled(false);
+		end.setBorderPainted(false);
+		end.setBorder(null);
+		end.setFocusable(false);
+		end.setBounds(602, 393, 79, 44);
+		getContentPane().add(end);
+		end.addActionListener(this);		
 	}
-	
+
 	/**
 	 * Paint component.
 	 *
@@ -187,22 +199,20 @@ public class GamePanel extends JFrame implements ActionListener {
 	 */
 	public void paintComponent(Graphics g)
 	{
-	   super.paintComponents(g);
+		super.paintComponents(g);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		String item = evt.getActionCommand();
-		if(item.equals("Play"))
+		if(item.equals("Start"))
 		{
-			MyOpponentsPanel = new Grid(10,10, HitsListener.class);
-			MyOpponentsPanel.setBounds(682, 50, 600, 653);
-			MyOpponentsPanel.setPreferredSize(new Dimension(600, 20));
-			add(MyOpponentsPanel);	
-			MyOpponentsPanel.revalidate();
+			myGridPanel.setVisible(true);
+			MyOpponentsPanel.setVisible(true);
+			end.addActionListener(this);
 			play.removeActionListener(this);
 		}
 		else if(item.equals("Quit"))
@@ -211,16 +221,16 @@ public class GamePanel extends JFrame implements ActionListener {
 			if(confirmDialog == JOptionPane.YES_OPTION) {               
 				dispose();
 				startFrame.setVisible(true);         
-				//focus under this comment here                     
-			} else {                    
-				//game.reset();                 
-				//displayBoard();
-				System.out.println("you almost quit the game");
-			}
+				 //focus under this comment here                     
+			} 
 		}
 		else if(item.equals("Save"))
 			new SaveGameMenu();
+		else if(item.equals("End"))
+			end.removeActionListener(this);	
 	}
+
+	public JButton getEnd(){return end;}
 }
 
 

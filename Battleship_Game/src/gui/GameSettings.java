@@ -33,6 +33,7 @@ import com.sun.glass.events.WindowEvent;
 
 import cli.Setup;
 import logic.Game;
+import logic.Player;
 
 /**
  * The Class GameSettings.
@@ -179,21 +180,28 @@ public class GameSettings extends JDialog implements ActionListener, FocusListen
 										int n = JOptionPane.showConfirmDialog(null,"Confirm", "Configurations accepted",JOptionPane.YES_NO_OPTION);
 										if(n==0)
 										{
-
 											dispose();
 											frame.dispose();
-											JFrame gameFrame;
+											game.setStartingPlayer(random.nextInt(2)+1);
 											if((againstPC.isSelected()))
 											{
-												gameFrame = new GamePanel(namePlayer1, namePlayer2, frame); // game against pc
-												gameFrame.setVisible(true);
-												gameFrame.setLocationRelativeTo(frame);
+												new GameDriver(namePlayer1, "Computer", game.getPlayer1(), game.getPlayer2(), frame);
+												/*new GamePanel(namePlayer1, "Computer", game.getPlayer1(), frame); // game against pc
+												myGridpanel1 = new GamePanel(namePlayer1, "Computer", game.getPlayer1(), frame); // game against pc
+												gameFrame1.setVisible(false);
+												gameFrame1.setLocationRelativeTo(frame);
+												*/
 											}
 											else
 											{
-												gameFrame = new GamePanel(namePlayer1, namePlayer2, frame); // game against human
-												gameFrame.setVisible(true);
-												gameFrame.setLocationRelativeTo(frame);
+												/*gameFrame1 = new GamePanel(namePlayer1, namePlayer2, game.getPlayer1(), frame); // game against human
+												gameFrame1.setVisible(false);
+												gameFrame1.setLocationRelativeTo(frame);
+												gameFrame2 = new GamePanel(namePlayer2, namePlayer1, game.getPlayer2(), frame); // game against human
+												gameFrame2.setVisible(false);
+												gameFrame2.setLocationRelativeTo(frame);
+												*/
+												new GameDriver(namePlayer1, namePlayer2, game.getPlayer1(), game.getPlayer2(), frame);
 											}
 										}
 									}
