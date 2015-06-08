@@ -29,7 +29,6 @@ public class Grid extends JPanel {
 
 	private Game game;
 
-	
 	/**
 	 * Create the panel.
 	 *
@@ -128,9 +127,10 @@ public class Grid extends JPanel {
      *
      * @param row the number of rows
      * @param col the number of columns
+     * @wbp.parser.constructor
      */
     public Grid(int row, int col) {
-        game = Game.Instance();
+    	game = Game.Instance();
         grid = new JPanel [row][col];
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.rowWeights = new double[]{};

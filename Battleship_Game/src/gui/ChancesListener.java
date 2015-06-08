@@ -1,8 +1,10 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JPanel;
 
 // TODO: Auto-generated Javadoc
@@ -48,6 +50,7 @@ public class ChancesListener extends JPanel{
 				public void mouseClicked(MouseEvent e) {
 					if(click2 == false)
 					{
+						System.out.println(getParent().getCursor());
 						defaultBackground = Color.GRAY;
 						setBackground(Color.GRAY);
 						click2 = true;

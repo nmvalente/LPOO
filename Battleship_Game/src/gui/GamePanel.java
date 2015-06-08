@@ -27,7 +27,8 @@ public class GamePanel extends JFrame implements ActionListener {
 	private static final int PANEL_HEIGHT = 600;*/
 	/** The My opponents panel. */
 	private JPanel MyOpponentsPanel;
-	
+	private JButton play;
+	private JLabel turn;
 	/** The start frame. */
 	private JFrame startFrame;
 	
@@ -123,7 +124,7 @@ public class GamePanel extends JFrame implements ActionListener {
 		MyOpponentsPanel.setPreferredSize(new Dimension(600, 20));
 		getContentPane().add(MyOpponentsPanel);
 
-		JLabel turn = new JLabel("My turn");
+		turn = new JLabel("My turn");
 		turn.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		turn.setHorizontalAlignment(SwingConstants.CENTER);
 		turn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -160,7 +161,7 @@ public class GamePanel extends JFrame implements ActionListener {
 		getContentPane().add(quit);
 		quit.addActionListener(this);
 		
-		JButton play = new JButton("Play");
+		play = new JButton("Play");
 		play.setFocusable(false);
 		play.setDisabledIcon(null);
 		play.setDisabledSelectedIcon(null);
@@ -200,6 +201,7 @@ public class GamePanel extends JFrame implements ActionListener {
 			MyOpponentsPanel.setPreferredSize(new Dimension(600, 20));
 			add(MyOpponentsPanel);	
 			MyOpponentsPanel.revalidate();
+			play.removeActionListener(this);
 		}
 		else if(item.equals("Quit"))
 		{
