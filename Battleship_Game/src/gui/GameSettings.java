@@ -318,7 +318,7 @@ public class GameSettings extends JDialog implements ActionListener, FocusListen
 		if(arg0.getActionCommand().equals("Load Config"))
 		{
 			String configFile;
-			lgm = new LoadGameMenu();
+			lgm = new LoadGameMenu("txt/.", "config.txt");
 			configFile = lgm.getArquivoSelec().getName();
             game.setConfigFile(configFile);
             try {

@@ -137,7 +137,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				removeFont();
 				load.setFont(change);
 				optionNr = 2;
-				loadmenu = new LoadGameMenu();
+				loadmenu = new LoadGameMenu(".", "game.xml");
 			}
 		});
 		load.setPreferredSize(new Dimension(200, 25));
@@ -248,7 +248,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 			}
 			
 			else if(options[2].getFont().equals(change))
-				loadmenu = new LoadGameMenu();
+				loadmenu = new LoadGameMenu(".", "game.xml");
 			else if(options[3].getFont().equals(change))
 				exitmenu = new ExitMenu();
 		}

@@ -14,20 +14,20 @@ public class LoadGameMenu extends JFileChooser
 	private static final long serialVersionUID = 1L;
 	
 	/** The arquivo selec. */
-	private static File arquivoSelec = null;
+	private File arquivoSelec = null;
 	
 	/** The abre arquivo. */
-	private static JFileChooser abreArquivo = new JFileChooser();
+	private JFileChooser abreArquivo = new JFileChooser();
 	
 	/**
 	 * Instantiates a new load game menu
 	 */
-	public LoadGameMenu()
+	public LoadGameMenu(String currDir, String selectedFile)
 	{
 		int retorno = 0;
 
-		abreArquivo.setCurrentDirectory(new File("."));
-		abreArquivo.setSelectedFile(new File("game.xml")); 
+		abreArquivo.setCurrentDirectory(new File(currDir));
+		abreArquivo.setSelectedFile(new File(selectedFile)); 
 		retorno = abreArquivo.showOpenDialog(this);
 
 		if (retorno == JFileChooser.APPROVE_OPTION)
@@ -45,7 +45,7 @@ public class LoadGameMenu extends JFileChooser
 	public static void main (String[] args)
 	{
 		try {
-			LoadGameMenu fr = new LoadGameMenu();
+			LoadGameMenu fr = new LoadGameMenu("txt/.", "config.txt");
 			fr.setVisible(false);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,7 +66,8 @@ public class LoadGameMenu extends JFileChooser
 	 *
 	 * @param arquivoSelec the new arquivo selec
 	 */
-	public static void setArquivoSelec(File arquivoSelec) {
-		LoadGameMenu.arquivoSelec = arquivoSelec;
+	public void setArquivoSelec(File arquivoSelec) {
+		this.arquivoSelec = arquivoSelec;
 	}
+ 
 }
