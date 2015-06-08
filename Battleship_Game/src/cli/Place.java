@@ -66,7 +66,7 @@ public class Place {
         boolean orientation = true;
         for (int i = 0; i < game.getNumberShips(); i++) {
             do {
-                System.out.println();
+                Utils.clearScreen();
                 System.out.println(game.printPlayer(playerNumber));
                 System.out.println(game.printShip(playerNumber, i));
                 System.out.print("LINE (A.." + maxLine + ") COLUMN (a.." + maxColumn + ") ORIENTATION (H V)? ");
@@ -82,7 +82,6 @@ public class Place {
             } while (!validPosition || !game.manualPlaceShip(playerNumber, i, position, orientation));
             game.placeShipBoard(playerNumber, i);
         }
-        System.out.println(game.printPlayer(playerNumber));
         repositionShips(scan, playerName, playerNumber);
     }
 
@@ -96,6 +95,8 @@ public class Place {
     private void repositionShips(Scanner scan, String playerName, int playerNumber) {
         String reposition;
         do {
+            Utils.clearScreen();
+            System.out.println(game.printPlayer(playerNumber));
             System.out.print(playerName + ": reposition ships (y/n)? ");
             reposition = scan.nextLine();
             if (Objects.equals(reposition, "y")) changeShipPosition(scan, playerNumber);
@@ -165,8 +166,6 @@ public class Place {
             }
         }
         while (!validOldPos || !validNewPos || !game.changeShipPosition(playerNumber, oldPosition, newPosition, newOri));
-        System.out.println();
-        System.out.println(game.printPlayer(playerNumber));
     }
 
     /**

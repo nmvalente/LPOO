@@ -2,6 +2,7 @@ package cli;
 
 import logic.Game;
 
+import java.awt.*;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
@@ -24,7 +25,6 @@ public class Start {
      */
     Start(Scanner scan, Random random, String name1Def, String name2Def, String configDef, String file1Def, String file2Def) {
         Game game = Game.Instance();
-        Utils.clearScreen();
         System.out.println("Battleship!");
         System.out.println();
         System.out.print("1 - New Game / 2 - Load Game ? ");
@@ -48,7 +48,14 @@ public class Start {
      * @param args default main method argument
      */
     public static void main(String[] args) {
-        new Utils(true, true); /* ide = true, nix = true */
+        Color color = Color.RED;
+        try {
+            Thread.sleep(5000);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        new Utils(false, true); /* ide = true, nix = true */
+        Utils.clearScreen();
         String name1 = "Player 1";
         String name2 = "Player 2";
         String config = "/Users/Angie/Documents/MIEIC/2A2S/LPOO/praticas/Battleship/txt/config.txt";

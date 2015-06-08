@@ -283,7 +283,8 @@ public class Player {
                     int index = opponent.getPosition(Position.Instance(i, j));
                     if (index == -1) out += ". ";
                     else if (index == -2) out += "- ";
-                    else out += "* ";
+                    else if (index == -3) out += "* ";
+                    else out += (ships.get(index)).getSymbol() + " ";
                 }
             }
             out += "\n";

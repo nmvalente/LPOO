@@ -122,7 +122,8 @@ public class GameTest {
     public void test4Place() {
         Game game = Game.Instance();
         game.autoPlaceShips(random, 1);
-        assertEquals("   a b c d e f g h i j \n" +
+        assertEquals("Tony:\n" +
+                     "   a b c d e f g h i j \n" +
                      " A . . . . . . . . A . \n" +
                      " B S B B B B . . . A . \n" +
                      " C . . . . . . . . A . \n" +
@@ -134,7 +135,8 @@ public class GameTest {
                      " I . . . . S . . . . . \n" +
                      " J . . . . . . . . . . \n", game.printPlayer(1));
         game.autoPlaceShips(random, 2);
-        assertEquals("   a b c d e f g h i j \n" +
+        assertEquals("Player 2:\n" +
+                     "   a b c d e f g h i j \n" +
                      " A . . . . . . . . . . \n" +
                      " B . . . . S . . . . . \n" +
                      " C A . B . . . . . . . \n" +
@@ -146,7 +148,8 @@ public class GameTest {
                      " I . . D . . . . . . . \n" +
                      " J . . . . . . . . . . \n", game.printPlayer(2));
         game.changeShipPosition(1, Position.Instance(0, 8), Position.Instance(0, 0), true);
-        assertEquals("   a b c d e f g h i j \n" +
+        assertEquals("Tony:\n" +
+                     "   a b c d e f g h i j \n" +
                      " A A A A A A . . . . . \n" +
                      " B S B B B B . . . . . \n" +
                      " C . . . . . . . . . . \n" +
@@ -158,7 +161,8 @@ public class GameTest {
                      " I . . . . S . . . . . \n" +
                      " J . . . . . . . . . . \n", game.printPlayer(1));
         game.changeShipPosition(2, Position.Instance(3, 0), Position.Instance(0, 0), true);
-        assertEquals("   a b c d e f g h i j \n" +
+        assertEquals("Player 2:\n" +
+                     "   a b c d e f g h i j \n" +
                      " A A A A A A . . . . . \n" +
                      " B . . . . S . . . . . \n" +
                      " C . . B . . . . . . . \n" +
@@ -170,7 +174,8 @@ public class GameTest {
                      " I . . D . . . . . . . \n" +
                      " J . . . . . . . . . . \n", game.printPlayer(2));
         game.changeShipPosition(2, Position.Instance(0, 0), Position.Instance(2, 2), true);
-        assertEquals("   a b c d e f g h i j \n" +
+        assertEquals("Player 2:\n" +
+                     "   a b c d e f g h i j \n" +
                      " A A A A A A . . . . . \n" +
                      " B . . . . S . . . . . \n" +
                      " C . . B . . . . . . . \n" +
@@ -182,7 +187,8 @@ public class GameTest {
                      " I . . D . . . . . . . \n" +
                      " J . . . . . . . . . . \n", game.printPlayer(2));
         game.removeShipBoard(1, 1);
-        assertEquals("   a b c d e f g h i j \n" +
+        assertEquals("Tony:\n" +
+                     "   a b c d e f g h i j \n" +
                      " A A A A A A . . . . . \n" +
                      " B S . . . . . . . . . \n" +
                      " C . . . . . . . . . . \n" +
@@ -194,7 +200,8 @@ public class GameTest {
                      " I . . . . S . . . . . \n" +
                      " J . . . . . . . . . . \n", game.printPlayer(1));
         game.manualPlaceShip(1, 1, Position.Instance(0, 9), false);
-        assertEquals("   a b c d e f g h i j \n" +
+        assertEquals("Tony:\n" +
+                     "   a b c d e f g h i j \n" +
                      " A A A A A A . . . . . \n" +
                      " B S . . . . . . . . . \n" +
                      " C . . . . . . . . . . \n" +
@@ -206,7 +213,8 @@ public class GameTest {
                      " I . . . . S . . . . . \n" +
                      " J . . . . . . . . . . \n", game.printPlayer(1));
         game.placeShipBoard(1, 1);
-        assertEquals("   a b c d e f g h i j \n" +
+        assertEquals("Tony:\n" +
+                     "   a b c d e f g h i j \n" +
                      " A A A A A A . . . . B \n" +
                      " B S . . . . . . . . B \n" +
                      " C . . . . . . . . . B \n" +
@@ -221,7 +229,8 @@ public class GameTest {
         game.removeShipBoard(2, 0);
         game.manualPlaceShip(2, 0, Position.Instance(0, 9), false);
         game.placeShipBoard(2, 0);
-        assertEquals("   a b c d e f g h i j \n" +
+        assertEquals("Player 2:\n" +
+                     "   a b c d e f g h i j \n" +
                      " A . . . . . . . . . A \n" +
                      " B . . . . S . . . . A \n" +
                      " C . . B . . . . . . A \n" +
@@ -406,58 +415,70 @@ public class GameTest {
         game.setNumberPlayers(1);
         game.loadGame(random);
         assertEquals("Tony:                        Player 2:\n" +
-                "   a b c d e f g h i j          a b c d e f g h i j \n" +
-                " A * A A A A . . . . -        A * . . . . . . . . . \n" +
-                " B * B B B B . . . . .        B - . . . . . . . . . \n" +
-                " C . . . . . . . . . .        C . . . . . . . . . . \n" +
-                " D . . D D . . . . . .        D . . . . . . . . . . \n" +
-                " E . . . . D . . C . .        E . . . . . . . . . . \n" +
-                " F . . . . D . . C . .        F . . . . . . . . . . \n" +
-                " G . . . . . . . C . .        G . . . . . . . . . . \n" +
-                " H . . . . . . . . . .        H . . . . . . . . . . \n" +
-                " I . . . . S . . . . .        I . . . . . . . . . . \n" +
-                " J . . . . . . . . . .        J . . . . . . . . . . \n", game.printPlayer(1));
+                     "   a b c d e f g h i j          a b c d e f g h i j \n" +
+                     " A * A A A A . . . . -        A * . . . . . . . . . \n" +
+                     " B * B B B B . . . . .        B - . . . . . . . . . \n" +
+                     " C . . . . . . . . . .        C . . . . . . . . . . \n" +
+                     " D . . D D . . . . . .        D . . . . . . . . . . \n" +
+                     " E . . . . D . . C . .        E . . . . . . . . . . \n" +
+                     " F . . . . D . . C . .        F . . . . . . . . . . \n" +
+                     " G . . . . . . . C . .        G . . . . . . . . . . \n" +
+                     " H . . . . . . . . . .        H . . . . . . . . . . \n" +
+                     " I . . . . S . . . . .        I . . . . . . . . . . \n" +
+                     " J . . . . . . . . . .        J . . . . . . . . . . \n", game.printPlayer(1));
         assertEquals("Player 2:                    Tony:\n" +
-                "   a b c d e f g h i j          a b c d e f g h i j \n" +
-                " A * A A A A . . . . .        A * . . . . . . . . - \n" +
-                " B - . . . S . . . . .        B * . . . . . . . . . \n" +
-                " C . . B . . . . . . .        C . . . . . . . . . . \n" +
-                " D . . B . . . . . . .        D . . . . . . . . . . \n" +
-                " E . . B . . . . . . .        E . . . . . . . . . . \n" +
-                " F . . B D D C . . . .        F . . . . . . . . . . \n" +
-                " G . . . . . C . . . .        G . . . . . . . . . . \n" +
-                " H . . D . . C S . . .        H . . . . . . . . . . \n" +
-                " I . . D . . . . . . .        I . . . . . . . . . . \n" +
-                " J . . . . . . . . . .        J . . . . . . . . . . \n", game.printPlayer(2));
+                     "   a b c d e f g h i j          a b c d e f g h i j \n" +
+                     " A * A A A A . . . . .        A * . . . . . . . . - \n" +
+                     " B - . . . S . . . . .        B * . . . . . . . . . \n" +
+                     " C . . B . . . . . . .        C . . . . . . . . . . \n" +
+                     " D . . B . . . . . . .        D . . . . . . . . . . \n" +
+                     " E . . B . . . . . . .        E . . . . . . . . . . \n" +
+                     " F . . B D D C . . . .        F . . . . . . . . . . \n" +
+                     " G . . . . . C . . . .        G . . . . . . . . . . \n" +
+                     " H . . D . . C S . . .        H . . . . . . . . . . \n" +
+                     " I . . D . . . . . . .        I . . . . . . . . . . \n" +
+                     " J . . . . . . . . . .        J . . . . . . . . . . \n", game.printPlayer(2));
         game.computerTurn(game.getPlayer2(), game.getPlayer1());
         game.computerTurn(game.getPlayer2(), game.getPlayer1());
         game.computerTurn(game.getPlayer2(), game.getPlayer1());
         game.computerTurn(game.getPlayer2(), game.getPlayer1());
         game.computerTurn(game.getPlayer2(), game.getPlayer1());
         assertEquals("Tony:                        Player 2:\n" +
-                "   a b c d e f g h i j          a b c d e f g h i j \n" +
-                " A * * A A A . . . . -        A * . . . . . . . . . \n" +
-                " B * * * B B . . . . .        B - . . . . . . . . . \n" +
-                " C . . . . . . . . . .        C . . . . . . . . . . \n" +
-                " D . . D D . . . . . .        D . . . . . . . . . . \n" +
-                " E . - . . D . . C . .        E . . . . . . . . . . \n" +
-                " F . . . . D . . C . .        F . . . . . . . . . . \n" +
-                " G . - . . . . . C . .        G . . . . . . . . . . \n" +
-                " H . . . . . . . . . .        H . . . . . . . . . . \n" +
-                " I . . . . S . . . . .        I . . . . . . . . . . \n" +
-                " J . . . . . . . . . -        J . . . . . . . . . . \n", game.printPlayer(1));
+                     "   a b c d e f g h i j          a b c d e f g h i j \n" +
+                     " A * * A A A . . . . -        A * . . . . . . . . . \n" +
+                     " B * * * B B . . . . .        B - . . . . . . . . . \n" +
+                     " C . . . . . . . . . .        C . . . . . . . . . . \n" +
+                     " D . . D D . . . . . .        D . . . . . . . . . . \n" +
+                     " E . - . . D . . C . .        E . . . . . . . . . . \n" +
+                     " F . . . . D . . C . .        F . . . . . . . . . . \n" +
+                     " G . - . . . . . C . .        G . . . . . . . . . . \n" +
+                     " H . . . . . . . . . .        H . . . . . . . . . . \n" +
+                     " I . . . . S . . . . .        I . . . . . . . . . . \n" +
+                     " J . . . . . . . . . -        J . . . . . . . . . . \n", game.printPlayer(1));
         assertEquals("Player 2:                    Tony:\n" +
-                "   a b c d e f g h i j          a b c d e f g h i j \n" +
-                " A * A A A A . . . . .        A * * . . . . . . . - \n" +
-                " B - . . . S . . . . .        B * * * . . . . . . . \n" +
-                " C . . B . . . . . . .        C . . . . . . . . . . \n" +
-                " D . . B . . . . . . .        D . . . . . . . . . . \n" +
-                " E . . B . . . . . . .        E . - . . . . . . . . \n" +
-                " F . . B D D C . . . .        F . . . . . . . . . . \n" +
-                " G . . . . . C . . . .        G . - . . . . . . . . \n" +
-                " H . . D . . C S . . .        H . . . . . . . . . . \n" +
-                " I . . D . . . . . . .        I . . . . . . . . . . \n" +
-                " J . . . . . . . . . .        J . . . . . . . . . - \n", game.printPlayer(2));
+                     "   a b c d e f g h i j          a b c d e f g h i j \n" +
+                     " A * A A A A . . . . .        A * * . . . . . . . - \n" +
+                     " B - . . . S . . . . .        B * * * . . . . . . . \n" +
+                     " C . . B . . . . . . .        C . . . . . . . . . . \n" +
+                     " D . . B . . . . . . .        D . . . . . . . . . . \n" +
+                     " E . . B . . . . . . .        E . - . . . . . . . . \n" +
+                     " F . . B D D C . . . .        F . . . . . . . . . . \n" +
+                     " G . . . . . C . . . .        G . - . . . . . . . . \n" +
+                     " H . . D . . C S . . .        H . . . . . . . . . . \n" +
+                     " I . . D . . . . . . .        I . . . . . . . . . . \n" +
+                     " J . . . . . . . . . .        J . . . . . . . . . - \n", game.printPlayer(2));
+        assertEquals("Player 2:                    Tony:\n" +
+                     "   a b c d e f g h i j          a b c d e f g h i j \n" +
+                     " A * A A A A . . . . .        A * * A A A . . . . - \n" +
+                     " B - . . . S . . . . .        B * * * B B . . . . . \n" +
+                     " C . . B . . . . . . .        C . . . . . . . . . . \n" +
+                     " D . . B . . . . . . .        D . . D D . . . . . . \n" +
+                     " E . . B . . . . . . .        E . - . . D . . C . . \n" +
+                     " F . . B D D C . . . .        F . . . . D . . C . . \n" +
+                     " G . . . . . C . . . .        G . - . . . . . C . . \n" +
+                     " H . . D . . C S . . .        H . . . . . . . . . . \n" +
+                     " I . . D . . . . . . .        I . . . . S . . . . . \n" +
+                     " J . . . . . . . . . .        J . . . . . . . . . - \n", game.printFinal());
     }
 
 }

@@ -1,6 +1,6 @@
 package logic;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Vector;
 
 /**
@@ -38,6 +38,7 @@ public class Ship {
      * @param types name of the type of the ship
      * @param dims number of cells of the ship
      * @param symbols symbol that represents the ship
+     * @param colors color of the ship
      */
     Ship(String types, int dims, char symbols, Color colors) {
         type = types;

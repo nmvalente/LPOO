@@ -1,6 +1,6 @@
 package logic;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.*;
 import java.util.Random;
 import java.util.Vector;
@@ -147,11 +147,11 @@ public class Game {
         while ((line = reader.readLine()) != null) {
             String[] shipSpecs = line.split(" - ");
             String[] shipColor = shipSpecs[4].split("/");
-            Color color = new Color(Integer.parseInt(shipColor[0]),Integer.parseInt(shipColor[1]), Integer.parseInt(shipColor[2]));
+//            Color color = new Color(Integer.parseInt(shipColor[0]),Integer.parseInt(shipColor[1]), Integer.parseInt(shipColor[2]));
             for (int i = 0; i < Integer.parseInt(shipSpecs[0]); i++) {
-                Ship shipPlayer1 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), color);
+                Ship shipPlayer1 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), null);
                 player1.addShip(shipPlayer1);
-                Ship shipPlayer2 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), color);
+                Ship shipPlayer2 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), null);
                 player2.addShip(shipPlayer2);
             }
         }
@@ -223,6 +223,8 @@ public class Game {
     /**
      * Initiates the board for the opponents for each player, where bomb results will be registered, and
      * if there is a single player, adds bomb positions to the attack vector for the AI
+     *
+     * @param random Random number generator to build the computer bombs
      */
     public void startGame(Random random) {
         int dimV = getDimV();
@@ -279,15 +281,15 @@ public class Game {
      */
     public String printPlayer(Player playerA, Player playerB) {
         String out = "";
+        out += playerA.getName() + ":";
         Board opponent = playerA.getOpponent();
         if (opponent != null) {
-            out += playerA.getName() + ":";
             for (int i = 0; i < 2 * playerA.getBoard().getDimH() + 8 - (playerA.getName()).length(); i++) {
                 out += " ";
             }
-            out += playerB.getName() + ":\n";
+            out += playerB.getName() + ":";
         }
-        out += playerA;
+        out += "\n" + playerA;
         return out;
     }
 
@@ -417,6 +419,8 @@ public class Game {
 
     /**
      * Loads a game from the player's files
+     *
+     * @param random Random number generator to build the computer bombs
      */
     public void loadGame(Random random) {
         Vector<Position> previousBombs;
@@ -592,10 +596,21 @@ public class Game {
         }
     }
 
+    /**
+     * Returns the computerBombs
+     *
+     * @return vector with the positions for the computer attacks
+     */
     public Vector<Position> getComputerBombs() {
         return computerBombs;
     }
 
+    /**
+     * Randomly shuffles the vector of computer attacks
+     *
+     * @param computerBombs vector of computer attacks
+     * @param random random number generator for the shuffle
+     */
     private void shuffle(Vector<Position> computerBombs, Random random) {
         int count = computerBombs.size();
         for (int i = count; i > 1; i--) {
@@ -603,10 +618,29 @@ public class Game {
         }
     }
 
+    /**
+     * Swaps the elements in indexes i and j of the vector for computer attacks
+     *
+     * @param computerBombs vector of computer attacks
+     * @param i first index of the swap
+     * @param j second index of the swap
+     */
     private void swap(Vector<Position> computerBombs, int i, int j) {
         Position temp = computerBombs.get(i);
         computerBombs.set(i, computerBombs.get(j));
         computerBombs.set(j, temp);
+    }
+
+    /**
+     * Prints both player boards at the end of the game
+     *
+     * @return string with both player boards
+     */
+    public String printFinal() {
+        player1.setOpponent(player2.getBoard());
+        player2.setOpponent(player1.getBoard());
+        if (state == 1) return printPlayer(player1, player2);
+        else return printPlayer(player2, player1);
     }
 
 }

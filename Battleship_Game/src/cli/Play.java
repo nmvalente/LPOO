@@ -54,6 +54,8 @@ public class Play {
         System.out.println();
         if (exit) System.out.println("Goodbye!");
         else {
+            Utils.clearScreen();
+            System.out.println(game.printFinal());
             if (game.getNumberPlayers() == 2) {
                 if (game.getState() == 1) System.out.print(game.getPlayer1().getName());
                 else System.out.print(game.getPlayer1().getName());
@@ -80,7 +82,7 @@ public class Play {
         int dimH = game.getDimH();
         char maxLine = (char)(dimV + 64);
         char maxColumn = (char)(dimH + 96);
-        System.out.print(playerAttack.getName() + ": it's your turn. Press enter to continue, S to save, E to save and exit. ");
+        System.out.print(playerAttack.getName() + ": it's your turn. Press enter to continue, S to save, E to exit. ");
         String answer = scan.nextLine();
         if (Objects.equals(answer, "S")) {
             game.saveGame(playerAttack.getNumber());
