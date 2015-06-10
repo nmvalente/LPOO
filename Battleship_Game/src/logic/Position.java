@@ -25,7 +25,7 @@ public class Position {
      * @param newLine line of the position
      * @param newColumn column of the position
      */
-    private Position(int newLine, int newColumn) {
+    public Position(int newLine, int newColumn) {
         line = newLine;
         column = newColumn;
     }

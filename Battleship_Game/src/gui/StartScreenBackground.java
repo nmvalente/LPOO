@@ -3,27 +3,19 @@ package gui;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import java.awt.Color;
-
 import javax.swing.SwingConstants;
-
-import cli.Start;
-import cli.Utils;
 import audio.IntroSound;
-
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * The Class StartScreenBackground is used to create a new background image and to handle with the events on the first game frame
@@ -63,8 +55,8 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	/** The startmenu. */
 	private GameSettings startmenu;
 	
-	/** The statmenu. */
-	private StatisticsMenu statmenu;// = new StatisticsMenu();
+//	/** The statmenu. */
+//	private StatisticsMenu statmenu;// = new StatisticsMenu();
 	
 	/** The exitmenu. */
 	private ExitMenu exitmenu;// = new ExitMenu();
@@ -124,6 +116,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				help.setFont(change);
 				optionNr = 1;
 				helpmenu = new HelpMenu();
+				helpmenu.setVisible(true);
 			}
 		});		
 		help.setPreferredSize(new Dimension(200, 25));
@@ -138,6 +131,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				load.setFont(change);
 				optionNr = 2;
 				loadmenu = new LoadGameMenu(".", "game.xml");
+				loadmenu.setVisible(true);
 			}
 		});
 		load.setPreferredSize(new Dimension(200, 25));
@@ -152,6 +146,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 				exit.setFont(change);
 				optionNr = 3;
 				exitmenu = new ExitMenu();
+				exitmenu.setVisible(true);
 			}
 		});
 		exit.setPreferredSize(new Dimension(200, 25));

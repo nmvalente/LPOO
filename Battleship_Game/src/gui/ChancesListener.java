@@ -1,13 +1,17 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-// TODO: Auto-generated Javadoc
+import logic.Game;
+import logic.Player;
+import logic.Position;
+
+
 /**
  * The listener interface for receiving chances events.
  * The class that is interested in processing a chances
@@ -17,9 +21,10 @@ import javax.swing.JPanel;
  * the chances event occurs, that object's appropriate
  * method is invoked.
  */
-public class ChancesListener extends JPanel{
+public class ChancesListener extends JPanel implements MouseListener {
 	int posX;
 	int posY;
+	private int numberHits = 0;
 	public int getPosX(){return posX;}
 	public int getPosY(){return posY;}
 	/** The Constant serialVersionUID. */
@@ -30,47 +35,71 @@ public class ChancesListener extends JPanel{
 	
 	/** The click2. */
 	private boolean click2 = false;
+	private Player player1, player2;
 	
+	private Game game;
 	/**
 	 * Instantiates a new chances listener.
 	 */
 	public ChancesListener()
 	{
+		game = game.Instance();
+		addMouseListener(this);
+	}
+		
+	public int getNrHits(){return numberHits;}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
 		{
-			addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					defaultBackground = getBackground();
-					setBackground(Color.GRAY);
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-					setBackground(defaultBackground);
-				}
- 
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					if(click2 == false)
-					{
-						posX=getY()/60-1;
-						posY=getX()/60-1;
-						
-						System.out.println(posX + " " + posY);
-						
-						defaultBackground = Color.GRAY;
-						setBackground(Color.GRAY);
-						click2 = true;
-					}
-					else 
-					{
-						defaultBackground = Color.BLACK; 
-						setBackground(Color.BLACK);
-						click2 = false;
-					}
-				}
-			});
+			posX=getY()/60-1;
+			posY=getX()/60-1;
+			
+			Position position = new Position(posX,posY);
+			//game.attackPosition(player1, player2, position);
+			numberHits++;
+			System.out.println("dfhgfhfh");
+			//System.out.println(game.attackPosition(player1, player2, position));
+			//DriveGame dg = new DriveGame(player1, player2, position);
+			
+			if(click2 == false)
+			{
+				
+				System.out.println(posX + " " + posY);
+				
+				defaultBackground = Color.GRAY;
+				setBackground(Color.GRAY);
+				click2 = true;
+			}
+			else 
+			{
+				defaultBackground = Color.BLACK; 
+				setBackground(Color.BLACK);
+				click2 = false;
+			}
 		}
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		defaultBackground = getBackground();
+		setBackground(Color.GRAY);
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		setBackground(defaultBackground);
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

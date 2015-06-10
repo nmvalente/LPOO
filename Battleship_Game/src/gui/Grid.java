@@ -1,28 +1,36 @@
 package gui;
 
-import logic.Board;
 import logic.Game;
 import logic.Player;
 import logic.Position;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
-
-import org.omg.CORBA.portable.RemarshalException;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * The Class Grid.
  */
 public class Grid extends JPanel {
+
+	int posX;
+	int posY;
+	//private int numberHits = 0;
+	public int getPosX(){return posX;}
+	public int getPosY(){return posY;}
+	public Player opp, me;
+
+	public Game game;
+	/** The default background. */
+	private Color defaultBackground = Color.GRAY; 
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -30,18 +38,19 @@ public class Grid extends JPanel {
 	/** The grid. */
 	private JPanel grid[][];
 
-	private Game game;
-
 	/**
 	 * Create the panel.
 	 *
 	 * @param row the number of rows
 	 * @param col the number of columns
 	 * @param obj the obj the Grid uses like Listener
+	 * @param player1 
 	 */
-	public Grid(int row, int col, @SuppressWarnings("rawtypes") Class obj, String namePlayer) {
-		game = Game.Instance();
+	public Grid(int row, int col, Player opp, Player me) {
+		//game = game.Instance();
 		grid = new JPanel [row][col];
+		this.opp = opp;
+		this.me = me;
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.rowWeights = new double[]{};
 		gridBagLayout.columnWeights = new double[]{};
@@ -69,18 +78,14 @@ public class Grid extends JPanel {
 						border = new MatteBorder(1, 1, 1, 1, Color.GRAY);
 					}
 				}
-				Object panel = null;
-				try {
-					panel = obj.newInstance();
-				} catch (InstantiationException | IllegalAccessException e) {
-					e.printStackTrace();
-				}
-				((JPanel) panel).setBorder(border);
-				((JPanel) panel).setMinimumSize(new Dimension(40,40));
-				((JPanel) panel).setPreferredSize(new Dimension(60,60));
-				((JPanel) panel).setBackground(Color.black);
-				add(((JPanel) panel), gbc_panel);
-				grid[i][j] = ((JPanel) panel);
+				JPanel panel = new JPanel();
+				panel.setBorder(border);
+				panel.setMinimumSize(new Dimension(40,40));
+				panel.setPreferredSize(new Dimension(60,60));
+				panel.setBackground(Color.black);
+				add(panel, gbc_panel);
+				grid[i][j] = panel;
+				grid[i][j].addMouseListener(new MyAdapter(i,j));
 			} 
 		for(int k = 0; k < row ; k++)
 		{			
@@ -123,13 +128,10 @@ public class Grid extends JPanel {
 		panel.setBackground(Color.black);
 		add(panel, gbc_panel);
 
-
-
-
 		gbc_panel.gridx = 1;
 		gbc_panel.gridy = 0;
 		gbc_panel.gridwidth = GridBagConstraints.REMAINDER;
-		JLabel la = new JLabel(namePlayer);
+		JLabel la = new JLabel(opp.getName());
 		add(la, gbc_panel);
 	}
 
@@ -140,8 +142,7 @@ public class Grid extends JPanel {
 	 * @param col the number of columns
 	 * @wbp.parser.constructor
 	 */
-	public Grid(int row, int col, String namePlayer) {
-		game = Game.Instance();
+	public Grid(int row, int col, Player player) {
 		grid = new JPanel [row][col];
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.rowWeights = new double[]{};
@@ -175,6 +176,7 @@ public class Grid extends JPanel {
 				panel.setMinimumSize(new Dimension(40,40));
 				panel.setPreferredSize(new Dimension(60,60));
 				panel.setBackground(Color.black);
+
 				add(panel, gbc_panel);
 				grid[i][j] = panel;
 			}
@@ -219,13 +221,10 @@ public class Grid extends JPanel {
 		panel.setBackground(Color.black);
 		add(panel, gbc_panel);
 
-
-
-
 		gbc_panel.gridx = 1;
 		gbc_panel.gridy = 0;
 		gbc_panel.gridwidth = GridBagConstraints.REMAINDER;
-		JLabel la = new JLabel(namePlayer);
+		JLabel la = new JLabel(player.getName());
 		add(la, gbc_panel);     
 	}
 
@@ -246,7 +245,7 @@ public class Grid extends JPanel {
 	 * @param col the numher of columns
 	 * @param obj the obj the Grid uses like Listener
 	 */
-	public void setGrid(Player player, int row, int col, @SuppressWarnings("rawtypes") Class obj){
+	public void setGrid(Player player, int row, int col){
 		for(int i = 0  ; i < row ; i++) {
 			for (int j = 0; j < col; j++) {
 				Position position = Position.Instance(i, j);
@@ -268,9 +267,57 @@ public class Grid extends JPanel {
 		JFrame frame = new JFrame("Testing");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().add(new Grid(10,10, ChancesListener.class, "name player"));
+		Player playerAux1 = new Player(1, "name1");
+		Player playerAux2 = new Player(2, "name2");
+		frame.getContentPane().add(new Grid(10,10, playerAux1, playerAux2));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-	}   
+	}
+
+	class MyAdapter extends MouseAdapter {
+		public int linha, coluna;
+		public MyAdapter(int i, int j){
+			linha = i;
+			coluna = j;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			{
+				JPanel panel = (JPanel)e.getSource();
+				if(panel.getBackground() == Color.LIGHT_GRAY)
+					System.out.println("do nothing");
+				else 
+				{
+					posX=linha;
+					posY=coluna;
+					//Position position = Position.Instance(posX, posY);
+					panel.setBackground(Color.LIGHT_GRAY); 
+
+				}
+			}
+
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			JPanel panel = (JPanel)e.getSource();
+			if(panel.getBackground() == Color.black)
+				panel.setBackground(Color.GRAY);
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			JPanel panel = (JPanel)e.getSource();
+			if(panel.getBackground() == Color.GRAY)
+			{
+				defaultBackground=Color.BLACK;
+				panel.setBackground(defaultBackground);
+			}
+		}
+
+	}
+	public void setGridColor(Color color, int row, int col){
+		grid[row][col].setBackground(color);
+	}
 }

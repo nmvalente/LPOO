@@ -7,33 +7,24 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import audio.IntroSound;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
 import java.io.IOException;
 import java.util.Random;
-import java.util.Scanner;
-
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.border.EtchedBorder;
-
-import com.sun.glass.events.WindowEvent;
-
-import cli.Setup;
 import logic.Game;
-import logic.Player;
+
 
 /**
  * The Class GameSettings.

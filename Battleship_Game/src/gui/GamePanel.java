@@ -14,25 +14,38 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.GridLayout;
+import java.util.Random;
+import javax.swing.border.MatteBorder;
 
 /**
  * The Class GamePanel.
  */
-public class GamePanel extends JFrame implements ActionListener {
+public class GamePanel extends JFrame implements ActionListener, MouseListener {
 
+	public JPanel[][] cells1 = new JPanel [10][10], cells2 = new JPanel [10][10];
+	int posX;
+	int posY;
+	/** The default background. */
+	private Color defaultBackground = Color.GRAY;
 	private int turn; 
 	/** The My opponents panel. */
-	private JPanel MyOpponentsPanel1;
-	private JPanel myGridPanel1;
-	private JPanel MyOpponentsPanel2;
-	private JPanel myGridPanel2;
-	private JPanel hitmissPanel;
+	public JPanel MyOpponentsPanel1;
+	public JPanel myGridPanel1;
+	public JPanel MyOpponentsPanel2;
+	public JPanel myGridPanel2;
+	public JPanel hitmissPanel1;
+	public JPanel hitmissPanel2;
 	private JPanel panel;
 	private JButton play;
 	private JButton end;
 	private JButton save;
 	private JButton quit;
-	private JLabel nameP1, nameP2;
+	private JLabel nameP1;
+	private Random randomRow = new Random(), randomCol = new Random();;
+	private int hits1=0, hits2=0, misses1=0,misses2=0;
 	/** The start frame. */
 	private JFrame startFrame;
 
@@ -63,7 +76,7 @@ public class GamePanel extends JFrame implements ActionListener {
 					game.loadConfig();
 					JFrame frameStart = new JFrame();
 					GamePanel frame = new GamePanel("Me","You",game.getPlayer1(), game.getPlayer2(),frameStart);
-					//frame.setVisible(true);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -113,7 +126,7 @@ public class GamePanel extends JFrame implements ActionListener {
 
 		if(turn == 1 )
 		{
-			nameP1 = new JLabel(namePlayer1 + " play first");
+			nameP1 = new JLabel(namePlayer1 + " plays first");
 			nameP1.setForeground(Color.WHITE);
 			nameP1.setFont(new Font("Tahoma", Font.ITALIC, 16));
 			nameP1.setBounds(550, 0, 200, 50);
@@ -121,45 +134,145 @@ public class GamePanel extends JFrame implements ActionListener {
 		}
 		else
 		{
-			nameP1 = new JLabel(namePlayer2 + " play first");
+			nameP1 = new JLabel(namePlayer2 + " plays first");
 			nameP1.setForeground(Color.WHITE);
 			nameP1.setFont(new Font("Tahoma", Font.ITALIC, 16));
 			nameP1.setBounds(550, 0, 200, 50);
 			panel.add(nameP1);
 		}
 
-		myGridPanel1 = new Grid(10,10, namePlayer1);
+		myGridPanel1 = new Grid(10,10, player1);
 		myGridPanel1.setLocation(0, 50);
 		myGridPanel1.setPreferredSize(new Dimension(600, 20));
 		myGridPanel1.setSize(new Dimension(600, 653));
 		getContentPane().add(myGridPanel1);
-		((Grid)myGridPanel1).setGrid(player1, game.getDimV(), game.getDimH(), ChancesListener.class);
+		((Grid)myGridPanel1).setGrid(player1, game.getDimV(), game.getDimH());
 
-		myGridPanel2 = new Grid(10,10, namePlayer2);
+		myGridPanel2 = new Grid(10,10, player2);
 		myGridPanel2.setLocation(0, 50);
 		myGridPanel2.setPreferredSize(new Dimension(600, 20));
 		myGridPanel2.setSize(new Dimension(600, 653));
 		getContentPane().add(myGridPanel2);
-		((Grid)myGridPanel2).setGrid(player2, game.getDimV(), game.getDimH(), ChancesListener.class);
+		((Grid)myGridPanel2).setGrid(player2, game.getDimV(), game.getDimH());
 
-		MyOpponentsPanel1 = new Grid(10,10, JPanel.class, namePlayer2);
-		MyOpponentsPanel1.setBounds(682, 50, 600, 653);
-		MyOpponentsPanel1.setPreferredSize(new Dimension(600, 20));
+		MyOpponentsPanel1 = new JPanel();
+		MyOpponentsPanel1.setBackground(Color.RED);
+		MyOpponentsPanel1.setBounds(772, 169, 450, 450);
+		for (int i =0; i < 10; i++){
+			for(int j = 0; j < 10; j++)
+			{
+				JPanel tempPanel = new JPanel();
+				tempPanel.setBackground(Color.black);
+				tempPanel.setMinimumSize(new Dimension(45, 45));
+				tempPanel.setMaximumSize(new Dimension(45, 45));
+				tempPanel.setPreferredSize(new Dimension(45, 45));
+				tempPanel.setBorder(new MatteBorder(1, 1, 0, 0, Color.GRAY));
+				cells1[i][j] = tempPanel;
+				//				tempPanel.addMouseListener(new MouseAdapter() {
+				//					@Override
+				//					public void mouseEntered(MouseEvent e) {
+				//						JPanel painel = (JPanel)e.getSource();
+				//						if(painel.getBackground() == Color.black)
+				//							painel.setBackground(Color.GRAY);
+				//					}
+				//
+				//					@Override
+				//					public void mouseExited(MouseEvent e) {
+				//						JPanel painel = (JPanel)e.getSource();
+				//						if(painel.getBackground() == Color.blue || painel.getBackground() == Color.LIGHT_GRAY)
+				//						{
+				//							defaultBackground=painel.getBackground();
+				//							painel.setBackground(defaultBackground);
+				//						}
+				//						if(painel.getBackground() == Color.GRAY)
+				//						{
+				//							defaultBackground=Color.BLACK;
+				//							painel.setBackground(defaultBackground);
+				//						}
+				//					}
+				//
+				//				});
+
+				MyOpponentsPanel1.add(cells1[i][j]);
+			}
+		}
+		MyOpponentsPanel1.setLayout(new GridLayout(10, 10, 0, 0));
+		MyOpponentsPanel1.addMouseListener(this);
 		getContentPane().add(MyOpponentsPanel1);
 
-		MyOpponentsPanel2 = new Grid(10,10, JPanel.class, namePlayer1);
-		MyOpponentsPanel2.setBounds(682, 50, 600, 653);
-		MyOpponentsPanel2.setPreferredSize(new Dimension(600, 20));
+		/*
+		MyOpponentsPanel1 = new Grid(10,10, player2, player1);
+		MyOpponentsPanel1.setBounds(682, 50, 600, 653);
+		MyOpponentsPanel1.setPreferredSize(new Dimension(600, 20));
+		MyOpponentsPanel2.addMouseListener(this);
+		getContentPane().add(MyOpponentsPanel1);
+		 */
+		MyOpponentsPanel2 = new JPanel();
+		MyOpponentsPanel2.setBackground(Color.RED);
+		MyOpponentsPanel2.setBounds(772, 169, 450, 450);
+		for (int i = 0; i < 10; i++){
+			for(int j = 0; j < 10; j++)
+			{
+				JPanel tempPanel = new JPanel();
+				tempPanel.setBackground(Color.black);
+				tempPanel.setMinimumSize(new Dimension(45, 45));
+				tempPanel.setMaximumSize(new Dimension(45, 45));
+				tempPanel.setPreferredSize(new Dimension(45, 45));
+				tempPanel.setBorder(new MatteBorder(1, 1, 0, 0, Color.GRAY));
+				cells2[i][j] = tempPanel;
+				//				tempPanel.addMouseListener(new MouseAdapter() {
+				//					@Override
+				//					public void mouseEntered(MouseEvent e) {
+				//						JPanel painel = (JPanel)e.getSource();
+				//						if(painel.getBackground() == Color.black)
+				//							painel.setBackground(Color.GRAY);
+				//					}
+				//
+				//					@Override
+				//					public void mouseExited(MouseEvent e) {
+				//						JPanel painel = (JPanel)e.getSource();
+				//						if(painel.getBackground() == Color.blue || painel.getBackground() == Color.LIGHT_GRAY)
+				//						{
+				//							defaultBackground=painel.getBackground();
+				//							painel.setBackground(defaultBackground);
+				//						}
+				//						if(painel.getBackground() == Color.GRAY)
+				//						{
+				//							defaultBackground=Color.BLACK;
+				//							painel.setBackground(defaultBackground);
+				//						}
+				//					}
+				//
+				//				});
+
+				MyOpponentsPanel2.add(cells2[i][j]);
+			}
+		}
+		MyOpponentsPanel2.setLayout(new GridLayout(10, 10, 0, 0));
+		MyOpponentsPanel2.addMouseListener(this);
 		getContentPane().add(MyOpponentsPanel2);
 
-		hitmissPanel = new HitMissPanel(600,50);
-		hitmissPanel.setBounds(0, 703, 1282, 50);
-		getContentPane().add(hitmissPanel);
+		/*
+		MyOpponentsPanel2 = new Grid(10,10, player1, player2);
+		MyOpponentsPanel2.setBounds(682, 50, 600, 653);
+		MyOpponentsPanel2.setPreferredSize(new Dimension(600, 20));
+		MyOpponentsPanel2.addMouseListener(this);
+		getContentPane().add(MyOpponentsPanel2);
+		 */
+		hitmissPanel1 = new HitMissPanel(600,50);
+		hitmissPanel1.setBounds(0, 703, 1282, 50);
+		getContentPane().add(hitmissPanel1);
+
+		hitmissPanel2 = new HitMissPanel(600,50);
+		hitmissPanel2.setBounds(0, 703, 1282, 50);
+		getContentPane().add(hitmissPanel2);
 
 		myGridPanel1.setVisible(false);
 		myGridPanel2.setVisible(false);
 		MyOpponentsPanel1.setVisible(false);
 		MyOpponentsPanel2.setVisible(false);
+		hitmissPanel1.setVisible(false);
+		hitmissPanel2.setVisible(false);
 
 		save = new JButton("Save");
 		save.setFocusable(false);
@@ -190,6 +303,8 @@ public class GamePanel extends JFrame implements ActionListener {
 		quit.setBounds(602, 548, 79, 50);
 		quit.addActionListener(this);
 		getContentPane().add(quit);		
+
+
 	}
 
 	public void initPaintForOnePlayer(){
@@ -197,6 +312,8 @@ public class GamePanel extends JFrame implements ActionListener {
 		MyOpponentsPanel1.setVisible(true);
 		myGridPanel2.setVisible(false);
 		MyOpponentsPanel2.setVisible(false);
+		hitmissPanel1.setVisible(true);
+		hitmissPanel2.setVisible(false);
 	}
 	/**
 	 * Inits the paint of the components
@@ -251,6 +368,7 @@ public class GamePanel extends JFrame implements ActionListener {
 				MyOpponentsPanel1.setVisible(true);
 				myGridPanel2.setVisible(false);
 				MyOpponentsPanel2.setVisible(false);
+				hitmissPanel1.setVisible(true);
 				play.setEnabled(false);
 				end.setEnabled(true);
 			}
@@ -261,6 +379,7 @@ public class GamePanel extends JFrame implements ActionListener {
 				MyOpponentsPanel2.setVisible(true);
 				myGridPanel1.setVisible(false);
 				MyOpponentsPanel1.setVisible(false);
+				hitmissPanel2.setVisible(true);
 				play.setEnabled(false);
 				end.setEnabled(true);
 			}
@@ -271,6 +390,7 @@ public class GamePanel extends JFrame implements ActionListener {
 			{
 				myGridPanel1.setVisible(false);
 				MyOpponentsPanel1.setVisible(false);
+				hitmissPanel1.setVisible(false);
 				++turn;
 				play.setEnabled(true);
 				end.setEnabled(false);
@@ -280,6 +400,7 @@ public class GamePanel extends JFrame implements ActionListener {
 			{
 				myGridPanel2.setVisible(false);
 				MyOpponentsPanel2.setVisible(false);
+				hitmissPanel2.setVisible(false);
 				--turn;
 				play.setEnabled(true);
 				end.setEnabled(false);
@@ -295,12 +416,129 @@ public class GamePanel extends JFrame implements ActionListener {
 				MyOpponentsPanel1 = null;
 				myGridPanel1 = null;
 				MyOpponentsPanel2 = null;
-				myGridPanel2 = null;
-				//focus under this comment here                     
+				myGridPanel2 = null;               
 			} 
 		}
 		else if(item.equals("Save"))
 			new SaveGameMenu();	
+	}
+
+	public void computerTurn(Player player2, Player player1){
+		int linha = randomRow.nextInt(10);
+		int coluna = randomCol.nextInt(10);
+		if(cells2[linha][coluna].getBackground() != Color.LIGHT_GRAY && cells2[linha][coluna].getBackground() != Color.BLUE)
+		{
+			Color cell = ((Grid) myGridPanel1).getGrid()[linha][coluna].getBackground();
+			if(cell != Color.BLACK)
+			{
+				((HitMissPanel) hitmissPanel2).setStats(++hits2,misses2);// n e necessario
+				cells2[linha][coluna].setBackground(Color.LIGHT_GRAY);
+				((Grid)myGridPanel1).setGridColor(Color.RED, posX, posY);
+			}
+			else 
+			{
+				((HitMissPanel) hitmissPanel2).setStats(hits2,++misses2);//n e necessario
+				cells2[linha][coluna].setBackground(Color.BLUE);
+			}
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		{
+			posX = arg0.getY()/45;
+			posY = arg0.getX()/45;
+			if(game.getNumberPlayers() == 1)
+			{
+				if(turn == 2)
+				{
+					computerTurn(player2, player1);
+					--turn;
+				}
+				else 
+				{
+					if(cells1[posX][posY].getBackground() != Color.LIGHT_GRAY && cells1[posX][posY].getBackground() != Color.BLUE)
+					{
+						Color cell = ((Grid) myGridPanel2).getGrid()[posX][posY].getBackground();
+						if(cell != Color.BLACK)
+						{
+							((HitMissPanel) hitmissPanel1).setStats(++hits1,misses1);
+							cells1[posX][posY].setBackground(Color.LIGHT_GRAY);
+							((Grid)myGridPanel2).setGridColor(Color.RED, posX, posY);
+						}
+						else 
+						{
+							((HitMissPanel) hitmissPanel1).setStats(hits1,++misses1);
+							cells1[posX][posY].setBackground(Color.BLUE);
+						}
+					}
+					turn++;
+				}
+			}
+			else
+			{
+				if(turn == 1)
+				{
+					if(cells1[posX][posY].getBackground() != Color.LIGHT_GRAY && cells1[posX][posY].getBackground() != Color.BLUE)
+					{
+						Color cell = ((Grid) myGridPanel2).getGrid()[posX][posY].getBackground();
+						if(cell != Color.BLACK)
+						{
+							((HitMissPanel) hitmissPanel1).setStats(++hits1,misses1);
+							cells1[posX][posY].setBackground(Color.LIGHT_GRAY);
+							((Grid)myGridPanel2).setGridColor(Color.RED, posX, posY);
+						}
+						else 
+						{
+							((HitMissPanel) hitmissPanel1).setStats(hits1,++misses1);
+							cells1[posX][posY].setBackground(Color.BLUE);
+						}
+					}
+				}
+				else
+				{
+					if(cells2[posX][posY].getBackground() != Color.LIGHT_GRAY && cells2[posX][posY].getBackground() != Color.BLUE)
+					{
+						Color cell = ((Grid) myGridPanel1).getGrid()[posX][posY].getBackground();
+						if(cell != Color.BLACK)
+						{
+							((HitMissPanel) hitmissPanel2).setStats(++hits2,misses2);
+							cells2[posX][posY].setBackground(Color.LIGHT_GRAY);
+							((Grid)myGridPanel1).setGridColor(Color.RED, posX, posY);
+						}
+						else 
+						{
+							((HitMissPanel) hitmissPanel2).setStats(hits2,++misses2);
+							cells2[posX][posY].setBackground(Color.BLUE);
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
+
+	public JPanel createSquareJPanel(Color color, int size)
+	{
+		JPanel tempPanel = new JPanel();
+		tempPanel.setBackground(color);
+		tempPanel.setMinimumSize(new Dimension(size, size));
+		tempPanel.setMaximumSize(new Dimension(size, size));
+		tempPanel.setPreferredSize(new Dimension(size, size));
+		tempPanel.setBorder(new MatteBorder(1, 1, 0, 0, Color.GRAY));
+		repaint();
+		return tempPanel;
 	}
 }
 
