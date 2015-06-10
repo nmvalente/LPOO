@@ -185,23 +185,16 @@ public class GameSettings extends JDialog implements ActionListener, FocusListen
 											game.setStartingPlayer(random.nextInt(2)+1);
 											if((againstPC.isSelected()))
 											{
-												new GameDriver(namePlayer1, "Computer", game.getPlayer1(), game.getPlayer2(), frame);
-												/*new GamePanel(namePlayer1, "Computer", game.getPlayer1(), frame); // game against pc
-												myGridpanel1 = new GamePanel(namePlayer1, "Computer", game.getPlayer1(), frame); // game against pc
-												gameFrame1.setVisible(false);
+												JFrame gameFrame1 = new GamePanel(namePlayer1, "Computer", game.getPlayer1(), game.getPlayer2(), frame);
+												gameFrame1.setVisible(true);
 												gameFrame1.setLocationRelativeTo(frame);
-												*/
+												
 											}
 											else
 											{
-												/*gameFrame1 = new GamePanel(namePlayer1, namePlayer2, game.getPlayer1(), frame); // game against human
-												gameFrame1.setVisible(false);
+												JFrame gameFrame1 = new GamePanel(namePlayer1, namePlayer2, game.getPlayer1(), game.getPlayer2(), frame);
+												gameFrame1.setVisible(true);
 												gameFrame1.setLocationRelativeTo(frame);
-												gameFrame2 = new GamePanel(namePlayer2, namePlayer1, game.getPlayer2(), frame); // game against human
-												gameFrame2.setVisible(false);
-												gameFrame2.setLocationRelativeTo(frame);
-												*/
-												new GameDriver(namePlayer1, namePlayer2, game.getPlayer1(), game.getPlayer2(), frame);
 											}
 										}
 									}

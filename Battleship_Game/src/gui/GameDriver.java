@@ -9,7 +9,7 @@ import logic.Player;
 
 public class GameDriver {
 
-	private int turn = 0; 
+	
 	private JPanel mypanel1, myopponentsPanel1, mypanel2, myopponentsPanel2;
 	private JFrame frame; 
 	GamePanel gm1, gm2;
@@ -18,7 +18,7 @@ public class GameDriver {
 		Game game = Game.Instance();
 		frame = startFrame;
 
-		gm1 = new GamePanel(namePlayer1, namePlayer2, game.getPlayer1(), frame);
+		/*	gm1 = new GamePanel(namePlayer1, namePlayer2, game.getPlayer1(), frame);
 		gm1.setVisible(false);
 		mypanel1 = gm1.getMyPanel();
 		myopponentsPanel1 = gm1.getMyOpponentsPanel();
@@ -30,8 +30,8 @@ public class GameDriver {
 		turn = game.getStartingPlayer();
 		initGame();
 	}
-
-	public void initGame(){
+		 */
+		/*public void initGame(){
 		if(turn == 1)
 		{
 			mypanel1.setVisible(false);
@@ -44,5 +44,6 @@ public class GameDriver {
 			myopponentsPanel2.setVisible(false);
 			gm2.setVisible(true);
 		}
-	};	
+	};*/
+	}
 }
