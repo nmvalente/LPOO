@@ -321,7 +321,7 @@ public class GameSettings extends JDialog implements ActionListener, FocusListen
             }
             game.autoPlaceShips(random, 1);
             game.autoPlaceShips(random, 2);
-
+            game.startGame(random);
 		}
 	}
 

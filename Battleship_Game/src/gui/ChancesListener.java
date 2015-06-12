@@ -55,7 +55,7 @@ public class ChancesListener extends JPanel implements MouseListener {
 			posX=getY()/60-1;
 			posY=getX()/60-1;
 			
-			Position position = new Position(posX,posY);
+	//		Position position = new Position(posX,posY);
 			//game.attackPosition(player1, player2, position);
 			numberHits++;
 			System.out.println("dfhgfhfh");

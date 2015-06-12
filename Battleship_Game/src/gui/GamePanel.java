@@ -2,6 +2,8 @@ package gui;
 
 import logic.Game;
 import logic.Player;
+import logic.Position;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -25,27 +27,30 @@ import javax.swing.border.MatteBorder;
  */
 public class GamePanel extends JFrame implements ActionListener, MouseListener {
 
-	public JPanel[][] cells1 = new JPanel [10][10], cells2 = new JPanel [10][10];
+	public JPanel[][][] cells = new JPanel [2][10][10]; //, cells2 = new JPanel [10][10];
 	int posX;
 	int posY;
 	/** The default background. */
 	private Color defaultBackground = Color.GRAY;
-	private int turn; 
+	private int turn;
+    private boolean played;
 	/** The My opponents panel. */
-	public JPanel MyOpponentsPanel1;
-	public JPanel myGridPanel1;
-	public JPanel MyOpponentsPanel2;
-	public JPanel myGridPanel2;
-	public JPanel hitmissPanel1;
-	public JPanel hitmissPanel2;
+	public JPanel[] MyOpponentsPanels = new JPanel[2];
+	public JPanel[] myGridPanels = new JPanel[2];
+//	public JPanel MyOpponentsPanel2;
+//	public JPanel myGridPanel2;
+	public JPanel[] hitmissPanels = new JPanel[2];
+//	public JPanel hitmissPanel2;
 	private JPanel panel;
 	private JButton play;
 	private JButton end;
 	private JButton save;
 	private JButton quit;
 	private JLabel nameP1;
-	private Random randomRow = new Random(), randomCol = new Random();;
-	private int hits1=0, hits2=0, misses1=0,misses2=0;
+	private Random randomRow = new Random(), randomCol = new Random();
+    private int[] hits = {0, 0};
+    private int[] misses = {0, 0};
+//	private int hits1=0, hits2=0, misses1=0,misses2=0;
 	/** The start frame. */
 	private JFrame startFrame;
 
@@ -58,10 +63,10 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 	private Game game;
 	private Player player1, player2;
 
-	public JPanel getMyOpponentsPanel1(){return MyOpponentsPanel1;}
-	public JPanel getMyPanel1(){return myGridPanel1;}
-	public JPanel getMyOpponentsPanel2(){return MyOpponentsPanel2;}
-	public JPanel getMyPanel2(){return myGridPanel2;}
+	public JPanel getMyOpponentsPanel1(){return MyOpponentsPanels[0];}
+	public JPanel getMyPanel1(){return myGridPanels[0];}
+	public JPanel getMyOpponentsPanel2(){return MyOpponentsPanels[0];}
+	public JPanel getMyPanel2(){return myGridPanels[1];}
 
 	/**
 	 * Launch the application.
@@ -97,6 +102,7 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		this.player2 = player2;
 		game = Game.Instance();
 		turn = game.getStartingPlayer();
+        played = false;
 
 		this.startFrame = startFrame;
 		this.namePlayer1 = namePlayer1.toUpperCase();
@@ -141,23 +147,23 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 			panel.add(nameP1);
 		}
 
-		myGridPanel1 = new Grid(10,10, player1);
-		myGridPanel1.setLocation(0, 50);
-		myGridPanel1.setPreferredSize(new Dimension(600, 20));
-		myGridPanel1.setSize(new Dimension(600, 653));
-		getContentPane().add(myGridPanel1);
-		((Grid)myGridPanel1).setGrid(player1, game.getDimV(), game.getDimH());
+		myGridPanels[0] = new Grid(10,10, player1);
+		myGridPanels[0].setLocation(0, 50);
+		myGridPanels[0].setPreferredSize(new Dimension(600, 20));
+		myGridPanels[0].setSize(new Dimension(600, 653));
+		getContentPane().add(myGridPanels[0]);
+		((Grid)myGridPanels[0]).setGrid(player1, game.getDimV(), game.getDimH(), false);
 
-		myGridPanel2 = new Grid(10,10, player2);
-		myGridPanel2.setLocation(0, 50);
-		myGridPanel2.setPreferredSize(new Dimension(600, 20));
-		myGridPanel2.setSize(new Dimension(600, 653));
-		getContentPane().add(myGridPanel2);
-		((Grid)myGridPanel2).setGrid(player2, game.getDimV(), game.getDimH());
+		myGridPanels[1] = new Grid(10,10, player2);
+		myGridPanels[1].setLocation(0, 50);
+		myGridPanels[1].setPreferredSize(new Dimension(600, 20));
+		myGridPanels[1].setSize(new Dimension(600, 653));
+		getContentPane().add(myGridPanels[1]);
+		((Grid)myGridPanels[1]).setGrid(player2, game.getDimV(), game.getDimH(), false);
 
-		MyOpponentsPanel1 = new JPanel();
-		MyOpponentsPanel1.setBackground(Color.RED);
-		MyOpponentsPanel1.setBounds(772, 169, 450, 450);
+		MyOpponentsPanels[0] = new JPanel();
+		MyOpponentsPanels[0].setBackground(Color.RED);
+		MyOpponentsPanels[0].setBounds(772, 169, 450, 450);
 		for (int i =0; i < 10; i++){
 			for(int j = 0; j < 10; j++)
 			{
@@ -167,7 +173,7 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 				tempPanel.setMaximumSize(new Dimension(45, 45));
 				tempPanel.setPreferredSize(new Dimension(45, 45));
 				tempPanel.setBorder(new MatteBorder(1, 1, 0, 0, Color.GRAY));
-				cells1[i][j] = tempPanel;
+				cells[0][i][j] = tempPanel;
 				//				tempPanel.addMouseListener(new MouseAdapter() {
 				//					@Override
 				//					public void mouseEntered(MouseEvent e) {
@@ -193,12 +199,12 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 				//
 				//				});
 
-				MyOpponentsPanel1.add(cells1[i][j]);
+				MyOpponentsPanels[0].add(cells[0][i][j]);
 			}
 		}
-		MyOpponentsPanel1.setLayout(new GridLayout(10, 10, 0, 0));
-		MyOpponentsPanel1.addMouseListener(this);
-		getContentPane().add(MyOpponentsPanel1);
+		MyOpponentsPanels[0].setLayout(new GridLayout(10, 10, 0, 0));
+		MyOpponentsPanels[0].addMouseListener(this);
+		getContentPane().add(MyOpponentsPanels[0]);
 
 		/*
 		MyOpponentsPanel1 = new Grid(10,10, player2, player1);
@@ -207,9 +213,9 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		MyOpponentsPanel2.addMouseListener(this);
 		getContentPane().add(MyOpponentsPanel1);
 		 */
-		MyOpponentsPanel2 = new JPanel();
-		MyOpponentsPanel2.setBackground(Color.RED);
-		MyOpponentsPanel2.setBounds(772, 169, 450, 450);
+		MyOpponentsPanels[1] = new JPanel();
+		MyOpponentsPanels[1].setBackground(Color.RED);
+		MyOpponentsPanels[1].setBounds(772, 169, 450, 450);
 		for (int i = 0; i < 10; i++){
 			for(int j = 0; j < 10; j++)
 			{
@@ -219,7 +225,7 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 				tempPanel.setMaximumSize(new Dimension(45, 45));
 				tempPanel.setPreferredSize(new Dimension(45, 45));
 				tempPanel.setBorder(new MatteBorder(1, 1, 0, 0, Color.GRAY));
-				cells2[i][j] = tempPanel;
+				cells[1][i][j] = tempPanel;
 				//				tempPanel.addMouseListener(new MouseAdapter() {
 				//					@Override
 				//					public void mouseEntered(MouseEvent e) {
@@ -245,12 +251,12 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 				//
 				//				});
 
-				MyOpponentsPanel2.add(cells2[i][j]);
+				MyOpponentsPanels[1].add(cells[1][i][j]);
 			}
 		}
-		MyOpponentsPanel2.setLayout(new GridLayout(10, 10, 0, 0));
-		MyOpponentsPanel2.addMouseListener(this);
-		getContentPane().add(MyOpponentsPanel2);
+		MyOpponentsPanels[1].setLayout(new GridLayout(10, 10, 0, 0));
+		MyOpponentsPanels[1].addMouseListener(this);
+		getContentPane().add(MyOpponentsPanels[1]);
 
 		/*
 		MyOpponentsPanel2 = new Grid(10,10, player1, player2);
@@ -259,20 +265,20 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		MyOpponentsPanel2.addMouseListener(this);
 		getContentPane().add(MyOpponentsPanel2);
 		 */
-		hitmissPanel1 = new HitMissPanel(600,50);
-		hitmissPanel1.setBounds(0, 703, 1282, 50);
-		getContentPane().add(hitmissPanel1);
+		hitmissPanels[0] = new HitMissPanel(600,50);
+		hitmissPanels[0].setBounds(0, 703, 1282, 50);
+		getContentPane().add(hitmissPanels[0]);
 
-		hitmissPanel2 = new HitMissPanel(600,50);
-		hitmissPanel2.setBounds(0, 703, 1282, 50);
-		getContentPane().add(hitmissPanel2);
+		hitmissPanels[1] = new HitMissPanel(600,50);
+		hitmissPanels[1].setBounds(0, 703, 1282, 50);
+		getContentPane().add(hitmissPanels[1]);
 
-		myGridPanel1.setVisible(false);
-		myGridPanel2.setVisible(false);
-		MyOpponentsPanel1.setVisible(false);
-		MyOpponentsPanel2.setVisible(false);
-		hitmissPanel1.setVisible(false);
-		hitmissPanel2.setVisible(false);
+		myGridPanels[0].setVisible(false);
+		myGridPanels[1].setVisible(false);
+		MyOpponentsPanels[0].setVisible(false);
+		MyOpponentsPanels[1].setVisible(false);
+		hitmissPanels[0].setVisible(false);
+		hitmissPanels[1].setVisible(false);
 
 		save = new JButton("Save");
 		save.setFocusable(false);
@@ -308,12 +314,12 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 	}
 
 	public void initPaintForOnePlayer(){
-		myGridPanel1.setVisible(true);
-		MyOpponentsPanel1.setVisible(true);
-		myGridPanel2.setVisible(false);
-		MyOpponentsPanel2.setVisible(false);
-		hitmissPanel1.setVisible(true);
-		hitmissPanel2.setVisible(false);
+		myGridPanels[0].setVisible(true);
+		MyOpponentsPanels[0].setVisible(true);
+		myGridPanels[1].setVisible(false);
+		MyOpponentsPanels[1].setVisible(false);
+		hitmissPanels[0].setVisible(true);
+		hitmissPanels[1].setVisible(false);
 	}
 	/**
 	 * Inits the paint of the components
@@ -364,161 +370,123 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 			if(turn == 1)
 			{
 				nameP1.setText(namePlayer1 + " playing");
-				myGridPanel1.setVisible(true);
-				MyOpponentsPanel1.setVisible(true);
-				myGridPanel2.setVisible(false);
-				MyOpponentsPanel2.setVisible(false);
-				hitmissPanel1.setVisible(true);
+				myGridPanels[0].setVisible(true);
+				MyOpponentsPanels[0].setVisible(true);
+				myGridPanels[1].setVisible(false);
+				MyOpponentsPanels[1].setVisible(false);
+				hitmissPanels[0].setVisible(true);
 				play.setEnabled(false);
 				end.setEnabled(true);
 			}
 			else if(turn == 2)
 			{
 				nameP1.setText(namePlayer2 + " playing");
-				myGridPanel2.setVisible(true);
-				MyOpponentsPanel2.setVisible(true);
-				myGridPanel1.setVisible(false);
-				MyOpponentsPanel1.setVisible(false);
-				hitmissPanel2.setVisible(true);
+				myGridPanels[1].setVisible(true);
+				MyOpponentsPanels[1].setVisible(true);
+				myGridPanels[0].setVisible(false);
+				MyOpponentsPanels[0].setVisible(false);
+				hitmissPanels[1].setVisible(true);
 				play.setEnabled(false);
 				end.setEnabled(true);
 			}
 		}
 		else if(item.equals("End"))
 		{
-			if(turn == 1)
-			{
-				myGridPanel1.setVisible(false);
-				MyOpponentsPanel1.setVisible(false);
-				hitmissPanel1.setVisible(false);
-				++turn;
-				play.setEnabled(true);
-				end.setEnabled(false);
-				nameP1.setText("Changing to " + namePlayer2);
-			}
-			else if(turn == 2)
-			{
-				myGridPanel2.setVisible(false);
-				MyOpponentsPanel2.setVisible(false);
-				hitmissPanel2.setVisible(false);
-				--turn;
-				play.setEnabled(true);
-				end.setEnabled(false);
-				nameP1.setText("Changing to " + namePlayer1);
-			}
-		}
+            played = false;
+            if (turn == 1) {
+                myGridPanels[0].setVisible(false);
+                MyOpponentsPanels[0].setVisible(false);
+                hitmissPanels[0].setVisible(false);
+                ++turn;
+                play.setEnabled(true);
+                end.setEnabled(false);
+                nameP1.setText("Changing to " + namePlayer2);
+            } else if (turn == 2) {
+                myGridPanels[1].setVisible(false);
+                MyOpponentsPanels[1].setVisible(false);
+                hitmissPanels[1].setVisible(false);
+                --turn;
+                play.setEnabled(true);
+                end.setEnabled(false);
+                nameP1.setText("Changing to " + namePlayer1);
+            }
+        }
 		else if(item.equals("Quit"))
 		{
 			int confirmDialog = JOptionPane.showConfirmDialog(null, "You selected quit! \nAre you sure you want to quit?", "Selected Quit", JOptionPane.YES_NO_OPTION);
 			if(confirmDialog == JOptionPane.YES_OPTION) {               
 				dispose();
 				startFrame.setVisible(true);  
-				MyOpponentsPanel1 = null;
-				myGridPanel1 = null;
-				MyOpponentsPanel2 = null;
-				myGridPanel2 = null;               
+				MyOpponentsPanels[0] = null;
+				myGridPanels[0] = null;
+				MyOpponentsPanels[1] = null;
+				myGridPanels[1] = null;
 			} 
 		}
 		else if(item.equals("Save"))
 			new SaveGameMenu();	
 	}
 
-	public void computerTurn(Player player2, Player player1){
-		int linha = randomRow.nextInt(10);
-		int coluna = randomCol.nextInt(10);
-		if(cells2[linha][coluna].getBackground() != Color.LIGHT_GRAY && cells2[linha][coluna].getBackground() != Color.BLUE)
-		{
-			Color cell = ((Grid) myGridPanel1).getGrid()[linha][coluna].getBackground();
-			if(cell != Color.BLACK)
-			{
-				((HitMissPanel) hitmissPanel2).setStats(++hits2,misses2);// n e necessario
-				cells2[linha][coluna].setBackground(Color.LIGHT_GRAY);
-				((Grid)myGridPanel1).setGridColor(Color.RED, posX, posY);
-			}
-			else 
-			{
-				((HitMissPanel) hitmissPanel2).setStats(hits2,++misses2);//n e necessario
-				cells2[linha][coluna].setBackground(Color.BLUE);
-			}
-		}
+	public void computerTurn(Player player2, Player player1) {
+        game.computerTurn(player2, player1);
+        ((Grid)myGridPanels[0]).setGrid(player1, game.getDimV(), game.getDimH(), false);
+        played = false;
+        turn--;
+        endGame();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		{
-			posX = arg0.getY()/45;
-			posY = arg0.getX()/45;
-			if(game.getNumberPlayers() == 1)
-			{
-				if(turn == 2)
-				{
-					computerTurn(player2, player1);
-					--turn;
-				}
-				else 
-				{
-					if(cells1[posX][posY].getBackground() != Color.LIGHT_GRAY && cells1[posX][posY].getBackground() != Color.BLUE)
-					{
-						Color cell = ((Grid) myGridPanel2).getGrid()[posX][posY].getBackground();
-						if(cell != Color.BLACK)
-						{
-							((HitMissPanel) hitmissPanel1).setStats(++hits1,misses1);
-							cells1[posX][posY].setBackground(Color.LIGHT_GRAY);
-							((Grid)myGridPanel2).setGridColor(Color.RED, posX, posY);
-						}
-						else 
-						{
-							((HitMissPanel) hitmissPanel1).setStats(hits1,++misses1);
-							cells1[posX][posY].setBackground(Color.BLUE);
-						}
-					}
-					turn++;
-				}
-			}
-			else
-			{
-				if(turn == 1)
-				{
-					if(cells1[posX][posY].getBackground() != Color.LIGHT_GRAY && cells1[posX][posY].getBackground() != Color.BLUE)
-					{
-						Color cell = ((Grid) myGridPanel2).getGrid()[posX][posY].getBackground();
-						if(cell != Color.BLACK)
-						{
-							((HitMissPanel) hitmissPanel1).setStats(++hits1,misses1);
-							cells1[posX][posY].setBackground(Color.LIGHT_GRAY);
-							((Grid)myGridPanel2).setGridColor(Color.RED, posX, posY);
-						}
-						else 
-						{
-							((HitMissPanel) hitmissPanel1).setStats(hits1,++misses1);
-							cells1[posX][posY].setBackground(Color.BLUE);
-						}
-					}
-				}
-				else
-				{
-					if(cells2[posX][posY].getBackground() != Color.LIGHT_GRAY && cells2[posX][posY].getBackground() != Color.BLUE)
-					{
-						Color cell = ((Grid) myGridPanel1).getGrid()[posX][posY].getBackground();
-						if(cell != Color.BLACK)
-						{
-							((HitMissPanel) hitmissPanel2).setStats(++hits2,misses2);
-							cells2[posX][posY].setBackground(Color.LIGHT_GRAY);
-							((Grid)myGridPanel1).setGridColor(Color.RED, posX, posY);
-						}
-						else 
-						{
-							((HitMissPanel) hitmissPanel2).setStats(hits2,++misses2);
-							cells2[posX][posY].setBackground(Color.BLUE);
-						}
-					}
-				}
-			}
-		}
-
+        if (game.getState() == 0) {
+            posX = arg0.getY() / 45;
+            posY = arg0.getX() / 45;
+            Position position = Position.Instance(posX, posY);
+            if (game.getNumberPlayers() == 1) {
+                if (turn == 2) computerTurn(player2, player1);
+                else if (!played) playerTurn(position, player1, player2);
+            } else if (!played) {
+                if (turn == 1) playerTurn(position, player1, player2);
+                else playerTurn(position, player2, player1);
+            }
+        }
 	}
 
-	@Override
+    private void playerTurn(Position position, Player playerAttack, Player playerDefend) {
+        if (playerDefend.getBoard().getPosition(position) != -2 && playerDefend.getBoard().getPosition(position) != -3) {
+            boolean attackResult = game.attackPosition(playerAttack, playerDefend, position);
+            if(attackResult) {
+                ((HitMissPanel) hitmissPanels[playerAttack.getNumber() - 1]).setStats(++hits[playerAttack.getNumber() - 1], misses[playerAttack.getNumber() - 1]);
+                cells[playerAttack.getNumber() - 1][posX][posY].setBackground(Color.RED);
+                ((Grid)myGridPanels[playerDefend.getNumber() - 1]).setGridColor(Color.RED, posX, posY);
+            }
+            else {
+                ((HitMissPanel) hitmissPanels[playerAttack.getNumber() - 1]).setStats(hits[playerAttack.getNumber() - 1], ++misses[playerAttack.getNumber() - 1]);
+                cells[playerAttack.getNumber() - 1][posX][posY].setBackground(Color.BLUE);
+                ((Grid)myGridPanels[playerDefend.getNumber() - 1]).setGridColor(Color.BLUE, posX, posY);
+                played = true;
+                if (game.getNumberPlayers() == 1) turn++;
+            }
+            endGame();
+        }
+   }
+
+    private void endGame() {
+        if (game.getState() != 0) {
+            if (game.getState() == 1)
+                JOptionPane.showMessageDialog(null, "Congratulations " + game.getPlayer1().getName() + ", you won!", "Game Over", JOptionPane.OK_OPTION);
+            else if (game.getState() == 2) {
+                if (game.getNumberPlayers() == 2)
+                    JOptionPane.showMessageDialog(null, "Congratulations " + game.getPlayer2().getName() + ", you won!", "Game Over", JOptionPane.OK_OPTION);
+                else
+                    JOptionPane.showMessageDialog(null, "Sorry " + game.getPlayer1().getName() + ", you loose!", "Game Over", JOptionPane.OK_OPTION);
+            }
+            play.setEnabled(false);
+            end.setEnabled(false);
+            played = true;
+        }
+    }
+
+    @Override
 	public void mouseEntered(MouseEvent e) {}
 
 	@Override

@@ -147,11 +147,11 @@ public class Game {
         while ((line = reader.readLine()) != null) {
             String[] shipSpecs = line.split(" - ");
             String[] shipColor = shipSpecs[4].split("/");
-//            Color color = new Color(Integer.parseInt(shipColor[0]),Integer.parseInt(shipColor[1]), Integer.parseInt(shipColor[2]));
+            Color color = new Color(Integer.parseInt(shipColor[0]),Integer.parseInt(shipColor[1]), Integer.parseInt(shipColor[2]));
             for (int i = 0; i < Integer.parseInt(shipSpecs[0]); i++) {
-                Ship shipPlayer1 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), null);
+                Ship shipPlayer1 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), color);
                 player1.addShip(shipPlayer1);
-                Ship shipPlayer2 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), null);
+                Ship shipPlayer2 = new Ship(shipSpecs[1], Integer.parseInt(shipSpecs[2]), shipSpecs[3].charAt(0), color);
                 player2.addShip(shipPlayer2);
             }
         }

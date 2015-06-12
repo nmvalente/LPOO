@@ -35,7 +35,7 @@ public class Player {
      * @param newNumber player's number
      * @param newName player's name
      */
-    public Player(int newNumber, String newName) {
+    Player(int newNumber, String newName) {
         number = newNumber;
         name = newName;
         ships = new Vector<>();

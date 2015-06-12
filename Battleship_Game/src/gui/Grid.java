@@ -43,8 +43,6 @@ public class Grid extends JPanel {
 	 *
 	 * @param row the number of rows
 	 * @param col the number of columns
-	 * @param obj the obj the Grid uses like Listener
-	 * @param player1 
 	 */
 	public Grid(int row, int col, Player opp, Player me) {
 		//game = game.Instance();
@@ -243,18 +241,21 @@ public class Grid extends JPanel {
 	 * @param player the player whose board we want to draw
 	 * @param row the number of rows
 	 * @param col the numher of columns
-	 * @param obj the obj the Grid uses like Listener
 	 */
-	public void setGrid(Player player, int row, int col){
+	public void setGrid(Player player, int row, int col, boolean opponent){
 		for(int i = 0  ; i < row ; i++) {
 			for (int j = 0; j < col; j++) {
 				Position position = Position.Instance(i, j);
-				int shipIndex = player.getBoard().getPosition(position);
+				int shipIndex;
+                if (opponent) shipIndex = player.getOpponent().getPosition(position);
+                else shipIndex = player.getBoard().getPosition(position);
 				if (shipIndex > -1) {
 					Color color = player.getShips().get(shipIndex).getColor();
 					grid[i][j].setBackground(color);
 				}
-			}
+                else if (shipIndex == -2) grid[i][j].setBackground(Color.BLUE);
+                else if (shipIndex == -3) grid[i][j].setBackground(Color.RED);
+            }
 		}
 	}
 
@@ -267,9 +268,9 @@ public class Grid extends JPanel {
 		JFrame frame = new JFrame("Testing");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout());
-		Player playerAux1 = new Player(1, "name1");
-		Player playerAux2 = new Player(2, "name2");
-		frame.getContentPane().add(new Grid(10,10, playerAux1, playerAux2));
+//		Player playerAux1 = new Player(1, "name1");
+//		Player playerAux2 = new Player(2, "name2");
+//		frame.getContentPane().add(new Grid(10,10, playerAux1, playerAux2));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);

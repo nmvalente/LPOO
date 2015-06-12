@@ -3,6 +3,8 @@ package cli;
 import logic.Game;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
@@ -48,13 +50,14 @@ public class Start {
      * @param args default main method argument
      */
     public static void main(String[] args) {
+        @SuppressWarnings({"UnusedDeclaration"})
         Color color = Color.RED;
         try {
-            Thread.sleep(5000);                 //1000 milliseconds is one second.
+            Thread.sleep(5000);
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-        new Utils(false, true); /* ide = true, nix = true */
+        new Utils(true, true); /* ide = true, nix = true */
         Utils.clearScreen();
         String name1 = "Player 1";
         String name2 = "Player 2";
