@@ -29,6 +29,8 @@ public class StartScreen extends JFrame {
 	/**
 	 * Instantiates a new start screen.
 	 *
+     * @param random random number generator
+     *
 	 * @throws Exception the exception
 	 */
 	public StartScreen(Random random) throws Exception {
@@ -37,6 +39,8 @@ public class StartScreen extends JFrame {
 
 	/**
 	 * Inits the ui.
+     *
+     * @param random random number generator
 	 *
 	 * @throws Exception the exception
 	 */
@@ -65,6 +69,8 @@ public class StartScreen extends JFrame {
 	/**
 	 * Inits the components.
 	 *
+     * @param random random number generator
+     *
 	 * @throws Exception the exception
 	 */
 	private void initComponents(Random random) throws Exception {

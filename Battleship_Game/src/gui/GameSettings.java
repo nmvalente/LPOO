@@ -103,6 +103,7 @@ public class GameSettings extends JDialog implements ActionListener, FocusListen
 	 * @param h the height of the GameSettings JDialog
 	 * @param frame the start frame
 	 * @param audio the audio playing on the start frame
+     * @param newRandom random number generator
 	 */
 	public GameSettings(int w, int h, JFrame frame, IntroSound audio, Random newRandom) {
 		

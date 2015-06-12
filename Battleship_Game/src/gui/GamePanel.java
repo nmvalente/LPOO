@@ -94,10 +94,13 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 	 *
 	 * @param namePlayer1 the name of player1
 	 * @param namePlayer2 the name of player2
-	 * @param player2 
+     * @param player1 the first player
+	 * @param player2 the second player
 	 * @param startFrame the start frame
 	 */
 	public GamePanel(String namePlayer1, String namePlayer2, Player player1, Player player2, JFrame startFrame) {
+		getContentPane().setSize(new Dimension(1200, 600));
+		getContentPane().setPreferredSize(new Dimension(1200, 600));
 		this.player1 = player1;
 		this.player2 = player2;
 		game = Game.Instance();
@@ -111,7 +114,7 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		setName("Battleship");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(0, 0, 1243, 622);
-		setMinimumSize(new Dimension(1300, 800));
+		setMinimumSize(new Dimension(1280, 700));
 		getContentPane().setLayout(null);
 
 		initCommonPaint();
@@ -122,6 +125,9 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 
 	}
 
+    /**
+     * Paints constant part of the game panel
+     */
 	public void initCommonPaint(){
 		panel = new JPanel();
 		panel.setBackground(Color.BLUE);
@@ -150,20 +156,20 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		myGridPanels[0] = new Grid(10,10, player1);
 		myGridPanels[0].setLocation(0, 50);
 		myGridPanels[0].setPreferredSize(new Dimension(600, 20));
-		myGridPanels[0].setSize(new Dimension(600, 653));
+		myGridPanels[0].setSize(new Dimension(600, 550));
 		getContentPane().add(myGridPanels[0]);
 		((Grid)myGridPanels[0]).setGrid(player1, game.getDimV(), game.getDimH(), false);
 
 		myGridPanels[1] = new Grid(10,10, player2);
 		myGridPanels[1].setLocation(0, 50);
 		myGridPanels[1].setPreferredSize(new Dimension(600, 20));
-		myGridPanels[1].setSize(new Dimension(600, 653));
+		myGridPanels[1].setSize(new Dimension(600, 550));
 		getContentPane().add(myGridPanels[1]);
 		((Grid)myGridPanels[1]).setGrid(player2, game.getDimV(), game.getDimH(), false);
 
 		MyOpponentsPanels[0] = new JPanel();
 		MyOpponentsPanels[0].setBackground(Color.RED);
-		MyOpponentsPanels[0].setBounds(772, 169, 450, 450);
+		MyOpponentsPanels[0].setBounds(772, 100, 450, 450);
 		for (int i =0; i < 10; i++){
 			for(int j = 0; j < 10; j++)
 			{
@@ -215,7 +221,7 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		 */
 		MyOpponentsPanels[1] = new JPanel();
 		MyOpponentsPanels[1].setBackground(Color.RED);
-		MyOpponentsPanels[1].setBounds(772, 169, 450, 450);
+		MyOpponentsPanels[1].setBounds(772, 100, 450, 450);
 		for (int i = 0; i < 10; i++){
 			for(int j = 0; j < 10; j++)
 			{
@@ -266,11 +272,11 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		getContentPane().add(MyOpponentsPanel2);
 		 */
 		hitmissPanels[0] = new HitMissPanel(600,50);
-		hitmissPanels[0].setBounds(0, 703, 1282, 50);
+		hitmissPanels[0].setBounds(0, 600, 1282, 50);
 		getContentPane().add(hitmissPanels[0]);
 
 		hitmissPanels[1] = new HitMissPanel(600,50);
-		hitmissPanels[1].setBounds(0, 703, 1282, 50);
+		hitmissPanels[1].setBounds(0, 600, 1282, 50);
 		getContentPane().add(hitmissPanels[1]);
 
 		myGridPanels[0].setVisible(false);
@@ -291,7 +297,7 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		save.setHorizontalAlignment(SwingConstants.CENTER);
 		save.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		save.setAlignmentX(0.5f);
-		save.setBounds(602, 479, 79, 50);
+		save.setBounds(602, 419, 79, 50);
 		save.addActionListener(this);
 		getContentPane().add(save);
 
@@ -306,13 +312,16 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		quit.setHorizontalAlignment(SwingConstants.CENTER);
 		quit.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		quit.setAlignmentX(0.5f);
-		quit.setBounds(602, 548, 79, 50);
+		quit.setBounds(602, 492, 79, 50);
 		quit.addActionListener(this);
 		getContentPane().add(quit);		
 
 
 	}
 
+    /**
+     * Paints game panel components for 1 player game
+     */
 	public void initPaintForOnePlayer(){
 		myGridPanels[0].setVisible(true);
 		MyOpponentsPanels[0].setVisible(true);
@@ -322,7 +331,7 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
 		hitmissPanels[1].setVisible(false);
 	}
 	/**
-	 * Inits the paint of the components
+	 * Paints game panel components for 2 player game
 	 */
 	public void initPaintForTwoPlayers()
 	{
@@ -457,15 +466,16 @@ public class GamePanel extends JFrame implements ActionListener, MouseListener {
             if(attackResult) {
                 ((HitMissPanel) hitmissPanels[playerAttack.getNumber() - 1]).setStats(++hits[playerAttack.getNumber() - 1], misses[playerAttack.getNumber() - 1]);
                 cells[playerAttack.getNumber() - 1][posX][posY].setBackground(Color.RED);
-                ((Grid)myGridPanels[playerDefend.getNumber() - 1]).setGridColor(Color.RED, posX, posY);
+//                ((Grid)myGridPanels[playerDefend.getNumber() - 1]).setGridColor(Color.RED, posX, posY);
             }
             else {
                 ((HitMissPanel) hitmissPanels[playerAttack.getNumber() - 1]).setStats(hits[playerAttack.getNumber() - 1], ++misses[playerAttack.getNumber() - 1]);
                 cells[playerAttack.getNumber() - 1][posX][posY].setBackground(Color.BLUE);
-                ((Grid)myGridPanels[playerDefend.getNumber() - 1]).setGridColor(Color.BLUE, posX, posY);
+//                ((Grid)myGridPanels[playerDefend.getNumber() - 1]).setGridColor(Color.BLUE, posX, posY);
                 played = true;
                 if (game.getNumberPlayers() == 1) turn++;
             }
+            ((Grid)myGridPanels[playerDefend.getNumber() - 1]).setGrid(playerDefend, game.getDimV(), game.getDimH(), false);
             endGame();
         }
    }

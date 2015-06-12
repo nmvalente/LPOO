@@ -18,10 +18,12 @@ public class LoadGameMenu extends JFileChooser
 	
 	/** The abre arquivo. */
 	private JFileChooser abreArquivo = new JFileChooser();
-	
-	/**
-	 * Instantiates a new load game menu
-	 */
+
+    /**
+     * Instantiates a new load game menu
+     * @param currDir current directory for the load
+     * @param selectedFile selected file for the load
+     */
 	public LoadGameMenu(String currDir, String selectedFile)
 	{
 		int retorno = 0;

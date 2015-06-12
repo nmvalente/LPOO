@@ -82,6 +82,7 @@ public class StartScreenBackground extends JPanel implements KeyListener{
 	 * @param height the height
 	 * @param path the path
 	 * @param startScreen the start screen
+     * @param newRandom random number generator
 	 * @throws Exception the exception
 	 */
 	public StartScreenBackground(int width, int height, String path, JFrame startScreen, Random newRandom) throws Exception {

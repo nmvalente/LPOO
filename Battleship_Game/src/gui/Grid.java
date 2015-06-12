@@ -43,6 +43,8 @@ public class Grid extends JPanel {
 	 *
 	 * @param row the number of rows
 	 * @param col the number of columns
+     * @param opp opponent player
+     * @param me player the grid belongs to
 	 */
 	public Grid(int row, int col, Player opp, Player me) {
 		//game = game.Instance();
@@ -138,7 +140,7 @@ public class Grid extends JPanel {
 	 *
 	 * @param row the number of rows
 	 * @param col the number of columns
-	 * @wbp.parser.constructor
+     * @param player player the grid belongs to
 	 */
 	public Grid(int row, int col, Player player) {
 		grid = new JPanel [row][col];
@@ -240,7 +242,8 @@ public class Grid extends JPanel {
 	 * Sets the grid.
 	 * @param player the player whose board we want to draw
 	 * @param row the number of rows
-	 * @param col the numher of columns
+	 * @param col the number of columns
+     * @param opponent indicates if the grid is from the player or the opponent
 	 */
 	public void setGrid(Player player, int row, int col, boolean opponent){
 		for(int i = 0  ; i < row ; i++) {
